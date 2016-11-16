@@ -1,10 +1,12 @@
+"use strict";
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const appRoutes = require('./../routes/app');
+const yts = require('./yts.api');
+const appRoutes = require('./routes');
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -31,5 +33,8 @@ app.use('/', appRoutes);
 app.use((req, res) => {
   res.render('index');
 });
+
+//yts.getPage(1);
+
 
 module.exports = app;
