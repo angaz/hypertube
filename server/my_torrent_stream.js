@@ -21,7 +21,7 @@ function newStream (hash) {
             });
 
             if (stream !== null && maxSize !== 0) {
-                resolve(stream.createReadStream());
+                resolve(stream);
             } else {
                 reject('An error occurred starting a stream');
             }
