@@ -8,12 +8,12 @@ router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/watch', (res, req) => {
+router.get('/watch/:hash?', (req, res) => {
+    let hash = (req.body.hash !== undefined) ? req.body.hash : 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A';
     require('./my_torrent_stream')
-        .newStream('6141514CC6D6F02F17FE480E53C37A04BC594FAB')
+        .newStream(hash)
         .then((data) => {
-            //data.pipe(res);
-            //res.set('Content-Type', data.contentType);
+            res.set('Content-Type', 'video/mp4');
             data.pipe(res);
         })
         .catch((error) => {

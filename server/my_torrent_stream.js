@@ -7,9 +7,6 @@ const torrentStream = require('torrent-stream');
 
 function newStream (hash) {
     return new Promise((resolve, reject) => {
-        hash = 'A0DC864A77157CB98CE95E43BED98061D0736D02';
-        hash = hash.toLowerCase(hash);
-        console.log(hash);
         let engine = torrentStream(`magnet:?xt=urn:btih:${hash}`);
 
         engine.on('ready', () => {
