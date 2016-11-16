@@ -4,9 +4,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
-const appRoutes = require('./routes/app');
-
+const appRoutes = require('./../routes/app');
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -30,7 +28,7 @@ app.use((req, res, next) => {
 app.use('/', appRoutes);
 
 // Renders the index if no route was caught. 404 is handled by Angular
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.render('index');
 });
 
