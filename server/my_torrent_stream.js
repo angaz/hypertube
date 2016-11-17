@@ -10,9 +10,11 @@ mime.define({
     'video/webm': ['mkv']
 });
 
+let engines = {};
+
 function newStream (hash) {
     return new Promise((resolve, reject) => {
-        let engine = torrentStream(`magnet:?xt=urn:btih:${hash}`);
+        let engine = new torrentStream(`magnet:?xt=urn:btih:${hash}`);
         let stream = null;
         let totalPieces = 0;
 
@@ -46,25 +48,28 @@ function newStream (hash) {
             console.log(`${stream.name} has finished downloading`);
         });
 
-        engine.on('upload', (pieceIndex, offset, length) => {
+        /*engine.on('upload', (pieceIndex, offset, length) => {
             console.log(`${stream.name} uploaded ${pieceIndex} offset ${offset} length ${length}`);
-        });
+        });*/
     });
 }
 
 function watch(req, res) {
-    if (typeof req.session.engines === 'object') {
-        req.session.engines.forEach((engine) => {
-            engine.destroy();
+    if (typeof req.session.engineid === 'string' /*&& typeof engines[req.session.engineid] === 'object'*/) {
+        console.log('Destroying previous engine');
+        engines[req.session.engineid].destroy(() => {
+            console.log('Destroyed');
+            delete engines[req.session.engineid];
         });
     }
-    req.session.engines = [];
     let hash = (req.params.hash !== undefined) ? req.params.hash : 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A';
 
     newStream(hash)
         .then((data) => {
             let stream = data.stream;
-            //req.session.engines.push(data.engine);
+            req.session.engineid = require('crypto').randomBytes(Math.ceil(8)).toString('hex').slice(0, 16);
+            engines[req.session.engineid] = data.engine;
+            //console.log(engines);
             if (stream.name.match(/.*\.(mp4|mkv)$/i)) {
                 let range = [];
                 if (req.headers.range !== undefined) {
