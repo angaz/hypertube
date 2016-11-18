@@ -10,36 +10,16 @@ mime.define({
     'video/webm': ['mkv']
 });
 
-let engines = {};
-
-/*setInterval(() => {
-    let now = new Date().getTime();
-    for (let key in engines) {
-        let engine = engines[key];
-        if ((now - engine.created) > 60000) {  // 21600000
-            engine.destroy()
-                .then(() => {
-                    console.log('Destroyed due to old age');
-                    delete engines[key];
-                });
-        }
-    }
-}, 60000); // Every 10 minutes, destroys all engines older than 6 hours
-*/
-
 function newStream (hash) {
     return new Promise((resolve, reject) => {
         let engine = new torrentStream(`magnet:?xt=urn:btih:${hash}`);
         let stream = null;
+        let streamName = '';
         let totalPieces = 0;
-        let number = require('crypto').randomBytes(Math.ceil(8)).toString('hex').slice(0, 16);
-        let interval = setInterval(() => {
-            console.log(`${number} ${engine.swarm.downloaded} ${engine.swarm.uploaded}`);
-        }, 5000);
+
         let destroy = () => {
             return new Promise((callback) => {
                 engine.destroy(() => {
-                    clearInterval(interval);
                     callback();
                 });
             });
@@ -58,6 +38,7 @@ function newStream (hash) {
             if (stream !== null && maxSize !== 0) {
                 console.log(`Streaming: ${stream.name}`);
                 totalPieces = engine.torrent.pieces.length;
+                streamName = stream.name;
                 resolve({
                     stream: stream,
                     destroy: destroy
@@ -68,12 +49,12 @@ function newStream (hash) {
         });
 
         engine.on('download', (index) => {
-            //console.log(`Downloaded ${index} of ${totalPieces} from ${stream.name} ${parseFloat((index/totalPieces*100).toFixed(4))}%`);
+            console.log(`Downloaded ${index} of ${totalPieces} from ${stream.name} ${parseFloat((index/totalPieces*100).toFixed(4))}%`);
         });
 
-        engine.on('idle', () => {
-            //console.log(`${stream.name} has finished downloading`);
-        });
+        /*engine.on('idle', () => {
+            console.log(`${stream.name} has finished downloading`);
+        });*/
 
         /*engine.on('upload', (pieceIndex, offset, length) => {
             console.log(`${stream.name} uploaded ${pieceIndex} offset ${offset} length ${length}`);
@@ -82,36 +63,23 @@ function newStream (hash) {
 }
 
 function watch(req, res) {
-    if (typeof req.session.engineid === 'string' && typeof engines[req.session.engineid] === 'object') {
-        engines[engineid].destroy()
-            .then(() => {
-                delete engines[engineid];
-                console.log(`Destroyed due to seeking. Engines remaining ${Object.keys(engines).length}`);
-            });
-    }
-    let close = () => {
-        let engineid = req.session.engineid;
-        if (typeof engineid === 'string' && typeof engines[engineid] === 'object') {
-            engines[engineid].destroy()
-                .then(() => {
-                    delete engines[engineid];
-                    console.log(`Destroyed due to disconnect. Engines remaining ${Object.keys(engines).length}`);
-                });
-        }
-    };
-    req.on('close', close);
-    req.on('end', close);
-    req.session.engineid = require('crypto').randomBytes(Math.ceil(8)).toString('hex').slice(0, 16);
-    req.session.save();
     let hash = (req.params.hash !== undefined) ? req.params.hash : 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A';
 
     newStream(hash)
         .then((data) => {
             let stream = data.stream;
-            engines[req.session.engineid] = {
-                destroy: data.destroy,
-                created: new Date().getTime()
-            };
+
+            req.on('close', () => {
+                data.destroy().then(() => {
+                    console.log('Destroyed due to unexpected disconnect');
+                });
+            });
+            req.on('end', () => {
+                data.destroy().then(() => {
+                    console.log('Destroyed due to normal disconnect');
+                });
+            });
+
             if (stream.name.match(/.*\.(mp4|mkv)$/i)) {
                 let range = [];
                 if (req.headers.range !== undefined) {
