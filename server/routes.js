@@ -6,9 +6,11 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express' });
 });
 
-router.get('/watch/:hash?', torrent.watch);
+router.get('/watch/:hash?', (req, res) => {
+    torrent.watch(req, res, req.params.hash);
+});
 
 module.exports = router;

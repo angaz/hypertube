@@ -62,10 +62,8 @@ function newStream (hash) {
     });
 }
 
-function watch(req, res) {
-    let hash = (req.params.hash !== undefined) ? req.params.hash : 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A';
-
-    newStream(hash)
+function watch(req, res, hash) {
+    newStream((hash === undefined) ? 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A' : hash)
         .then((data) => {
             let stream = data.stream;
 
