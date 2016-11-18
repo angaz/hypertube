@@ -12,11 +12,38 @@ mime.define({
 
 let engines = {};
 
+/*setInterval(() => {
+    let now = new Date().getTime();
+    for (let key in engines) {
+        let engine = engines[key];
+        if ((now - engine.created) > 60000) {  // 21600000
+            engine.destroy()
+                .then(() => {
+                    console.log('Destroyed due to old age');
+                    delete engines[key];
+                });
+        }
+    }
+}, 60000); // Every 10 minutes, destroys all engines older than 6 hours
+*/
+
 function newStream (hash) {
     return new Promise((resolve, reject) => {
         let engine = new torrentStream(`magnet:?xt=urn:btih:${hash}`);
         let stream = null;
         let totalPieces = 0;
+        let number = require('crypto').randomBytes(Math.ceil(8)).toString('hex').slice(0, 16);
+        let interval = setInterval(() => {
+            console.log(`${number} ${engine.swarm.downloaded} ${engine.swarm.uploaded}`);
+        }, 5000);
+        let destroy = () => {
+            return new Promise((callback) => {
+                engine.destroy(() => {
+                    clearInterval(interval);
+                    callback();
+                });
+            });
+        };
 
         engine.on('ready', () => {
             let maxSize = 0;
@@ -33,7 +60,7 @@ function newStream (hash) {
                 totalPieces = engine.torrent.pieces.length;
                 resolve({
                     stream: stream,
-                    engine: engine
+                    destroy: destroy
                 });
             } else {
                 reject('An error occurred starting a stream');
@@ -41,11 +68,11 @@ function newStream (hash) {
         });
 
         engine.on('download', (index) => {
-            console.log(`Downloaded ${index} of ${totalPieces} from ${stream.name} ${parseFloat((index/totalPieces*100).toFixed(4))}%`);
+            //console.log(`Downloaded ${index} of ${totalPieces} from ${stream.name} ${parseFloat((index/totalPieces*100).toFixed(4))}%`);
         });
 
         engine.on('idle', () => {
-            console.log(`${stream.name} has finished downloading`);
+            //console.log(`${stream.name} has finished downloading`);
         });
 
         /*engine.on('upload', (pieceIndex, offset, length) => {
@@ -55,21 +82,36 @@ function newStream (hash) {
 }
 
 function watch(req, res) {
-    if (typeof req.session.engineid === 'string' /*&& typeof engines[req.session.engineid] === 'object'*/) {
-        console.log('Destroying previous engine');
-        engines[req.session.engineid].destroy(() => {
-            console.log('Destroyed');
-            delete engines[req.session.engineid];
-        });
+    if (typeof req.session.engineid === 'string' && typeof engines[req.session.engineid] === 'object') {
+        engines[engineid].destroy()
+            .then(() => {
+                delete engines[engineid];
+                console.log(`Destroyed due to seeking. Engines remaining ${Object.keys(engines).length}`);
+            });
     }
+    let close = () => {
+        let engineid = req.session.engineid;
+        if (typeof engineid === 'string' && typeof engines[engineid] === 'object') {
+            engines[engineid].destroy()
+                .then(() => {
+                    delete engines[engineid];
+                    console.log(`Destroyed due to disconnect. Engines remaining ${Object.keys(engines).length}`);
+                });
+        }
+    };
+    req.on('close', close);
+    req.on('end', close);
+    req.session.engineid = require('crypto').randomBytes(Math.ceil(8)).toString('hex').slice(0, 16);
+    req.session.save();
     let hash = (req.params.hash !== undefined) ? req.params.hash : 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A';
 
     newStream(hash)
         .then((data) => {
             let stream = data.stream;
-            req.session.engineid = require('crypto').randomBytes(Math.ceil(8)).toString('hex').slice(0, 16);
-            engines[req.session.engineid] = data.engine;
-            //console.log(engines);
+            engines[req.session.engineid] = {
+                destroy: data.destroy,
+                created: new Date().getTime()
+            };
             if (stream.name.match(/.*\.(mp4|mkv)$/i)) {
                 let range = [];
                 if (req.headers.range !== undefined) {
