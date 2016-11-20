@@ -1,0 +1,50 @@
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  width:90px;
+}
+
+.nav-item i{
+  width:100%;
+  margin-bottom:5px;
+}
+
+#nav-logo{
+  display: block;
+  overflow:hidden;
+  transition: all 0.5s ease-in-out;
+  color:#fff;
+  background:#52a591;
+  width:100%;
+  cursor: pointer;
+  height:90px;
+  text-align:center;
+  font-size:35px;
+  padding:18px 0;
+  font-family: 'Pacifico', cursive;
+  text-shadow: 1px 1px rgba(0,137,123, 0.47), 2px 2px rgba(0,137,123, 0.40), 3px 3px rgba(0,137,123, 0.35), 4px 4px rgba(0,137,123, 0.31), 5px 5px rgba(0,137,123, 0.28), 6px 6px rgba(0,137,123, 0.25), 7px 7px rgba(0,137,123, 0.22), 8px 8px rgba(0,137,123, 0.20), 9px 9px rgba(0,137,123, 0.18), 10px 10px rgba(0,137,123, 0.17), 11px 11px rgba(0,137,123, 0.15), 12px 12px rgba(0,137,123, 0.14), 13px 13px rgba(0,137,123, 0.12), 14px 14px rgba(0,137,123, 0.11), 15px 15px rgba(0,137,123, 0.10), 16px 16px rgba(0,137,123, 0.09), 17px 17px rgba(0,137,123, 0.07), 18px 18px rgba(0,137,123, 0.06), 19px 19px rgba(0,137,123, 0.05), 20px 20px rgba(0,137,123, 0.04), 21px 21px rgba(0,137,123, 0.03), 22px 22px rgba(0,137,123, 0.03), 23px 23px rgba(0,137,123, 0.02), 24px 24px rgba(0,137,123, 0.01), 25px 25px rgba(0,137,123, 0.00)
+}
+
+#nav-logo:hover{
+  background:#4b9482;
+  text-shadow: 1px 1px rgba(0,121,107, 1.00), 2px 2px rgba(0,121,107, 0.99), 3px 3px rgba(0,121,107, 0.98), 4px 4px rgba(0,121,107, 0.97), 5px 5px rgba(0,121,107, 0.96), 6px 6px rgba(0,121,107, 0.95), 7px 7px rgba(0,121,107, 0.94), 8px 8px rgba(0,121,107, 0.92), 9px 9px rgba(0,121,107, 0.91), 10px 10px rgba(0,121,107, 0.89), 11px 11px rgba(0,121,107, 0.88), 12px 12px rgba(0,121,107, 0.86), 13px 13px rgba(0,121,107, 0.85), 14px 14px rgba(0,121,107, 0.83), 15px 15px rgba(0,121,107, 0.81), 16px 16px rgba(0,121,107, 0.80), 17px 17px rgba(0,121,107, 0.78), 18px 18px rgba(0,121,107, 0.76), 19px 19px rgba(0,121,107, 0.74), 20px 20px rgba(0,121,107, 0.72), 21px 21px rgba(0,121,107, 0.70), 22px 22px rgba(0,121,107, 0.68), 23px 23px rgba(0,121,107, 0.66), 24px 24px rgba(0,121,107, 0.64), 25px 25px rgba(0,121,107, 0.62), 26px 26px rgba(0,121,107, 0.60), 27px 27px rgba(0,121,107, 0.58), 28px 28px rgba(0,121,107, 0.56), 29px 29px rgba(0,121,107, 0.53), 30px 30px rgba(0,121,107, 0.51), 31px 31px rgba(0,121,107, 0.49), 32px 32px rgba(0,121,107, 0.46), 33px 33px rgba(0,121,107, 0.44), 34px 34px rgba(0,121,107, 0.42), 35px 35px rgba(0,121,107, 0.39), 36px 36px rgba(0,121,107, 0.37), 37px 37px rgba(0,121,107, 0.34), 38px 38px rgba(0,121,107, 0.32), 39px 39px rgba(0,121,107, 0.29), 40px 40px rgba(0,121,107, 0.27), 41px 41px rgba(0,121,107, 0.24), 42px 42px rgba(0,121,107, 0.22), 43px 43px rgba(0,121,107, 0.19)
+}
+
+.nav-item{
+  display: block;
+  cursor:pointer;
+  transition: all 0.5s ease-in-out;
+  font-size:14px;
+  text-align: center;
+  width:100%;
+  height:90px;
+  padding:18px 0 !important;
+  border-bottom: 1px solid #322d33;
+  color: #4d484e !important;
+}
+
+.nav-item:hover {
+  background: #322d33;
+  color:#fcf2e6 !important;
+}
