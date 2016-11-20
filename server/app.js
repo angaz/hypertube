@@ -49,7 +49,20 @@ app.use((req, res) => {
   res.render('index');
 });
 
-//yts.getPage(1);
+/*
+yts.getPage(1)
+    .then((movies) => {
+        yts.getAllSubs(movies[0].imdb_code)
+            .then((subs) => {
+                console.log(require('util').inspect(subs, {depth: null}));
+            });
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+*/
 
+//yts.downloadSub('http://www.yifysubtitles.com/subtitle-api/late-summer-yify-99403.zip');
+//yts.downloadSub('https://github.com/request/request/archive/master.zip');
 
 module.exports = app;

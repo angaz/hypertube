@@ -67,14 +67,14 @@ function watch(req, res, hash) {
         .then((data) => {
             let stream = data.stream;
 
-            req.on('close', () => {
-                data.destroy().then(() => {
-                    console.log('Destroyed due to unexpected disconnect');
-                });
-            });
             req.on('end', () => {
                 data.destroy().then(() => {
                     console.log('Destroyed due to normal disconnect');
+                });
+            });
+            req.on('close', () => {
+                data.destroy().then(() => {
+                    console.log('Destroyed due to unexpected disconnect');
                 });
             });
 
