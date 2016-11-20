@@ -16,6 +16,7 @@ function newStream (hash) {
         let stream = null;
         let streamName = '';
         let totalPieces = 0;
+        let pieces = 0;
 
         let destroy = () => {
             return new Promise((callback) => {
@@ -48,8 +49,8 @@ function newStream (hash) {
             }
         });
 
-        engine.on('download', (index) => {
-            console.log(`Downloaded ${index} of ${totalPieces} from ${stream.name} ${parseFloat((index/totalPieces*100).toFixed(4))}%`);
+        engine.on('download', () => {
+            console.log(`Downloaded ${++pieces} of ${totalPieces} from ${stream.name} ${parseFloat((pieces/totalPieces*100).toFixed(4))}%`);
         });
 
         /*engine.on('idle', () => {
