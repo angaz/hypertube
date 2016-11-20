@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row full-height flex-items-xs-middle flex-items-xs-center">
+        <div class="col-xs offset-xs-0 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+            <div class="signin-tile tile tile-inner-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="signin-title">
+                            <div class="logo-long">tubular</div>
+                            <h3>Signup</h3>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form [formGroup]="signinForm" (submit)="signin()">
+                            <div class="row">
+                                <div class="col-xs-12"><input type="text" name="username" id="username" placeholder="Username" formControlName="username"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12"><input type="password" name="password" id="password" placeholder="Password" formControlName="password"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12"><button type="submit" class="button">Sign In</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <hr>
+                <h5>OR</h5>
+                <div class="social-container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6"><div class="social-button" id="social-button-facebook"><i class="fa fa-facebook"></i><div class="name">Sign in with Facebook</div></div></div>
+                        <div class="col-xs-12 col-md-6"><div class="social-button" id="social-button-google"><i class="fa fa-google"></i><div class="name">Sign in with Google</div></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hypertube-footer></hypertube-footer>
