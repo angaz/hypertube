@@ -9,6 +9,7 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const yts = require('./yts.api');
 const appRoutes = require('./routes');
+const apiRoutes = require('./routes.api');
 const app = express();
 const hbs = exphbs.create({
     extname: '.hbs',
@@ -33,7 +34,10 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use('/js', express.static(path.join(__dirname, '../public/js')));
+app.use('/stylesheets', express.static(path.join(__dirname, '../public/stylesheets')));
+app.use('/subtitles', express.static(path.join(__dirname, '../public/subtitles')));
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,14 +46,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/api', apiRoutes);
 app.use('/', appRoutes);
 
 // Renders the index if no route was caught. 404 is handled by Angular
-app.use((req, res) => {
-  res.render('index');
-});
-
-//yts.getPage(1);
-
+app.use((req, res) => res.render('index'));
 
 module.exports = app;
