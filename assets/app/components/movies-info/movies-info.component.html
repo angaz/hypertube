@@ -1,0 +1,28 @@
+<div id="movies-info-container">
+    <div class="movies-profile-close" (click)="movieProfileClose()"><i class="fa fa-times fa-2x"></i></div>
+    <div class="movies-profile" [ngStyle]="{'background-image': 'url(' + movie.background_image_original + ')'}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="movies-profile-container">
+                <div class="col-lg-3">
+                    <div class="movies-profile-cover"><img [src]=movie.medium_cover_image></div>
+                </div>
+                <div class="col-lg-6">
+                <div class="movies-profile-title">{{movie.title_long}}</div>
+                <div class="movies-profile-genre"><div class="genre-tag" *ngFor="let genre of movie.genres">{{genre}}</div></div>
+                <div class="movies-profile-runtime"><strong>Runtime:</strong> {{movie.runtime}} minutes</div>
+                </div>
+                <div class="col-lg-3">
+                <div class="movies-profile-watch">Watch now</div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-12">
+            <h4>Summary</h4>
+            {{movie.summary}}
+            </div>
+        </div>
+    </div>
+</div>

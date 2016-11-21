@@ -1,0 +1,53 @@
+@keyframes movies-info-show {
+    0%   { background-color: transparent; }
+    80%  { background-color: transparent; }
+    100% { background-color: rgba(40,40,44, 0.8) }
+}
+
+.container-fluid{
+    overflow:hidden;
+}
+.hide-movies-info{
+    right:0;
+    animation: movies-info-show 1s ease-in-out;
+    background-color: rgba(40,40,44, 0.8)
+}
+
+movies-info {
+    z-index:99;
+    width:calc(100% - 90px);
+    position:fixed;
+    top:0;
+    right:-100%;
+    min-height:100vh;
+    transition: all 1s ease-in-out;
+    background-color:rgba(40,40,44, 0);
+    color:#fff;
+}
+
+#movies-results{
+    background:#221e23;
+}
+
+.movies-thumb-img{
+    width:100%;
+}
+
+#movies-results:hover > div{
+    opacity:0.3;
+    transition: all 0.5s ease-in-out;
+    transform: scale3d(1, 1, 1)
+
+}
+
+#movies-results:hover > div:hover{
+    opacity:1;
+    transform: scale3d(1.05, 1.05, 1.05);
+    transition: all 0.5s ease-in-out;
+    z-index: 1;
+}
+
+#movies-results > div {
+    transition: all 0.5s ease-in-out;
+    padding:0 !important;
+}
