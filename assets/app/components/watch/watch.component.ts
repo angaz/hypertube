@@ -1,30 +1,52 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { YtsService } from '../../services/yts.service';
+import {isNullOrUndefined} from "util";
 
 @Component ({
   selector: 'hypertube-watch',
-  providers: [YtsService],
-  templateUrl: './movies.component.html',
-  styleUrls: ['./movies.component.css']
+  templateUrl: './watch.component.html',
+  styleUrls: ['./watch.component.css']
 })
-export class MoviesComponent {
-  isHide = false;
-  selectedMovie: Object = {
-    'title' : "No Title has been set...",
+export class WatchComponent {
+  private subscription: Subscription;
+  movie: any = {
+      poster: null,
+      src: null
   };
-  defaultMovies: any;
+  captions: any = [{
+      language: {
+          code: null,
+          nativeName: null
+      },
+      src: null
+  }];
+  noMovie: boolean = false;
 
-  constructor(private _ytsService:YtsService){
-    this._ytsService.defaultOutput().subscribe(res => {
-      this.defaultMovies = res.data.movies;
-    });
+  constructor(private activatedRoute: ActivatedRoute, private _ytsService:YtsService) {}
+
+  ngOnInit() {
+    // subscribe to router event
+    this.subscription = this.activatedRoute.params.subscribe(
+        (param: any) => {
+            let watch = this._ytsService.findBySlug(param.name);
+            console.log(watch);
+            if (isNullOrUndefined(watch)) {
+                return this.noMovie = true;
+            }
+            this.movie = {
+                poster: watch.background_image,
+                src: `/api/watch/${watch.torrents[0].hash}`,
+            };
+            this._ytsService.getCaptions(watch.id)
+                .then(captions => {this.captions = captions; console.log(captions);});
+        });
   }
 
-  movieProfileClose(){
-    this.isHide = false;
-  }
-
-  movieUpdateInfo(movieObject: any){
-    this.selectedMovie = movieObject;
+  ngOnDestroy() {
+    // prevent memory leak by unsubscribing
+    this.subscription.unsubscribe();
   }
 }

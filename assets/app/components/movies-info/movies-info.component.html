@@ -5,7 +5,7 @@
         <div class="row">
             <div class="movies-profile-container">
                 <div class="col-lg-3">
-                    <div class="movies-profile-cover"><img [src]=movie.medium_cover_image></div>
+                    <div class="movies-profile-cover"><img src="" [src]=movie.medium_cover_image></div>
                 </div>
                 <div class="col-lg-6">
                 <div class="movies-profile-title">{{movie.title_long}}</div>
@@ -13,7 +13,7 @@
                 <div class="movies-profile-runtime"><strong>Runtime:</strong> {{movie.runtime}} minutes</div>
                 </div>
                 <div class="col-lg-3">
-                <div class="movies-profile-watch">Watch now</div>
+                    <div class="movies-profile-watch"><a [routerLink]="['/watch/' + movie.slug]">Watch now</a></div>
                 </div>
             </div>
         </div>
