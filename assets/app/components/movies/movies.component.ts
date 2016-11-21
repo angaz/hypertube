@@ -3,7 +3,6 @@ import { YtsService } from '../../services/yts.service';
 
 @Component ({
   selector: 'hypertube-movies',
-  providers: [YtsService],
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.css']
 })

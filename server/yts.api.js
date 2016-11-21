@@ -3,8 +3,8 @@ const request = require('request');
 const yifysubs = require('yifysubs');
 const unzip = require('unzip');
 const srt2vtt = require('srt2vtt');
-const fs = require('fs');
-const iso639 = require('iso-639-1');
+const fs = require('fs-extra');
+const iso639 = require('iso-639-1').default;
 
 function getPage(pageNum) {
     return new Promise((resolve, reject) => {
@@ -71,21 +71,17 @@ function getAllSubs(movie) {
     });
 }
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 function downloadSub(subURL, name, language) {
     let found = false;
     return new Promise((resolve, reject) => {
-        fs.mkdirSync(`${__dirname}/../public/captions`);
+        fs.mkdirsSync(`${__dirname}/../public/captions`);
         request(subURL)
             .pipe(unzip.Parse())
             // Called for every file in the zip
             .on('entry', entry => {
                 if (entry.path.match(/.*\.srt$/)) {
                     let buff = [];
-                    let langCode = iso639.getCode(capitalizeFirstLetter(language));
+                    let langCode = iso639.getCode(language);
                     let filename = `public/captions/${name}_${langCode}.vtt`;
                     entry.on('data', data => buff.push(data));
                     entry.on('end', () => {
