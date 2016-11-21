@@ -1,0 +1,53 @@
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouterModule, Routes } from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpModule } from '@angular/http';
+
+import { AppComponent } from '../components/app/app.component';
+import { NavComponent } from '../components/nav/nav.component';
+import { PageNotFoundComponent } from '../components/404/404.component';
+import { SigninComponent } from '../components/signin/signin.component';
+import { SignupComponent } from '../components/signup/signup.component';
+import { HomeComponent } from '../components/home/home.component';
+import { MoviesComponent } from '../components/movies/movies.component';
+import { MoviesInfoComponent } from '../components/movies-info/movies-info.component';
+import { SeriesComponent } from '../components/series/series.component';
+import { FooterComponent } from "../components/footer/footer.component";
+
+const appRoutes: Routes = [
+    { path: 'signin', component: SigninComponent },
+    { path: 'signup', component: SignupComponent },
+    { path: 'movies', component: MoviesComponent },
+    { path: 'series', component: SeriesComponent },
+    { path: '', component: HomeComponent },
+    { path: '**', component: PageNotFoundComponent }
+];
+
+@NgModule({
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        SigninComponent,
+        SignupComponent,
+        SeriesComponent,
+        MoviesComponent,
+        MoviesInfoComponent,
+        HomeComponent,
+        PageNotFoundComponent,
+        NavComponent,
+        FooterComponent
+    ],
+    imports: [
+        RouterModule.forRoot(appRoutes),
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        ReactiveFormsModule
+    ],
+    bootstrap: [AppComponent]
+
+})
+export class AppModule{
+
+}
