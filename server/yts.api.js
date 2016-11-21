@@ -78,6 +78,7 @@ function capitalizeFirstLetter(string) {
 function downloadSub(subURL, name, language) {
     let found = false;
     return new Promise((resolve, reject) => {
+        fs.mkdirSync(`${__dirname}/../public/captions`);
         request(subURL)
             .pipe(unzip.Parse())
             // Called for every file in the zip
@@ -85,7 +86,7 @@ function downloadSub(subURL, name, language) {
                 if (entry.path.match(/.*\.srt$/)) {
                     let buff = [];
                     let langCode = iso639.getCode(capitalizeFirstLetter(language));
-                    let filename = `public/subtitles/${name}_${langCode}.vtt`;
+                    let filename = `public/captions/${name}_${langCode}.vtt`;
                     entry.on('data', data => buff.push(data));
                     entry.on('end', () => {
                         srt2vtt(Buffer.concat(buff), (err, vtt) => {
@@ -117,11 +118,6 @@ function downloadSub(subURL, name, language) {
             });
     });
 }
-
-
-/*function downloadSubs(subsURL) {
-    if (typeof subs === 'object')
-}*/
 
 module.exports = {
     getPage: getPage,

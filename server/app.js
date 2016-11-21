@@ -34,7 +34,6 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, '../public')));
 app.use('/js', express.static(path.join(__dirname, '../public/js')));
 app.use('/stylesheets', express.static(path.join(__dirname, '../public/stylesheets')));
 app.use('/subtitles', express.static(path.join(__dirname, '../public/subtitles')));
@@ -52,32 +51,5 @@ app.use('/', appRoutes);
 
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
-
-/*
-yts.getPage(1)
-    .then((movies) => {
-        console.log(movies[0]);
-        yts.getAllSubs(movies[0])
-            .then(subs => {
-                console.log(subs);
-            });
-            // .catch(err => console.log(err));
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-*/
-
-/*yts.downloadSub('http://www.yifysubtitles.com/subtitle-api/late-summer-yify-99403.zip', 'english')
-    .then(sub => {
-        console.log(sub);
-    })
-    .catch(error => console.log(error));*/
-
-/*yts.downloadSub('https://github.com/request/request/archive/master.zip')
-    .then((file) => {
-        console.log(file);
-    })
-    .catch(error => console.log(error));*/
 
 module.exports = app;
