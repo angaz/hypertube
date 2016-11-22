@@ -14,12 +14,12 @@ function newStream (hash) {
     return new Promise((resolve, reject) => {
         let engine = new torrentStream(`magnet:?xt=urn:btih:${hash}`);
         let stream = null;
-        let streamName = '';
         let totalPieces = 0;
-        let pieces = 0;
+        let noPieces = 0;
+        let pieces = [];
 
         let destroy = () => {
-            return new Promise((callback) => {
+            return new Promise(callback => {
                 engine.destroy(() => {
                     callback();
                 });
@@ -29,7 +29,7 @@ function newStream (hash) {
         engine.on('ready', () => {
             let maxSize = 0;
 
-            engine.files.forEach((file) => {
+            engine.files.forEach(file => {
                 if (file.length > maxSize) {
                     stream = file;
                     maxSize = file.length;
@@ -38,8 +38,7 @@ function newStream (hash) {
 
             if (stream !== null && maxSize !== 0) {
                 console.log(`Streaming: ${stream.name}`);
-                totalPieces = engine.torrent.pieces.length;
-                streamName = stream.name;
+                totalPieces = Math.ceil(stream.length / engine.torrent.pieceLength);
                 resolve({
                     stream: stream,
                     destroy: destroy
@@ -49,23 +48,21 @@ function newStream (hash) {
             }
         });
 
-        engine.on('download', () => {
-            console.log(`Downloaded ${++pieces} of ${totalPieces} from ${stream.name} ${parseFloat((pieces/totalPieces*100).toFixed(4))}%`);
+        engine.on('verify', index => {
+            ++noPieces;
+            pieces.push(index);
+            if (stream === undefined || stream === null) {
+                console.log(`Verified ${index} of ${totalPieces}`);
+            } else {
+                console.log(`Downloaded ${noPieces} of ${totalPieces} from ${stream.name} ${parseFloat((noPieces/totalPieces*100).toFixed(4))}%`);
+            }
         });
-
-        /*engine.on('idle', () => {
-            console.log(`${stream.name} has finished downloading`);
-        });*/
-
-        /*engine.on('upload', (pieceIndex, offset, length) => {
-            console.log(`${stream.name} uploaded ${pieceIndex} offset ${offset} length ${length}`);
-        });*/
     });
 }
 
 function watch(req, res, hash) {
     newStream((hash === undefined) ? 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A' : hash)
-        .then((data) => {
+        .then(data => {
             let stream = data.stream;
 
             req.on('end', () => {
@@ -103,9 +100,9 @@ function watch(req, res, hash) {
                 res.json('Only mp4 videos allowed');
             }
         })
-        .catch((error) => {
+        .catch(error => {
             console.log(error);
-            res.json(error);
+            res.status(500).json(error);
         });
 }
 

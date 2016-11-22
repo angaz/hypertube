@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+
 import { YtsService } from '../../services/yts.service';
 
 @Component ({
-  selector: 'hypertube-movies',
-  templateUrl: './movies.component.html',
-  styleUrls: ['./movies.component.css']
+    selector: 'hypertube-movies',
+    templateUrl: './movies.component.html',
+    styleUrls: ['./movies.component.css']
 })
 export class MoviesComponent {
   isHide = false;
