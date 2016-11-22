@@ -28,4 +28,12 @@ export class MoviesComponent {
   movieUpdateInfo(movieObject: any) {
     this.selectedMovie = movieObject;
   }
+
+  onScroll() {
+      this._ytsService.getNextList()
+          .then(movies => {
+              this.defaultMovies = movies;
+              console.log(movies);
+          });
+  }
 }
