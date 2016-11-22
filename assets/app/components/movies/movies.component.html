@@ -1,11 +1,12 @@
 <div class="container-fluid">
     <movies-info (close)="movieProfileClose()"
                  [class.hide-movies-info]="isHide"
-                 [selectedMovie]="selectedMovie"
-                 infinite-scroll
-                    infiniteScrollDistance="1"
-                    (scrolled)="onScroll()"></movies-info>
-    <div id="movies-results" class="row">
+                 [selectedMovie]="selectedMovie"></movies-info>
+    <div id="movies-results"
+         class="row"
+         infinite-scroll
+            infiniteScrollDistance="1"
+            (scrolled)="onScroll()">
         <div class="col-sm-4 col-md-3 col-lg-2" *ngFor="let item of defaultMovies" (click)='movieUpdateInfo(item); isHide = !isHide;'><img class="movies-thumb-img" [src]=item.medium_cover_image></div>
     </div>
 </div>
