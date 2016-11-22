@@ -31,12 +31,15 @@ app.use(session({
     resave: true,
     saveUninitialized: false
 }));
+
+express.static.mime.define({'text/vtt': ['vtt']});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/js', express.static(path.join(__dirname, '../public/js')));
 app.use('/stylesheets', express.static(path.join(__dirname, '../public/stylesheets')));
-app.use('/subtitles', express.static(path.join(__dirname, '../public/subtitles')));
+app.use('/captions', express.static(path.join(__dirname, '../public/captions')));
 
 
 app.use((req, res, next) => {
@@ -51,5 +54,8 @@ app.use('/', appRoutes);
 
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
+
+/*yts.getPage()
+    .then(res => console.log(res));*/
 
 module.exports = app;

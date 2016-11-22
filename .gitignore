@@ -1,6 +1,5 @@
 .idea
-/.public/
 /node_modules
 /npm-debug.log
 /public/js
-/public/subtitles/
+/public/captions

@@ -3,7 +3,6 @@ import { YtsService } from '../../services/yts.service';
 
 @Component ({
   selector: 'hypertube-movies',
-  providers: [YtsService],
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.css']
 })
@@ -14,17 +13,19 @@ export class MoviesComponent {
   };
   defaultMovies: any;
 
-  constructor(private _ytsService:YtsService){
-    this._ytsService.defaultOutput().subscribe(res => {
-      this.defaultMovies = res.data.movies;
-    });
+  constructor(private _ytsService:YtsService) {
+    this._ytsService.getNextList()
+        .then(movies => {
+            this.defaultMovies = movies;
+            console.log(movies);
+        });
   }
 
-  movieProfileClose(){
+  movieProfileClose() {
     this.isHide = false;
   }
 
-  movieUpdateInfo(movieObject: any){
+  movieUpdateInfo(movieObject: any) {
     this.selectedMovie = movieObject;
   }
 }

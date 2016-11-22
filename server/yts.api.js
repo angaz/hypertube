@@ -3,8 +3,8 @@ const request = require('request');
 const yifysubs = require('yifysubs');
 const unzip = require('unzip');
 const srt2vtt = require('srt2vtt');
-const fs = require('fs');
-const iso639 = require('iso-639-1');
+const fs = require('fs-extra');
+const iso639 = require('iso-639-1').default;
 
 function getPage(pageNum) {
     return new Promise((resolve, reject) => {
@@ -65,57 +65,75 @@ function getAllSubs(movie) {
                 }
             }
             Promise.all(allSubs)
-                .then(values => resolve(values))
+                .then(values => {
+                    let newValues = [];
+                    values.forEach((item) => {
+                        // removes zip file errors and duplicates of the same language
+                        if (item !== null && newValues.find(value => value.file === item.file) === undefined) {
+                            newValues.push(item);
+                        }
+                    });
+                    resolve(newValues);
+                })
                 .catch(err => reject(err));
         });
     });
 }
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 function downloadSub(subURL, name, language) {
     let found = false;
-    return new Promise((resolve, reject) => {
-        fs.mkdirSync(`${__dirname}/../public/captions`);
-        request(subURL)
-            .pipe(unzip.Parse())
-            // Called for every file in the zip
-            .on('entry', entry => {
-                if (entry.path.match(/.*\.srt$/)) {
-                    let buff = [];
-                    let langCode = iso639.getCode(capitalizeFirstLetter(language));
-                    let filename = `public/captions/${name}_${langCode}.vtt`;
-                    entry.on('data', data => buff.push(data));
-                    entry.on('end', () => {
-                        srt2vtt(Buffer.concat(buff), (err, vtt) => {
-                            if (err) {
-                                return resolve(err);
-                            } else {
-                                fs.writeFileSync(filename, vtt);
-                            }
+    let langCode = iso639.getCode(language.replace(/.*?\-/, ''));
+    let filename = `captions/${name}_${langCode}.vtt`;
+    return new Promise(resolve => {
+        // First checks if subtitle file exists
+        fs.access(`./public/${filename}`, fs.F_OK, err => {
+            if (!err) {
+                found = true;
+                return resolve({
+                    language: {
+                        code: langCode,
+                        name: iso639.getName(langCode),
+                        nativeName: iso639.getNativeName(langCode)
+                    },
+                    file: filename
+                });
+            } // Don't need an else because of return
+            fs.mkdirsSync(`${__dirname}/../public/captions`);
+            request(subURL)
+                .pipe(unzip.Parse())
+                // Called for every file in the zip
+                .on('entry', entry => {
+                    if (entry.path.match(/.*\.srt$/)) {
+                        let buff = [];
+                        entry.on('data', data => buff.push(data));
+                        entry.on('end', () => {
+                            srt2vtt(Buffer.concat(buff), (err, vtt) => {
+                                if (err) {
+                                    return resolve(err);
+                                } else {
+                                    fs.writeFileSync(`./public/${filename}`, vtt);
+                                }
+                            });
+                            found = true;
+                            return resolve({
+                                language: {
+                                    code: langCode,
+                                    name: iso639.getName(langCode),
+                                    nativeName: iso639.getNativeName(langCode)
+                                },
+                                file: filename
+                            });
                         });
-                        found = true;
-                        let res = {
-                            language: {
-                                code: langCode,
-                                name: iso639.getName(langCode),
-                                nativeName: iso639.getNativeName(langCode)
-                            },
-                            file: filename
-                        };
-                        resolve(res);
-                    });
-                } else {
-                    entry.autodrain();
-                }
-            })
-            .on('close', () => {
-                if (!found) {
-                    reject('No srt file');
-                }
-            });
+                    } else {
+                        entry.autodrain();
+                    }
+                })
+                .on('close', () => {
+                    console.log(`Captions: ${filename} had no srt files`);
+                    return resolve(null);
+                });
+        });
+
     });
 }
 

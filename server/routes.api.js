@@ -5,6 +5,7 @@
 
 const express = require('express');
 const yts = require('./yts.api');
+const torrent = require('./my_torrent_stream');
 const router = express.Router();
 const request = require('request');
 
@@ -21,6 +22,10 @@ router.get('/movies/:page?', (req, res) => {
     yts.getPage((req.params.page === undefined) ? 1 : parseInt(req.params.page))
         .then(movies => res.json(movies))
         .catch(error => res.status(500).json(error));
+});
+
+router.get('/watch/:hash?', (req, res) => {
+    torrent.watch(req, res, req.params.hash);
 });
 
 module.exports = router;
