@@ -6,6 +6,7 @@
 const express = require('express');
 const yts = require('./yts.api');
 const torrent = require('./my_torrent_stream');
+const movieApi = require('./movie.api');
 const router = express.Router();
 const request = require('request');
 
@@ -26,6 +27,12 @@ router.get('/movies/:page?', (req, res) => {
 
 router.get('/watch/:hash?', (req, res) => {
     torrent.watch(req, res, req.params.hash);
+});
+
+router.get('/update', (req, res) => {
+    movieApi.update()
+        .then(update => res.json(update))
+        .catch(error => res.status(500).json(error));
 });
 
 module.exports = router;
