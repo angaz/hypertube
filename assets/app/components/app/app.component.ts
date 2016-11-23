@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 import {YtsService} from "../../services/yts.service";
+import {SearchService} from "../../services/search.service";
 
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    providers: [YtsService]
+    providers: [YtsService, SearchService]
 })
 export class AppComponent {
-
 }
