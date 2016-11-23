@@ -16,6 +16,7 @@ import { SeriesComponent } from '../components/series/series.component';
 import { FooterComponent } from "../components/footer/footer.component";
 import { MoviesInfoComponent } from "../components/movies-info/movies-info.component";
 import { WatchComponent } from "../components/watch/watch.component";
+import { SearchComponent } from "../components/search/search.component";
 
 const appRoutes: Routes = [
     { path: 'signin', component: SigninComponent },
@@ -40,7 +41,8 @@ const appRoutes: Routes = [
         PageNotFoundComponent,
         NavComponent,
         FooterComponent,
-        WatchComponent
+        WatchComponent,
+        SearchComponent
     ],
     imports: [
         RouterModule.forRoot(appRoutes),

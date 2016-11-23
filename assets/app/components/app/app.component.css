@@ -13,7 +13,7 @@ hypertube-nav, hypertube-home{
 }
 
 hypertube-nav{
-  z-index:100;
+  z-index:101;
   width:90px;
   background: #29242a;
   height:100vh;
@@ -43,3 +43,4 @@ hypertube-home{
   width: 100%;
   height:100vh;
 }
+

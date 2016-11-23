@@ -50,6 +50,10 @@ input {
   margin-bottom: 15px;
 }
 
+a {
+  text-decoration: none;
+}
+
 h1, h2, h3, h4, h5, h6{
   text-transform: uppercase;
   font-family: 'Oswald', sans-serif;
@@ -113,6 +117,7 @@ h3 {
 hr{
   border-top: 3px dashed #f1f1f1;
 }
+
 hypertube-movies{
   position:relative;
 }
