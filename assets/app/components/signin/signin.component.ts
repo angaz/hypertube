@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { User } from '../../user.model';
 
 @Component ({
   selector: 'app-signin',
@@ -9,9 +12,20 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class SigninComponent {
   signinForm: FormGroup;
 
+  constructor(private authService: AuthService, private router: Router) {}
+
   onSubmit() {
       // call to user registration service goes here. Elements have not been sanitized or validated. passing through signup form as object.
-      console.log(this.signinForm);
+      const user = new User(this.signinForm.value.username, this.signinForm.value.password);
+      this.authService.signin(user)
+          .subscribe(
+              data => {
+                  localStorage.setItem('token', data.token);
+                  localStorage.setItem('userId', data.userId);
+                  this.router.navigateByUrl('/');
+              },
+              error => console.error(error)
+          );
       this.signinForm.reset();
     }
 

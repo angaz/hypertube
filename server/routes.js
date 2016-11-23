@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('./user.model');
 
 router.post('/user', (req, res, next) => {
@@ -24,6 +25,29 @@ router.post('/user', (req, res, next) => {
 		res.status(201).json({
 			message: 'User created successfully',
 			obj: result
+		});
+	});
+});
+
+router.post('/user/signin', (req, res, next) => {
+	User.findOne({username: req.body.email}, (err, user) => {
+		if (err) {
+			return res.status(500).json({
+				title: 'An error occurred when logging in',
+				error: err
+			});
+		}
+		if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
+			return res.status(401).json({
+				title: 'Login failed',
+				error: {message: 'Invalid login credentials'}
+			});
+		}
+		let token = jwt.sign({user: user}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
+		res.status(200).json({
+			message: 'Successfully logged in',
+			token: token,
+			userId: user._id
 		});
 	});
 });
