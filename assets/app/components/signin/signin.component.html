@@ -13,15 +13,15 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12">
-                        <form [formGroup]="signinForm" (submit)="signin()">
+                        <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
                             <div class="row">
-                                <div class="col-xs-12"><input type="text" name="username" id="username" placeholder="Username" formControlName="username"></div>
+                                <div class="col-xs-12"><input type="text" class="form-control" id="username" placeholder="Username" formControlName="username"></div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12"><input type="password" name="password" id="password" placeholder="Password" formControlName="password"></div>
+                                <div class="col-xs-12 col-md-6"><input type="password" class="form-control" id="password" placeholder="Password" formControlName="password"></div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12"><button type="submit" class="button">Sign In</button></div>
+                                <div class="col-xs-12"><button type="submit" [disabled]="!signupForm.valid" class="button">Sign In</button></div>
                             </div>
                         </form>
                     </div>

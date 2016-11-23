@@ -1,25 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component ({
-  selector: 'hypertube-signin',
+  selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
-export class SigninComponent implements OnInit{
-  public signinForm: FormGroup;
+export class SigninComponent {
+  signinForm: FormGroup;
 
-  ngOnInit (){
-    this.signinForm = new FormGroup({
-      username: new FormControl(''),
-      password: new FormControl('')
-    })
+  onSubmit() {
+      // call to user registration service goes here. Elements have not been sanitized or validated. passing through signup form as object.
+      console.log(this.signinForm);
+      this.signinForm.reset();
+    }
+
+    ngOnInit () {
+	this.signinForm = new FormGroup({
+	  username: new FormControl(null, Validators.required),
+	  password: new FormControl(null, Validators.required)
+	})
   }
-
-  signin(){
-    // call to user signin service goes here. Elements have not been sanitized or validated. passing through signup form as object.
-    console.log(this.signinForm.value);
-  }
-
-
 }
