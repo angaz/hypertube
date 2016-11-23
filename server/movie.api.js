@@ -16,10 +16,14 @@ function update() {
             if (yify === undefined) {
                 return reject('getPage returned undefined');
             }
-            tmdbAPI.findByImdb(yify.imdb_code).then(tmdb => {
+            tmdbAPI.findByImdb(yify[0].imdb_code).then(tmdb => {
                 // let bulk = Movie.collection.initializeUnorderedBulkOp();
+                if (tmdb === undefined) {
+                    return reject('findByImdb returned undefined');
+                }
 
                 let genres = tmdb.genres.map(genre => {
+                    console.log(genre);
                     delete genre.id;
                     return genre;
                 });
@@ -61,8 +65,8 @@ function update() {
                 /*moviesList.forEach(movie => {
 
                  });*/
-            });
-        });
+            }).catch(error => console.log(error));
+        }).catch(error => console.log(error));
     });
 }
 

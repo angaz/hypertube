@@ -7,6 +7,7 @@ const express = require('express');
 const yts = require('./yts.api');
 const torrent = require('./my_torrent_stream');
 const movieApi = require('./movie.api');
+const tmdb = require('./tmdb.api');
 const router = express.Router();
 const request = require('request');
 
@@ -32,6 +33,18 @@ router.get('/watch/:hash?', (req, res) => {
 router.get('/update', (req, res) => {
     movieApi.update()
         .then(update => res.json(update))
+        .catch(error => res.status(500).json(error));
+});
+
+router.get('/get_details/:id', (req, res) => {
+    tmdb.getDetails(req.params.id)
+        .then(details => res.json(details))
+        .catch(error => res.status(500).json(error));
+});
+
+router.get('/find/:imdb', (req, res) => {
+    tmdb.find(req.params.imdb)
+        .then(found => res.json(found))
         .catch(error => res.status(500).json(error));
 });
 

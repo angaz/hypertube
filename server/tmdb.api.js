@@ -8,11 +8,13 @@ function getDetails(id) {
     return new Promise((resolve, reject) => {
         request(`https://api.themoviedb.org/3/movie/${id}?api_key=b5be569ee49cf0a7e3cf39991b982033`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
+                console.log(body);
                 resolve(JSON.parse(body));
             } else {
                 reject({
                     message: 'An error occurred',
-                    error: error
+                    error: error,
+                    code: response.statusCode
                 });
             }
         });
@@ -21,13 +23,15 @@ function getDetails(id) {
 
 function find(imdb) {
     return new Promise((resolve, reject) => {
-        request(`https://api.themoviedb.org/3/find/${imdb}?api_key=b5be569ee49cf0a7e3cf39991b982033`, (error, response, body) => {
+        request(`https://api.themoviedb.org/3/find/${imdb}?api_key=b5be569ee49cf0a7e3cf39991b982033&external_source=imdb_id`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
+                console.log(body);
                 resolve(JSON.parse(body));
             } else {
                 reject({
                     message: 'An error occurred',
-                    error: error
+                    error: error,
+                    code: response.statusCode
                 });
             }
         });
@@ -38,6 +42,7 @@ function findByImdb(imdb) {
     return new Promise((resolve, reject) => {
         find(imdb)
             .then((found => {
+                console.log(found);
                 getDetails(found.movie_results[0].id)
                     .then(movie => resolve(movie))
                     .catch(getDetailsError => reject(getDetailsError));
