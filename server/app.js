@@ -21,7 +21,7 @@ const hbs = exphbs.create({
     }
 });
 
-mongoose.connect('mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/?ssl=true');
+mongoose.connect('mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true');
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
@@ -58,10 +58,10 @@ app.use('/', appRoutes);
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
 
-yts.getPage()
+/*yts.getPage()
     .then(res => {
         console.log(res[0]);
         console.log(res[1]);
-    });
+    });*/
 
 module.exports = app;
