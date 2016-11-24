@@ -14,7 +14,8 @@ function getPage(pageNum) {
             } else {
                 reject({
                     message: 'An error occurred',
-                    error: error
+                    error: error,
+                    status: response.statusCode
                 });
             }
         });
@@ -45,7 +46,8 @@ function getDetails(id) {
                 } else {
                     reject({
                         message: 'An error occurred',
-                        error: error
+                        error: error,
+                        status: response.statusCode
                     });
                 }
 
@@ -84,7 +86,7 @@ function downloadSub(subURL, name, language) {
     let found = false;
     let langCode = iso639.getCode(language.replace(/.*?\-/, ''));
     let filename = `captions/${name}_${langCode}.vtt`;
-    return new Promise(resolve => {
+    return new Promise(resolve, reject => {
         // First checks if subtitle file exists
         fs.access(`./public/${filename}`, fs.F_OK, err => {
             if (!err) {
@@ -98,6 +100,9 @@ function downloadSub(subURL, name, language) {
                     file: filename
                 });
             } // Don't need an else because of return
+            else {
+                reject(err);
+            }
             fs.mkdirsSync(`${__dirname}/../public/captions`);
             request(subURL)
                 .pipe(unzip.Parse())

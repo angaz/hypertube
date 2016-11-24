@@ -33,7 +33,7 @@ router.get('/watch/:hash?', (req, res) => {
 router.get('/update', (req, res) => {
     movieApi.update()
         .then(update => res.json(update))
-        .catch(error => res.status(500).json(error));
+        .catch(error => res.json(error));
 });
 
 router.get('/get_details/:id', (req, res) => {

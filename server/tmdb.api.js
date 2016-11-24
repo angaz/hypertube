@@ -10,8 +10,11 @@ function getDetails(id) {
             if (!error && response.statusCode == 200) {
                 resolve(JSON.parse(body));
             } else {
+                if (response.statusCode === 429) {
+                    console.log('429');
+                }
                 reject({
-                    message: 'An error occurred',
+                    message: 'TMDB getDetails error',
                     error: error,
                     code: response.statusCode
                 });
@@ -26,9 +29,14 @@ function find(imdb) {
             if (!error && response.statusCode == 200) {
                 resolve(JSON.parse(body));
             } else {
+                if (response.statusCode === 429) {
+                    console.log('429');
+                }
                 reject({
-                    message: 'An error occurred',
+                    message: 'TMDB find error',
                     error: error,
+                    response: response,
+                    body: body,
                     code: response.statusCode
                 });
             }
@@ -40,11 +48,23 @@ function findByImdb(imdb) {
     return new Promise((resolve, reject) => {
         find(imdb)
             .then((found => {
-                getDetails(found.movie_results[0].id)
-                    .then(movie => resolve(movie))
-                    .catch(getDetailsError => reject(getDetailsError));
-                }))
-            .catch(findError => reject(findError));
+                if (found.movie_results.length > 0) {
+                    getDetails(found.movie_results[0].id)
+                        .then(movie => resolve(movie))
+                        .catch(getDetailsError => reject({
+                            message: 'getDetails error',
+                            error: getDetailsError,
+                            imdb: imdb
+                        }));
+                } else {
+                    resolve(undefined);
+                }
+            }))
+            .catch(err => reject({
+                message: 'find error',
+                error: err,
+                imdb: imdb
+            }));
     });
 }
 

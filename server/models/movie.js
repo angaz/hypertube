@@ -15,21 +15,21 @@ const schema = new Schema({
     },                                                      // YIFY ID number
     tmdb_id: {type: Number, required: true, unique: true},  // The Movie DB (TMDB) ID number
     imdb_id: {type: String, required: true, unique: true},  // IMDB ID number
-    belongs_to_collection: {type: Schema.Types.Mixed},                 // TMDB collection
+    belongs_to_collection: {type: Schema.Types.Mixed},      // TMDB collection
     title: {type: String, required: true},                  // Movie title
-    vote_average: {type: Number, required: true},           // TMDB Average vote
-    vote_count: {type: Number, required: true},             // TMDB vpte count
+    vote_average: {type: Number},                           // TMDB Average vote
+    vote_count: {type: Number},                             // TMDB vpte count
     runtime: {type: Number, required: true},                // Runtime in minutes
-    genres: {type: [String], required: true},               // Array of strings of genre names
-    overview: {type: String, required: true},               // short summary of the movie
-    language: {type: String, required: true},               // Spoken Language
-    mpa_rating: {type: String, required: true},             // MPA rating
-    backdrop_path: {type: String, required: true},          // Location of backdrop, prepend http://image.tmdb.org/t/p
-    poster_path: {type: String, required: true},            // Location of the poster, prepend http://image.tmdb.org/t/p
-    release_date: {type: String, required: true},           // Date of release in theaters
-    revenue: {type: Number, required: true},                // Revenue in USD
-    tagline: {type: String, required: true},                // Movie tagline
-    popularity: {type: Number, required: true},             // Movie's popularity
+    genres: {type: [String]},                               // Array of strings of genre names
+    overview: {type: String},                               // short summary of the movie
+    language: {type: String},                               // Spoken Language
+    mpa_rating: {type: String},                             // MPA rating
+    backdrop_path: {type: String},                          // Location of backdrop, prepend http://image.tmdb.org/t/p
+    poster_path: {type: String},                            // Location of the poster, prepend http://image.tmdb.org/t/p
+    release_date: {type: String},                           // Date of release in theaters
+    revenue: {type: Number},                                // Revenue in USD
+    tagline: {type: String},                                // Movie tagline
+    popularity: {type: Number},                             // Movie's popularity
     torrents: {type: Schema.Types.Mixed, required: true}
     /**
      * torrents: {
