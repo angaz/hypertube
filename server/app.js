@@ -8,8 +8,6 @@ const session = require('express-session');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const yts = require('./yts.api');
-const movie = require('./movie.api');
 const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
 const app = express();
@@ -65,10 +63,8 @@ app.use('/', appRoutes);
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
 
-/*yts.getPage()
-    .then(res => {
-        console.log(res[0]);
-        console.log(res[1]);
-    });*/
+const eztv = require('./api/eztv.api');
+/*eztv.getSeries().then(response => console.log(response));*/
+eztv.getShowInfo({id: 23, slug: 'the-big-bang-theory'}).then(response => console.log('Done')).catch(console.log.bind(console));
 
 module.exports = app;

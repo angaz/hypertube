@@ -2,9 +2,9 @@
  * Created by adippena on 11/23/16.
  */
 "use strict";
-const ytsAPI = require('./yts.api');
-const tmdbAPI = require('./tmdb.api');
-const Movie = require('./models/movie');
+const ytsAPI = require('./yts.api.js');
+const tmdbAPI = require('./tmdb.api.js');
+const Movie = require('./../models/movie');
 const iso639 = require('iso-639-1').default;
 
 function cleanArray(actual) {

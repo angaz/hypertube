@@ -4,10 +4,10 @@
 "use strict";
 
 const express = require('express');
-const yts = require('./yts.api');
+const yts = require('./api/yts.api.js');
 const torrent = require('./my_torrent_stream');
-const movieAPI = require('./movie.api');
-const tmdb = require('./tmdb.api');
+const movieAPI = require('./api/movie.api.js');
+const tmdb = require('./api/tmdb.api.js');
 const router = express.Router();
 const request = require('request');
 
