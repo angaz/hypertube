@@ -19,9 +19,20 @@ const hbs = exphbs.create({
 		}
 	}
 });
+//retries db connection if failed
 const mongoose = require('mongoose');
-//mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true');
+const mongoUrl = 'mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true';
+mongoose.Promise = global.Promise;
+const connectWithRetry = () => {
+	return mongoose.connect(mongoUrl, (err) => {
+		if (err) {
+			console.error('Failed to connect to mongo on startup - retrying in 5 sec', err);
+			setTimeout(connectWithRetry, 5000);
+		}
+	});
+};
+connectWithRetry();
+
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 

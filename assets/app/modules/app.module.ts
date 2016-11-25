@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-import {ReactiveFormsModule, FormsModule} from "@angular/forms";
-import {HttpModule} from "@angular/http";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
 
 import { AppComponent } from '../components/app/app.component';
 import { NavComponent } from '../components/nav/nav.component';

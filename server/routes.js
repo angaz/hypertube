@@ -1,18 +1,17 @@
 "use strict";
-
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./user.model');
 
-router.post('/user', (req, res, next) => {
+router.post('/', (req, res, next) => {
 	let user = new User({
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
-		username: req.body.username,
-		password: bcrypt.hashSync(req.body.password, 10),
 		email: req.body.email,
+		username: req.body.username,
+		password: bcrypt.hashSync(req.body.password, 10)
 	});
 	console.log(user);
 	user.save((err, result) => {
@@ -29,15 +28,21 @@ router.post('/user', (req, res, next) => {
 	});
 });
 
-router.post('/user/signin', (req, res, next) => {
-	User.findOne({username: req.body.email}, (err, user) => {
+router.post('/signin', (req, res, next) => {
+	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
 			return res.status(500).json({
 				title: 'An error occurred when logging in',
 				error: err
 			});
 		}
-		if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
+		if (!user) {
+			return res.status(401).json({
+				title: 'Login failed',
+				error: {message: 'Invalid login credentials'}
+			});
+		}
+		if (!bcrypt.compareSync(req.body.password, user.password)) {
 			return res.status(401).json({
 				title: 'Login failed',
 				error: {message: 'Invalid login credentials'}
