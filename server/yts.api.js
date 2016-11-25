@@ -86,7 +86,7 @@ function downloadSub(subURL, name, language) {
     let found = false;
     let langCode = iso639.getCode(language.replace(/.*?\-/, ''));
     let filename = `captions/${name}_${langCode}.vtt`;
-    return new Promise(resolve, reject => {
+    return new Promise((resolve, reject) => {
         // First checks if subtitle file exists
         fs.access(`./public/${filename}`, fs.F_OK, err => {
             if (!err) {

@@ -9,6 +9,7 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const yts = require('./yts.api');
+const movie = require('./movie.api');
 const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
 const app = express();

@@ -29,7 +29,14 @@ movies-info {
     background:#221e23;
 }
 
+.movies-thumb {
+    width: 100%;
+    padding-bottom: 150%;
+    position: relative;
+}
+
 .movies-thumb-img{
+    position: absolute;
     width:100%;
 }
 

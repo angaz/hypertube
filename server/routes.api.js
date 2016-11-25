@@ -6,7 +6,7 @@
 const express = require('express');
 const yts = require('./yts.api');
 const torrent = require('./my_torrent_stream');
-const movieApi = require('./movie.api');
+const movieAPI = require('./movie.api');
 const tmdb = require('./tmdb.api');
 const router = express.Router();
 const request = require('request');
@@ -21,8 +21,11 @@ router.get('/captions/:id?', (req, res) => {
 });
 
 router.get('/movies/:page?', (req, res) => {
-    yts.getPage((req.params.page === undefined) ? 1 : parseInt(req.params.page))
+/*    yts.getPage((req.params.page === undefined) ? 1 : parseInt(req.params.page))
         .then(movies => res.json(movies))
+        .catch(error => res.status(500).json(error));*/
+    movieAPI.getPage((req.params.page === undefined) ? 1 : parseInt(req.params.page))
+        .then(bagOMovies => res.json(bagOMovies))
         .catch(error => res.status(500).json(error));
 });
 
@@ -31,7 +34,7 @@ router.get('/watch/:hash?', (req, res) => {
 });
 
 router.get('/update', (req, res) => {
-    movieApi.update()
+    movieAPI.update()
         .then(update => res.json(update))
         .catch(error => res.json(error));
 });

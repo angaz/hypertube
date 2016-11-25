@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <video controls autoplay [poster]="movie.poster">
+    <video controls autoplay [poster]="'http://image.tmdb.org/t/p/w1280' + movie.poster">
         <source src="" [src]="movie.src">
         <track *ngFor="let caption of captions"
                [label]="caption.language.nativeName"

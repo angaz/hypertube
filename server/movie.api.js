@@ -31,7 +31,8 @@ function newMovie(page) {
         ytsAPI.getPage(page).then(yifyPage => {
             console.log(`Get page ${page}\t${new Date()}`);
             if (yifyPage === undefined) {
-                return reject('getPage returned undefined');
+                console.log('At the end');
+                return resolve(0);
             }
 
             yifyPage.forEach(yify => {
@@ -91,6 +92,7 @@ function newMovie(page) {
                                     revenue: tmdb.revenue,
                                     tagline: tmdb.tagline,
                                     popularity: tmdb.popularity,
+                                    subtitles: null,
                                     torrents: torrents
                                 };
 
@@ -122,8 +124,8 @@ function newMovie(page) {
                             setTimeout(() => {
                                 newMovie(page + 1)
                                     .then(anotherBagOMovies => {
-                                        console.log(inserted + anotherBagOMovies);
-                                        resolve(inserted + anotherBagOMovies);
+                                        console.log(inserted.length + anotherBagOMovies);
+                                        resolve(inserted.length + anotherBagOMovies);
                                     }).catch(error => reject(error));
                             }, 2500);
                         });
@@ -144,6 +146,18 @@ function newMovie(page) {
     });
 }
 
+function getPage(page) {
+    return new Promise((resolve, reject) => {
+        Movie.find({}).sort({yify_id: 'descending'}).limit(20).skip((page - 1) * 20).exec((err, bagOMovies) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(bagOMovies);
+        });
+    });
+}
+
 module.exports = {
-    update: update
+    update: update,
+    getPage: getPage
 };

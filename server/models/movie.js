@@ -30,6 +30,7 @@ const schema = new Schema({
     revenue: {type: Number},                                // Revenue in USD
     tagline: {type: String},                                // Movie tagline
     popularity: {type: Number},                             // Movie's popularity
+    subtitles: {type: [Schema.Types.Mixed]},                // Array of subtitles, contains language and subtitle path
     torrents: {type: Schema.Types.Mixed, required: true}
     /**
      * torrents: {
