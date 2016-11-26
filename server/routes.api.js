@@ -40,9 +40,6 @@ router.get('/captions/:id?', (req, res) => {
 });
 
 router.get('/movies/:page?', (req, res) => {
-/*    yts.getPage((req.params.page === undefined) ? 1 : parseInt(req.params.page))
-        .then(movies => res.json(movies))
-        .catch(error => res.status(500).json(error));*/
     movieAPI.getPage((req.params.page === undefined) ? 1 : parseInt(req.params.page))
         .then(bagOMovies => res.json(bagOMovies))
         .catch(error => res.status(500).json(error));
@@ -58,8 +55,8 @@ router.get('/update', (req, res) => {
         .catch(error => res.json(error));
 });
 
-router.get('/get_details/:id', (req, res) => {
-    tmdb.getDetails(req.params.id)
+router.get('/get_movie_details/:id', (req, res) => {
+    tmdb.getMovieDetails(req.params.id)
         .then(details => res.json(details))
         .catch(error => res.status(500).json(error));
 });

@@ -7,7 +7,7 @@ const request = require('request');
 const tmdb = 'https://api.themoviedb.org/3';
 const key = '?api_key=b5be569ee49cf0a7e3cf39991b982033';
 
-function getDetails(id) {
+function getMovieDetails(id) {
     return new Promise((resolve, reject) => {
         request(`${tmdb}/movie/${id}${key}`, (error, response, body) => {
             if (!error && response.statusCode == 200) {
@@ -47,12 +47,12 @@ function find(imdb) {
     });
 }
 
-function findByImdb(imdb) {
+function findMovieByImdb(imdb) {
     return new Promise((resolve, reject) => {
         find(imdb)
             .then((found => {
                 if (found.movie_results.length > 0) {
-                    getDetails(found.movie_results[0].id)
+                    getMovieDetails(found.movie_results[0].id)
                         .then(movie => resolve(movie))
                         .catch(getDetailsError => reject({
                             message: 'getDetails error',
@@ -72,7 +72,7 @@ function findByImdb(imdb) {
 }
 
 module.exports = {
-    getDetails: getDetails,
+    getMovieDetails: getMovieDetails,
     find: find,
-    findByImdb: findByImdb
+    findMovieByImdb: findMovieByImdb
 };

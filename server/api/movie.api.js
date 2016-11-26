@@ -46,7 +46,7 @@ function newMovie(page) {
                         }
 
                         if (movie[0] === undefined) {
-                            tmdbAPI.findByImdb(yify.imdb_code).then(tmdb => {
+                            tmdbAPI.findMovieByImdb(yify.imdb_code).then(tmdb => {
                                 if (tmdb === undefined) {
                                     console.log(`findByImdb returned undefined, skipping value ${yify.imdb_code}`);
                                     return success(null);

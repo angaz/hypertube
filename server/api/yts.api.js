@@ -4,7 +4,7 @@ const yifysubs = require('yifysubs');
 const unzip = require('unzip');
 const srt2vtt = require('srt2vtt');
 const fs = require('fs-extra');
-const iso639 = require('iso-639-1').default;
+const iso639 = require('iso-639-1');
 
 function getPage(pageNum) {
     return new Promise((resolve, reject) => {
