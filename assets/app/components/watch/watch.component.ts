@@ -37,10 +37,10 @@ export class WatchComponent {
                 return this.noMovie = true;
             }
             this.movie = {
-                poster: watch.background_image,
+                poster: watch.backdrop_path,
                 src: `/api/watch/${watch.torrents[0].hash}`,
             };
-            this._ytsService.getCaptions(watch.id)
+            this._ytsService.getCaptions(watch.yify_id)
                 .then(captions => {this.captions = captions; console.log(captions);});
         });
   }

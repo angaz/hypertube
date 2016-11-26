@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-const yts = require('./yts.api');
+const mongoose = require('mongoose');
 const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
 const app = express();
@@ -19,8 +19,8 @@ const hbs = exphbs.create({
 		}
 	}
 });
+
 //retries db connection if failed
-const mongoose = require('mongoose');
 const mongoUrl = 'mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true';
 mongoose.Promise = global.Promise;
 const connectWithRetry = () => {
@@ -32,6 +32,8 @@ const connectWithRetry = () => {
 	});
 };
 connectWithRetry();
+
+mongoose.connect('mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true');
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
@@ -62,13 +64,21 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use((req, res, next, err) => {
+    console.error(err);
+    res.send({status:500, message: 'internal error', type:'internal'});
+});
+
 app.use('/api', apiRoutes);
 app.use('/', appRoutes);
 
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
 
-/*yts.getPage()
-	.then(res => console.log(res));*/
+const eztv = require('./api/eztv.api');
+// eztv.getShows().then(response => console.log(response));
+/*eztv.getShowInfo({id: 23, slug: 'the-big-bang-theory'})
+    .then(response => console.log(require('util').inspect(response, {depth: null, breakLength: Infinity})))
+    .catch(console.log.bind(console));*/
 
 module.exports = app;
