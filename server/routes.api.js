@@ -8,6 +8,25 @@ const yts = require('./yts.api');
 const torrent = require('./my_torrent_stream');
 const router = express.Router();
 const request = require('request');
+const jwt = require('jsonwebtoken');
+
+
+//route security
+/*
+router.use('/', (req, res, next) => {
+    console.log('TEST: ' + req.query.token)
+    var test = jwt.verify(req.query.token, 'secretllamaissecret', (err, decoded) => {
+        if (err) {
+            console.log('TEST2: ' + test)
+            return res.status(401).json({
+                title: 'Not Authenticated',
+                error: err
+            });
+        }
+        next();
+    })
+});
+*/
 
 router.get('/captions/:id?', (req, res) => {
     if (req.params.id === undefined) {

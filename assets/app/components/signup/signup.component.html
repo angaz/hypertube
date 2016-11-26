@@ -13,23 +13,23 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12">
-                        <form [formGroup]="signupForm" (submit)="signup()">
+                        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
                             <div class="row">
-                                <div class="col-xs-12 col-md-6"><input type="text" name="username" id="name" placeholder="Name" formControlName="name"></div>
-                            <div class="col-xs-12 col-md-6"><input type="text" name="surname" id="surname" placeholder="Surname" formControlName="surname"></div>
+                                <div class="col-xs-12 col-md-6"><input type="text" class="form-control" id="firstName" placeholder="First Name" formControlName="firstName"></div>
+                                <div class="col-xs-12 col-md-6"><input type="text" class="form-control" id="lastName" placeholder="Last Name" formControlName="lastName"></div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12"><input type="email" name="email" id="email" placeholder="Email" formControlName="email"></div>
+                                <div class="col-xs-12"><input type="email" class="form-control" id="email" placeholder="Email" formControlName="email"></div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12"><input type="text" name="username" id="username" placeholder="Username"></div>
+                                <div class="col-xs-12"><input type="text" class="form-control" id="username" placeholder="Username" formControlName="username"></div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12 col-md-6"><input type="password" name="password" id="password" placeholder="Password"></div>
-                                <div class="col-xs-12 col-md-6"><input type="password" name="password_repeat" id="password-repeat" placeholder="Repeat Password"></div>
+                                <div class="col-xs-12 col-md-6"><input type="password" class="form-control" id="password" placeholder="Password" formControlName="password"></div>
+                                <div class="col-xs-12 col-md-6"><input type="password" class="form-control" id="repeatPassword" placeholder="Repeat Password" formControlName="repeatPassword"></div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12"><button type="submit" class="button">Sign Up</button></div>
+                                <div class="col-xs-12"><button type="submit" [disabled]="!signupForm.valid" class="button">Sign Up</button></div>
                             </div>
                         </form>
                     </div>
