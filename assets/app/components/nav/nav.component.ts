@@ -11,6 +11,9 @@ import { AuthService } from '../../services/auth.service';
 export class NavComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
+  //const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+
+
   onLogout() {
     this.authService.logout();
     this.router.navigateByUrl('/');
