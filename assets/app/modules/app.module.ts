@@ -17,44 +17,45 @@ import { FooterComponent } from "../components/footer/footer.component";
 import { MoviesInfoComponent } from "../components/movies-info/movies-info.component";
 import { WatchComponent } from "../components/watch/watch.component";
 import { SearchComponent } from "../components/search/search.component";
+import { AuthService } from "../services/auth.service";
 
 const appRoutes: Routes = [
-    { path: 'signin', component: SigninComponent },
-    { path: 'signup', component: SignupComponent },
-    { path: 'movies', component: MoviesComponent },
-    { path: 'series', component: SeriesComponent },
-    { path: 'watch/:name', component: WatchComponent},
-    { path: '', component: HomeComponent },
-    { path: '**', component: PageNotFoundComponent }
+	{ path: 'signin', component: SigninComponent },
+	{ path: 'signup', component: SignupComponent },
+	{ path: 'movies', component: MoviesComponent },
+	{ path: 'series', component: SeriesComponent },
+	{ path: 'watch/:name', component: WatchComponent},
+	{ path: '', component: HomeComponent },
+	{ path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        SigninComponent,
-        SignupComponent,
-        SeriesComponent,
-        MoviesComponent,
-        MoviesInfoComponent,
-        HomeComponent,
-        PageNotFoundComponent,
-        NavComponent,
-        FooterComponent,
-        WatchComponent,
-        SearchComponent
-    ],
-    imports: [
-        RouterModule.forRoot(appRoutes),
-        BrowserModule,
-        FormsModule,
-        HttpModule,
-        ReactiveFormsModule,
-        BrowserModule,
-        InfiniteScrollModule
-    ],
-    bootstrap: [AppComponent]
-
+	declarations: [
+		AppComponent,
+		HomeComponent,
+		SigninComponent,
+		SignupComponent,
+		SeriesComponent,
+		MoviesComponent,
+		MoviesInfoComponent,
+		HomeComponent,
+		PageNotFoundComponent,
+		NavComponent,
+		FooterComponent,
+		WatchComponent,
+		SearchComponent
+	],
+	imports: [
+		RouterModule.forRoot(appRoutes),
+		BrowserModule,
+		FormsModule,
+		HttpModule,
+		ReactiveFormsModule,
+		BrowserModule,
+		InfiniteScrollModule
+	],
+	providers: [AuthService],
+	bootstrap: [AppComponent]
 })
 export class AppModule{
 

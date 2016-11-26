@@ -12,13 +12,26 @@ const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
 const app = express();
 const hbs = exphbs.create({
-    extname: '.hbs',
-    helpers: {
-        angular: function(options) {
-            return options.fn();
-        }
-    }
+	extname: '.hbs',
+	helpers: {
+		angular: function(options) {
+			return options.fn();
+		}
+	}
 });
+
+//retries db connection if failed
+const mongoUrl = 'mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true';
+mongoose.Promise = global.Promise;
+const connectWithRetry = () => {
+	return mongoose.connect(mongoUrl, (err) => {
+		if (err) {
+			console.error('Failed to connect to mongo on startup - retrying in 5 sec', err);
+			setTimeout(connectWithRetry, 5000);
+		}
+	});
+};
+connectWithRetry();
 
 mongoose.connect('mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true');
 
@@ -29,9 +42,9 @@ app.set('view engine', 'hbs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(session({
-    secret: 'Ilivellamas',
-    resave: true,
-    saveUninitialized: false
+	secret: 'Ilivellamas',
+	resave: true,
+	saveUninitialized: false
 }));
 
 express.static.mime.define({'text/vtt': ['vtt']});
@@ -45,10 +58,10 @@ app.use('/captions', express.static(path.join(__dirname, '../public/captions')))
 
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
-    next();
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+	next();
 });
 
 app.use((req, res, next, err) => {

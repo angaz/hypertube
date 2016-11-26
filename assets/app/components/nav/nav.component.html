@@ -1,11 +1,17 @@
 <nav>
-  <a routerLink="/" routerLinkActive="active" id="nav-logo">t</a>
-  <a class="nav-item" routerLink="/signin" routerLinkActive="active"><i class="fa fa-sign-in fa-2x"></i>
-  SIGN IN</a>
-  <a class="nav-item" routerLink="/signup" routerLinkActive="active"><i class="fa fa-user-plus fa-2x"></i>
-  SIGN UP</a>
-  <a class="nav-item" routerLink="/movies" routerLinkActive="active"><i class="fa fa-film fa-2x"></i>
-    MOVIES</a>
-  <a class="nav-item" (click)="hideSearch()"><i class="fa fa-search fa-2x"></i>
-    SEARCH</a>
+	<a routerLink="/" routerLinkActive="active" id="nav-logo">t</a>
+	<div *ngIf="!isLoggedIn()">
+		<a class="nav-item" routerLink="/signin" routerLinkActive="active"><i class="fa fa-sign-in fa-2x"></i>
+			SIGN IN</a>
+		<a class="nav-item"  routerLink="/signup" routerLinkActive="active"><i class="fa fa-user-plus fa-2x"></i>
+			SIGN UP</a>
+	</div>
+	<div *ngIf="isLoggedIn()">
+		<a class="nav-item" (click)="onLogout()"><i class="fa fa-sign-out fa-2x"></i>
+			LOGOUT</a>
+		<a class="nav-item" routerLink="/movies" routerLinkActive="active"><i class="fa fa-film fa-2x"></i>
+			MOVIES</a>
+		<a class="nav-item" (click)="hideSearch()"><i class="fa fa-search fa-2x"></i>
+			SEARCH</a>
+	</div>
 </nav>

@@ -1,28 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../user.model';
 
 @Component ({
-  selector: 'hypertube-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+	selector: 'hypertube-signup',
+	templateUrl: './signup.component.html',
+	styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit{
-  public signupForm: FormGroup;
 
-  ngOnInit() {
-      this.signupForm = new FormGroup({
-          name: new FormControl(''),
-          surname: new FormControl(''),
-          email: new FormControl(''),
-          username: new FormControl(''),
-          password: new FormControl(''),
-          repeatPassword: new FormControl('')
-      });
-  }
+export class SignupComponent implements OnInit {
+	signupForm: FormGroup;
 
-  signup(){
-      // call to user registration service goes here. Elements have not been sanitized or validated. passing through signup form as object.
-      console.log(this.signupForm.value);
-  }
+	constructor(private authService: AuthService, private router: Router) {}
 
- }
+	onSubmit() {
+		const user = new User(
+			this.signupForm.value.firstName,
+			this.signupForm.value.lastName,
+			this.signupForm.value.email,
+			this.signupForm.value.username,
+			this.signupForm.value.password
+		);
+		this.authService.signup(user)
+			.subscribe(
+				data => {
+					console.log(data);
+					this.router.navigateByUrl('/signin');
+				},
+				error => console.error(error)
+			);
+		this.signupForm.reset();
+	}
+
+	ngOnInit() {
+		this.signupForm = new FormGroup({
+			firstName: new FormControl(null, Validators.required),
+			lastName: new FormControl(null, Validators.required),
+			email: new FormControl(null, [
+				Validators.required,
+				Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+			]),
+			username: new FormControl(null, Validators.required),
+			password: new FormControl(null, Validators.required),
+			repeatPassword: new FormControl(null, Validators.required)
+		});
+	}
+}
