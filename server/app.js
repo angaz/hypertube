@@ -52,7 +52,6 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next, err) => {
-    // Do logging and user-friendly error message display
     console.error(err);
     res.send({status:500, message: 'internal error', type:'internal'});
 });

@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+import { Component , Input} from '@angular/core';
 import { YtsService } from '../../services/yts.service';
 
 @Component ({
@@ -9,6 +8,7 @@ import { YtsService } from '../../services/yts.service';
 })
 export class MoviesComponent {
   isHide = false;
+  @Input ('isSearchHide') isSearchHide:boolean;
   selectedMovie: Object = {
     'title' : "No Title has been set...",
   };
@@ -18,7 +18,6 @@ export class MoviesComponent {
     this._ytsService.getNextList()
         .then(movies => {
             this.defaultMovies = movies;
-            console.log(movies);
         });
   }
 
@@ -34,7 +33,7 @@ export class MoviesComponent {
       this._ytsService.getNextList()
           .then(movies => {
               this.defaultMovies = movies;
-              console.log(movies);
           });
   }
+
 }
