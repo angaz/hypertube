@@ -13,6 +13,7 @@ hypertube-nav, hypertube-home{
 }
 
 hypertube-nav{
+  padding:0 45px;
   z-index:101;
   width:90px;
   background: #29242a;
