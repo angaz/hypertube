@@ -2,7 +2,6 @@
 
 const request = require('request');
 const cheerio = require('cheerio');
-const magnet = require('magnet-uri');
 
 const base = "http://eztv.ag";
 
