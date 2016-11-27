@@ -79,7 +79,14 @@ app.use((req, res) => res.render('index'));
 const eztv = require('./api/eztv.api');
 // eztv.getShows().then(response => console.log(response));
 /*eztv.getShowInfo({id: 23, slug: 'the-big-bang-theory'})
-    .then(response => console.log(require('util').inspect(response, {depth: null, breakLength: Infinity})))
+    .then(/!*response => console.log(require('util').inspect(response, {depth: null, breakLength: Infinity}))*!/)
     .catch(console.log.bind(console));*/
+
+require('node-cron').schedule('6 * * * *', () => {
+    require('./api/movie.api')
+        .update()
+        .then(result => console.log(`New movies: ${result}`))
+        .catch(error => console.log(error));
+});
 
 module.exports = app;
