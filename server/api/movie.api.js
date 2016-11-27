@@ -5,7 +5,7 @@
 const ytsAPI = require('./yts.api.js');
 const tmdbAPI = require('./tmdb.api.js');
 const Movie = require('./../models/movie');
-const iso639 = require('iso-639-1').default;
+const iso639 = require('iso-639-1');
 
 function cleanArray(actual) {
     let newArray = [];
@@ -123,14 +123,12 @@ function newMovie(page) {
                             }
                             setTimeout(() => {
                                 newMovie(page + 1)
-                                    .then(anotherBagOMovies => {
-                                        console.log(inserted.length + anotherBagOMovies);
-                                        resolve(inserted.length + anotherBagOMovies);
-                                    }).catch(error => reject(error));
+                                    .then(moreMovies => resolve(inserted.length + moreMovies))
+                                    .catch(error => reject(error));
                             }, 2500);
                         });
                     } else {
-                        console.log('resolving empty array');
+                        console.log('No more movies');
                         resolve(0);
                     }
                 })
@@ -148,12 +146,17 @@ function newMovie(page) {
 
 function getPage(page) {
     return new Promise((resolve, reject) => {
-        Movie.find({}).sort({yify_id: 'descending'}).limit(20).skip((page - 1) * 20).exec((err, bagOMovies) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(bagOMovies);
-        });
+        Movie
+            .find({})
+            .sort({yify_id: 'descending'})
+            .limit(20)
+            .skip((page - 1) * 20)
+            .exec((err, bagOMovies) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(bagOMovies);
+            });
     });
 }
 
