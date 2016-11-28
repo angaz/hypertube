@@ -35,5 +35,4 @@ export class MoviesComponent {
               this.defaultMovies = movies;
           });
   }
-
 }

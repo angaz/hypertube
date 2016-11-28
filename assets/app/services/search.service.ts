@@ -7,6 +7,7 @@ export class SearchService {
 
     constructor(private _http:Http) {}
 
+    public fetchingMovies = false;
     getHide(){
         return this.hide;
     }
@@ -14,6 +15,18 @@ export class SearchService {
     hideSearch(){
         this.hide = !this.hide;
         return this.hide;
+    }
+
+    fetchMoviesList() {
+        return new Promise<any>(resolve => {
+            this.fetchingMovies = true;
+            this._http.get('/api/get_movies')
+                .map(res => res.json())
+                .subscribe(res => {
+                    resolve(res);
+                    this.fetchingMovies = false;
+                });
+        });
     }
 
 }

@@ -161,21 +161,19 @@ function getPage(page) {
     });
 }
 
-function search(query) {
+function getAllMovies() {
     return new Promise(resolve => {
-        let date = new Date().getTime();
         Movie
-            .find({lowerTitle: {$regex: new RegExp(query.toLowerCase())}})
+            .find()
             .select({title: 1, _id: 0})
             .sort({title: 'ascending'})
-            .exec((err, bagOMovies) => {
+            .exec((err, bigBagOMovies) => {
                 if (err) {
                     throw new Error(err);
                 }
-                resolve(bagOMovies.map(title => {
+                resolve(bigBagOMovies.map(title => {
                     return title.title;
                 }));
-                console.log(query + '\t' + (new Date().getTime() - date) + '\t' + bagOMovies.length);
             });
     });
 }
@@ -196,6 +194,6 @@ function getMovie(query) {
 module.exports = {
     update: update,
     getPage: getPage,
-    search: search,
+    getAllMovies: getAllMovies,
     getMovie: getMovie
 };
