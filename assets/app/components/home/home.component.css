@@ -3,6 +3,8 @@ section#home-banner{
   min-height:100vh;
   background: #221e23;
   position:relative;
+  background: url('images/home-bg.jpg') center center;
+  background-size:cover;
 }
 
 .home-banner-text{

@@ -1,0 +1,28 @@
+<div id="series-info-container">
+    <div class="series-profile-close" (click)="movieProfileClose()"><i class="fa fa-times fa-2x"></i></div>
+    <div class="series-profile" [ngStyle]="{'background-image': 'url(http://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="series-profile-container">
+                <div class="col-lg-3">
+                    <div class="series-profile-cover"><img src="" [src]="'http://image.tmdb.org/t/p/w342' + movie.poster_path"></div>
+                </div>
+                <div class="col-lg-6">
+                <div class="series-profile-title">{{movie.title}}</div>
+                <div class="series-profile-genre"><div class="genre-tag" *ngFor="let genre of movie.genres">{{genre}}</div></div>
+                <div class="series-profile-runtime"><strong>Runtime:</strong> {{movie.runtime}} minutes</div>
+                </div>
+                <div class="col-lg-3">
+                    <a [routerLink]="['/watch/' + movie.slug]"><div class="series-profile-watch">Watch now</div></a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-12">
+            <h4>Summary</h4>
+            {{movie.overview}}
+            </div>
+        </div>
+    </div>
+</div>
