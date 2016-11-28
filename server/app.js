@@ -21,20 +21,25 @@ const hbs = exphbs.create({
 });
 
 //retries db connection if failed
-// const mongoUrl = 'mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true';
 const mongoUrl = 'mongodb://hypertube:eyVhqp8urJdS3CWn@52.165.47.251:7342/hypertube?ssl=true';
 mongoose.Promise = global.Promise;
-const connectWithRetry = () => {
-	return mongoose.connect(mongoUrl, (err) => {
-		if (err) {
-			console.error('Failed to connect to mongo on startup - retrying in 5 sec', err);
-			setTimeout(connectWithRetry, 5000);
-		}
-	});
-};
-connectWithRetry();
 
-// mongoose.connect('mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true');
+function connectWithRetry (counter) {
+	if (counter < 5) {
+        mongoose.connect(mongoUrl, (err) => {
+            if (err) {
+                console.error(`Failed to connect to mongo on startup - retrying in 5 sec\n Retry: ${counter}`, err);
+                setTimeout(() => connectWithRetry(counter + 1), 5000);
+            } else {
+            	console.log('Connected to MongoDB successfully');
+			}
+        });
+	} else {
+		throw new Error('Retried connecting to MongoDB 5 times');
+	}
+}
+
+connectWithRetry(0);
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
