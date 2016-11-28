@@ -12,7 +12,6 @@ const router = express.Router();
 const request = require('request');
 const jwt = require('jsonwebtoken');
 
-
 //route security
 /*
 router.use('/', (req, res, next) => {

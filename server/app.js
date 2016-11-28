@@ -21,7 +21,6 @@ const hbs = exphbs.create({
 });
 
 //retries db connection if failed
-// const mongoUrl = 'mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true';
 const mongoUrl = 'mongodb://hypertube:eyVhqp8urJdS3CWn@52.165.47.251:7342/hypertube?ssl=true';
 mongoose.Promise = global.Promise;
 const connectWithRetry = () => {
@@ -33,8 +32,6 @@ const connectWithRetry = () => {
 	});
 };
 connectWithRetry();
-
-// mongoose.connect('mongodb://wethinkcode:zHuOIrJYftfE48LgFGiQJizVxVuZsUdQZ4tn3oDtRV47h1uow503580ogz0SfYW5KlTJcylqjXbBJ0PR83F7cQ==@wethinkcode.documents.azure.com:10250/hypertube?ssl=true');
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
