@@ -33,12 +33,14 @@ movies-info {
     width: 100%;
     padding-bottom: 150%;
     position: relative;
+    background:#221e23;
 }
 
 .movies-thumb-img{
     position: absolute;
     width:100%;
 }
+
 
 #movies-results:hover > div{
     opacity:0.3;
