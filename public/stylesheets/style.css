@@ -20,7 +20,8 @@ button {
   font-size:1.2em;
   padding:10px 15px;
   text-transform: uppercase;
-  border-radius: 5px
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .full-height{
