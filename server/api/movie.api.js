@@ -79,6 +79,7 @@ function newMovie(page) {
                                     imdb_id: yify.imdb_code,
                                     belongs_to_collection: tmdb.belongs_to_collection,
                                     title: tmdb.title,
+                                    lowerTitle: tmdb.title.toLowerCase(),
                                     vote_average: tmdb.vote_average,
                                     vote_count: tmdb.vote_count,
                                     runtime: tmdb.runtime,
@@ -160,7 +161,41 @@ function getPage(page) {
     });
 }
 
+function search(query) {
+    return new Promise(resolve => {
+        let date = new Date().getTime();
+        Movie
+            .find({lowerTitle: {$regex: new RegExp(query.toLowerCase())}})
+            .select({title: 1, _id: 0})
+            .sort({title: 'ascending'})
+            .exec((err, bagOMovies) => {
+                if (err) {
+                    throw new Error(err);
+                }
+                resolve(bagOMovies.map(title => {
+                    return title.title;
+                }));
+                console.log(query + '\t' + (new Date().getTime() - date) + '\t' + bagOMovies.length);
+            });
+    });
+}
+
+function getMovie(query) {
+    return new Promise(resolve => {
+        Movie
+            .findOne(query)
+            .exec((err, movie) => {
+                if (err) {
+                    throw new Error(err);
+                }
+                resolve(movie);
+            });
+    });
+}
+
 module.exports = {
     update: update,
-    getPage: getPage
+    getPage: getPage,
+    search: search,
+    getMovie: getMovie
 };

@@ -17,6 +17,7 @@ const schema = new Schema({
     imdb_id: {type: String, required: true, unique: true},  // IMDB ID number
     belongs_to_collection: {type: Schema.Types.Mixed},      // TMDB collection
     title: {type: String, required: true},                  // Movie title
+    lowerTitle: {type: String, required: true},            // Movie title in lower case for faster searching
     vote_average: {type: Number},                           // TMDB Average vote
     vote_count: {type: Number},                             // TMDB vpte count
     runtime: {type: Number, required: true},                // Runtime in minutes
