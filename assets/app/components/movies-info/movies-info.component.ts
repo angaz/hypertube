@@ -1,4 +1,6 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import { Component } from '@angular/core';
+import { Subscription } from "rxjs";
+import { MovieService } from "../../services/movies.service";
 
 @Component({
     selector: 'movies-info',
@@ -6,10 +8,24 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
     styleUrls: ['movies-info.component.css']
 })
 export class MoviesInfoComponent{
-    @Input('selectedMovie') movie:string;
-    @Output() close: EventEmitter<any> = new EventEmitter();
+    private movie: any = {};
+    private movieSub: Subscription;
+
+    constructor(private _movieService: MovieService) {}
+
+    ngOnInit() {
+        this.movieSub = this._movieService.movie$
+            .subscribe(movie => {
+                console.log('Showing', movie);
+                this.movie = movie;
+            });
+    }
+
+    ngOnDestroy() {
+        this.movieSub.unsubscribe();
+    }
 
     movieProfileClose(){
-        this.close.emit(null);
+        this.movie = {};
     }
 }

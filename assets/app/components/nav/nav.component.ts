@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SearchService } from '../../services/search.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -16,8 +16,8 @@ export class NavComponent {
 		private router: Router
 	) {}
 
-	hideSearch(){
-		this._searchService.hideSearch();
+	toggleSearch(){
+		this._searchService.toggleHide();
 	}
 
 	onLogout() {

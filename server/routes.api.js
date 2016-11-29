@@ -67,4 +67,16 @@ router.get('/find/:imdb', (req, res) => {
         .catch(error => res.status(500).json(error));
 });
 
+router.get('/get_movies', (req, res) => {
+    movieAPI.getAllMovies()
+        .then(bigBagOMovies => res.json(bigBagOMovies))
+        .catch(error => res.status(500).json(error));
+});
+
+router.get('/get_movie/:imdb', (req, res) => {
+    movieAPI.getMovie({imdb_id: req.params.imdb})
+        .then(movie => res.json(movie))
+        .catch(error => res.status(500).json(error));
+});
+
 module.exports = router;

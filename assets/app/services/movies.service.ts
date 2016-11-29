@@ -1,11 +1,21 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { BehaviorSubject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class YtsService {
+export class MovieService {
     private movies: any[] = [];
     private page = 1;
+
+    /**
+     * Movies Info variables
+     */
+    private selectedMovie = new BehaviorSubject<any>({});
+    private infoHide = new BehaviorSubject<any>(true);
+    public movie$ = this.selectedMovie.asObservable();
+    public infoHide$ = this.infoHide.asObservable();
 
     constructor(private _http:Http) {}
 
@@ -48,5 +58,26 @@ export class YtsService {
                     resolve(res);
                 });
         });
+    }
+
+    /**
+     * Movie Info functions
+     */
+    showMovie(movie: any) {
+        if (typeof movie === 'string') {
+            this._http.get(`/api/get_movie/${movie}`)
+                .map(res => res.json())
+                .subscribe(res => {
+                    this.selectedMovie.next(res);
+                    this.infoHide.next(false);
+                });
+        } else {
+            this.selectedMovie.next(movie);
+            this.infoHide.next(false);
+        }
+    }
+
+    hideMovie() {
+        this.infoHide.next(true);
     }
 }

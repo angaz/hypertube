@@ -7,6 +7,7 @@
 .container-fluid{
     overflow:hidden;
 }
+
 .hide-movies-info{
     right:0;
     animation: movies-info-show 1s ease-in-out;
