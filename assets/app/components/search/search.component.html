@@ -1,4 +1,4 @@
-<div class="search-container"  [class.hide-search]="getHide()">
+<div class="search-container"  [class.hide-search]="_searchService.hide">
     <div class="search-inner-container">
         <div class="search">
             <input title="title_search" id="title-search" placeholder="Search..." [(ngModel)]="query" (keyup)="filter()">
@@ -9,7 +9,7 @@
                 <p>Find your favourite movie or series.</p>
             </div>
             <div *ngFor="let item of filteredList">
-                <a (click)="select(item)">{{ item }}</a>
+                <a (click)="selectMovie(item)">{{ item.title }}</a>
             </div>
         </div>
 

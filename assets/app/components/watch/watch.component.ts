@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { YtsService } from '../../services/movies.service';
+import { MovieService } from '../../services/movies.service';
 import {isNullOrUndefined} from "util";
 
 @Component ({
@@ -25,7 +25,7 @@ export class WatchComponent {
   }];
   noMovie: boolean = false;
 
-  constructor(private activatedRoute: ActivatedRoute, private _ytsService:YtsService) {}
+  constructor(private activatedRoute: ActivatedRoute, private _ytsService:MovieService) {}
 
   ngOnInit() {
     // subscribe to router event

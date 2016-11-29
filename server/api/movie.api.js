@@ -165,15 +165,13 @@ function getAllMovies() {
     return new Promise(resolve => {
         Movie
             .find()
-            .select({title: 1, _id: 0})
+            .select({title: 1, imdb_id: 1, poster_path:1, _id: 0})
             .sort({title: 'ascending'})
             .exec((err, bigBagOMovies) => {
                 if (err) {
                     throw new Error(err);
                 }
-                resolve(bigBagOMovies.map(title => {
-                    return title.title;
-                }));
+                resolve(bigBagOMovies);
             });
     });
 }

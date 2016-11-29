@@ -1,5 +1,5 @@
 import { Component , Input} from '@angular/core';
-import { YtsService } from '../../services/movies.service';
+import { MovieService } from '../../services/movies.service';
 
 @Component ({
   selector: 'hypertube-series',
@@ -14,7 +14,7 @@ export class SeriesComponent {
   };
   defaultMovies: any;
 
-  constructor(private _ytsService:YtsService) {
+  constructor(private _ytsService:MovieService) {
     this._ytsService.getNextList()
         .then(movies => {
           this.defaultMovies = movies;

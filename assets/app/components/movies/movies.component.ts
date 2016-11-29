@@ -1,5 +1,6 @@
-import { Component , Input} from '@angular/core';
-import { YtsService } from '../../services/movies.service';
+import { Component } from '@angular/core';
+import { MovieService } from '../../services/movies.service';
+import { Subscription } from "rxjs";
 
 @Component ({
     selector: 'hypertube-movies',
@@ -7,32 +8,30 @@ import { YtsService } from '../../services/movies.service';
     styleUrls: ['./movies.component.css']
 })
 export class MoviesComponent {
-  isHide = false;
-  @Input ('isSearchHide') isSearchHide:boolean;
-  selectedMovie: Object = {
-    'title' : "No Title has been set...",
-  };
-  defaultMovies: any;
+  private defaultMovies: any;
+  private infoHide = true;
+  private infoHideSub: Subscription;
 
-  constructor(private _ytsService:YtsService) {
-    this._ytsService.getNextList()
+  constructor(private _movieService:MovieService) {
+    this._movieService.getNextList()
         .then(movies => {
             this.defaultMovies = movies;
         });
   }
 
-  movieProfileClose() {
-    this.isHide = false;
-  }
-
-  movieUpdateInfo(movieObject: any) {
-    this.selectedMovie = movieObject;
-  }
-
   onScroll() {
-      this._ytsService.getNextList()
+      this._movieService.getNextList()
           .then(movies => {
               this.defaultMovies = movies;
           });
   }
+
+    ngOnInit() {
+        this.infoHideSub = this._movieService.infoHide$
+            .subscribe(hide => this.infoHide = hide);
+    }
+
+    ngOnDestroy() {
+        this.infoHideSub.unsubscribe();
+    }
 }

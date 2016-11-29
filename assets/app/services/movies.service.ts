@@ -1,17 +1,21 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { BehaviorSubject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class YtsService {
+export class MovieService {
     private movies: any[] = [];
     private page = 1;
 
     /**
      * Movies Info variables
      */
-    private show: boolean;
-    private selectedMovie: any;
+    private selectedMovie = new BehaviorSubject<any>({});
+    private infoHide = new BehaviorSubject<any>(true);
+    public movie$ = this.selectedMovie.asObservable();
+    public infoHide$ = this.infoHide.asObservable();
 
     constructor(private _http:Http) {}
 
@@ -59,29 +63,21 @@ export class YtsService {
     /**
      * Movie Info functions
      */
-
-    getShow() {
-        return this.show;
-    }
-
-    setShow(show) {
-        this.show = show;
-    }
-
     showMovie(movie: any) {
-        return new Promise<any>(resolve => {
-            if (this.movies.indexOf(movie) === -1) {
-                this._http.get('/api/find/')
-                    .map(res => res.json())
-                    .subscribe(res => {
-                        resolve(res);
-                    });
-            } else {
+        if (typeof movie === 'string') {
+            this._http.get(`/api/get_movie/${movie}`)
+                .map(res => res.json())
+                .subscribe(res => {
+                    this.selectedMovie.next(res);
+                    this.infoHide.next(false);
+                });
+        } else {
+            this.selectedMovie.next(movie);
+            this.infoHide.next(false);
+        }
+    }
 
-            }
-            this.selectedMovie = movie;
-
-        });
-
+    hideMovie() {
+        this.infoHide.next(true);
     }
 }

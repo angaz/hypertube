@@ -3,18 +3,14 @@ import { Http } from '@angular/http';
 
 @Injectable()
 export class SearchService {
-    hide:boolean = true;
+    public hide: boolean = true;
 
     constructor(private _http:Http) {}
 
     public fetchingMovies = false;
-    getHide(){
-        return this.hide;
-    }
 
-    hideSearch(){
+    toggleHide() {
         this.hide = !this.hide;
-        return this.hide;
     }
 
     fetchMoviesList() {
