@@ -4,7 +4,6 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./models/user');
-//const email = require('./email');
 
 router.post('/', (req, res, next) => {
 	let user = new User({
@@ -22,16 +21,8 @@ router.post('/', (req, res, next) => {
 				error: err
 			});
 		}
+		require('./email')(user.email, user.firstName, user.password);
 		console.log('sending email');
-		sendMail((user, err) => {
-			if (err) {
-				return res.status(500).json({
-					title: 'An error occurred when sending activation mail',
-					error: err
-				});
-			}
-		});
-		//let email = require('./email')(user);
 		res.status(201).json({
 			message: 'User created successfully',
 			obj: result
