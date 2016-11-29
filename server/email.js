@@ -1,16 +1,11 @@
 'use strict';
 
-let sendMail = (email, name, password) => {
+let sendMail = (email, name, token) => {
 	const SENDGRID_REGISTRATION_TEMPLATE = 'd75099cd-9a9e-4496-a6ba-ecf9797fe054';
 	const SENDGRID_API_KEY = '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';
 	const HOST = 'http://localhost:4200';
 	const sendgrid = require('sendgrid')(process.env.SENDGRID_API_KEY);
 	let sg = require('sendgrid')(SENDGRID_API_KEY);
-
-	console.log("INSIDE:!");
-	console.log(email);
-	console.log(name);
-	console.log(password);
 
 	let request = sg.emptyRequest({
 		method: 'POST',
@@ -25,7 +20,7 @@ let sendMail = (email, name, password) => {
 					],
 					'substitutions': {
 						'-name-': name,
-						'-activation_link-': HOST + '/activate/?email=' + email + '&activation=' + password
+						'-activation_code-': HOST + '/activate/?email=' + email + '&activation=' + token
 					},
 					subject: 'Welcome to Tubular, ' + name,
 				},

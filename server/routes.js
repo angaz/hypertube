@@ -21,7 +21,8 @@ router.post('/', (req, res, next) => {
 				error: err
 			});
 		}
-		require('./email')(user.email, user.firstName, user.password);
+		let token = jwt.sign({user: user}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
+		require('./email')(user.email, user.firstName, token);
 		console.log('sending email');
 		res.status(201).json({
 			message: 'User created successfully',
@@ -29,6 +30,11 @@ router.post('/', (req, res, next) => {
 		});
 	});
 });
+
+router.post('/activate/:email?:token?', (req, res, next) => {
+	console.log("ACTIVIGTIITITOISFGLHJFKLAFKADHFOI");
+	});
+
 
 router.post('/signin', (req, res, next) => {
 	User.findOne({username: req.body.username}, (err, user) => {
