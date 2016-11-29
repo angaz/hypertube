@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { YtsService } from '../../services/yts.service';
+import { YtsService } from '../../services/movies.service';
 import {isNullOrUndefined} from "util";
 
 @Component ({

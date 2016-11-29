@@ -7,6 +7,12 @@ export class YtsService {
     private movies: any[] = [];
     private page = 1;
 
+    /**
+     * Movies Info variables
+     */
+    private show: boolean;
+    private selectedMovie: any;
+
     constructor(private _http:Http) {}
 
     fetchList() {
@@ -48,5 +54,34 @@ export class YtsService {
                     resolve(res);
                 });
         });
+    }
+
+    /**
+     * Movie Info functions
+     */
+
+    getShow() {
+        return this.show;
+    }
+
+    setShow(show) {
+        this.show = show;
+    }
+
+    showMovie(movie: any) {
+        return new Promise<any>(resolve => {
+            if (this.movies.indexOf(movie) === -1) {
+                this._http.get('/api/find/')
+                    .map(res => res.json())
+                    .subscribe(res => {
+                        resolve(res);
+                    });
+            } else {
+
+            }
+            this.selectedMovie = movie;
+
+        });
+
     }
 }

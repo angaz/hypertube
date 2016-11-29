@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {YtsService} from "../../services/yts.service";
+import {YtsService} from "../../services/movies.service";
 import {SearchService} from "../../services/search.service";
 
 @Component({

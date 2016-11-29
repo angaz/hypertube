@@ -18,6 +18,7 @@ import { MoviesInfoComponent } from "../components/movies-info/movies-info.compo
 import { WatchComponent } from "../components/watch/watch.component";
 import { SearchComponent } from "../components/search/search.component";
 import { AuthService } from "../services/auth.service";
+import { MoviesInfoService } from "../services/movies-info.service";
 
 const appRoutes: Routes = [
 	{ path: 'signin', component: SigninComponent },
@@ -54,7 +55,7 @@ const appRoutes: Routes = [
 		BrowserModule,
 		InfiniteScrollModule
 	],
-	providers: [AuthService],
+	providers: [AuthService, MoviesInfoService],
 	bootstrap: [AppComponent]
 })
 export class AppModule{

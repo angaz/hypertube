@@ -1,5 +1,5 @@
 import { Component , Input} from '@angular/core';
-import { YtsService } from '../../services/yts.service';
+import { YtsService } from '../../services/movies.service';
 
 @Component ({
     selector: 'hypertube-movies',
