@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./models/user');
 
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
 	let user = new User({
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
@@ -31,12 +31,12 @@ router.post('/', (req, res, next) => {
 	});
 });
 
-router.post('/activate/:email?:token?', (req, res, next) => {
+router.post('/activate/:email?:token?', (/*req, res, next*/) => {
 	console.log("ACTIVIGTIITITOISFGLHJFKLAFKADHFOI");
 	});
 
 
-router.post('/signin', (req, res, next) => {
+router.post('/signin', (req, res) => {
 	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
 			return res.status(500).json({

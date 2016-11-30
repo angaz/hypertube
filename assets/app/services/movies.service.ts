@@ -26,9 +26,12 @@ export class MovieService {
                 .subscribe(res => {
                     console.log(res);
                     if (this.movies === []) {
+                        console.log('New movies: ', res);
                         this.movies = res;
                     } else {
-                        this.movies.concat(res);
+                        console.log('Next page: ', res);
+                        this.movies = this.movies.concat(res);
+                        console.log('Movies: ', this.movies);
                     }
                     resolve(this.movies);
                 });
