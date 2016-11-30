@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { User } from '../../user.model';
+import { User } from '../../models/user';
 
 @Component ({
     selector: 'hypertube-signin',
