@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('./user.model');
+const User = require('./models/user');
 
 router.post('/', (req, res, next) => {
 	let user = new User({
@@ -21,12 +21,20 @@ router.post('/', (req, res, next) => {
 				error: err
 			});
 		}
+		let token = jwt.sign({user: user}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
+		require('./email')(user.email, user.firstName, token);
+		console.log('sending email');
 		res.status(201).json({
 			message: 'User created successfully',
 			obj: result
 		});
 	});
 });
+
+router.post('/activate/:email?:token?', (req, res, next) => {
+	console.log("ACTIVIGTIITITOISFGLHJFKLAFKADHFOI");
+	});
+
 
 router.post('/signin', (req, res, next) => {
 	User.findOne({username: req.body.username}, (err, user) => {
