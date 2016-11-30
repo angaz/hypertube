@@ -35,8 +35,10 @@ export class WatchComponent {
                         poster: watch.backdrop_path,
                         src: `/api/watch/${watch.torrents[0].hash}`,
                     };
-                    /*this._ytsService.getCaptions(watch.yify_id)
-                        .then(captions => {this.captions = captions; console.log(captions);});*/
+                    this._movieService.getCaptions(watch.yify_id)
+                        .then(captions => {
+                            this.captions = captions; console.log(captions);
+                        });
                 })
                 .catch(err => console.log(err));
         });

@@ -9,7 +9,9 @@
              *ngFor="let item of defaultMovies"
              (click)='_movieService.showMovie(item)'>
             <div class="movies-thumb">
-                <img class="movies-thumb-img" src="/images/missing_w342.png" [src]="'http://image.tmdb.org/t/p/w342' + item.poster_path">
+                <img class="movies-thumb-img"
+                     src="/images/missing_w342.png"
+                     [src]="(item.poster_path) ? 'http://image.tmdb.org/t/p/w342' + item.poster_path : ''">
             </div>
         </div>
     </div>

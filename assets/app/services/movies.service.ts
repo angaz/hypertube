@@ -70,9 +70,7 @@ export class MovieService {
         return new Promise<any>((resolve) => {
             this._http.get(`/api/captions/${imdb}`)
                 .map(res => res.json())
-                .subscribe(res => {
-                    resolve(res);
-                });
+                .subscribe(res => resolve(res));
         });
     }
 
