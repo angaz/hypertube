@@ -8,7 +8,7 @@ import { Subscription } from "rxjs";
     styleUrls: ['./movies.component.css']
 })
 export class MoviesComponent {
-  private defaultMovies: any;
+  private defaultMovies = [];
   private infoHide = true;
   private infoHideSub: Subscription;
 

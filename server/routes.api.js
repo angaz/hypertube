@@ -10,7 +10,7 @@ const movieAPI = require('./api/movie.api.js');
 const tmdb = require('./api/tmdb.api.js');
 const router = express.Router();
 const request = require('request');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 
 
 //route security
@@ -75,6 +75,12 @@ router.get('/get_movies', (req, res) => {
 
 router.get('/get_movie/:imdb', (req, res) => {
     movieAPI.getMovie({imdb_id: req.params.imdb})
+        .then(movie => res.json(movie))
+        .catch(error => res.status(500).json(error));
+});
+
+router.get('/get_movie_by_slug/:slug', (req, res) => {
+    movieAPI.getMovie({slug: req.params.slug})
         .then(movie => res.json(movie))
         .catch(error => res.status(500).json(error));
 });

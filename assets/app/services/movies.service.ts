@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class MovieService {
-    private movies: any[] = [];
+    private movies = [];
     private page = 1;
 
     /**
@@ -24,15 +24,13 @@ export class MovieService {
             this._http.get(`/api/movies/${this.page++}`)
                 .map(res => res.json())
                 .subscribe(res => {
-                    for (let movie in res) {
-                        if (res.hasOwnProperty(movie)) {
-                            if (this.movies.indexOf(res[movie]) === -1) {
-                                res[movie].slug = `${res[movie].title.toLowerCase().replace('\'', '').replace(' ', '-')}-${res[movie].release_date.replace(/-.*/, '')}`;
-                                this.movies.push(res[movie]);
-                            }
-                        }
+                    console.log(res);
+                    if (this.movies === []) {
+                        this.movies = res;
+                    } else {
+                        this.movies.concat(res);
                     }
-                    resolve();
+                    resolve(this.movies);
                 });
         });
     }
@@ -40,13 +38,28 @@ export class MovieService {
     getNextList() {
         return new Promise<any>((resolve) => {
             this.fetchList()
-                .then(() => resolve(this.movies));
+                .then(res => {
+                    console.log(res);
+                    resolve(this.movies);
+                });
         });
     }
 
     findBySlug(search: string) {
-        return this.movies.find(movie => {
-            return movie.slug === search;
+        return new Promise<any>(resolve => {
+            let movie = this.movies.find(movie => {
+                return movie.slug === search;
+            });
+
+            if (!movie) {
+                this._http.get(`/api/get_movie_by_slug/${search}`)
+                    .map(res => res.json())
+                    .subscribe(res => {
+                        resolve(res);
+                    });
+            } else {
+                resolve(movie);
+            }
         });
     }
 
