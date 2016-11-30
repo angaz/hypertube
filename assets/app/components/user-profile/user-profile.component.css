@@ -1,0 +1,16 @@
+#user-profile-container {
+    min-height: 100vh;
+    position:fixed;
+    top:0;
+    right:0;
+    z-index:100;
+    width: calc(100% - 90px);
+    background: rgba(40,40,44, 0.8);
+}
+
+.user-profile-inner {
+    width: 90%;
+    min-height:100vh;
+    background: #322d33;
+    float:right;
+}

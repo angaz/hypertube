@@ -18,6 +18,7 @@ import { MoviesInfoComponent } from "../components/movies-info/movies-info.compo
 import { WatchComponent } from "../components/watch/watch.component";
 import { SearchComponent } from "../components/search/search.component";
 import { AuthService } from "../services/auth.service";
+import { UserProfileComponent } from "../components/user-profile/user-profile.component";
 
 const appRoutes: Routes = [
 	{ path: 'signin', component: SigninComponent },
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
 		NavComponent,
 		FooterComponent,
 		WatchComponent,
-		SearchComponent
+		SearchComponent,
+		UserProfileComponent
 	],
 	imports: [
 		RouterModule.forRoot(appRoutes),
