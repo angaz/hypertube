@@ -33,10 +33,7 @@ export class MovieService {
     getNextList() {
         return new Promise<any>((resolve) => {
             this.fetchList()
-                .then(res => {
-                    console.log(res);
-                    resolve(this.movies);
-                });
+                .then(res => resolve(this.movies));
         });
     }
 

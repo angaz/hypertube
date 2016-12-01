@@ -14,12 +14,15 @@ export class SearchComponent {
 
     constructor  (private _searchService: SearchService, private _movieService: MovieService) {
         this._searchService.fetchMoviesList()
-            .then(bagOMovies => this.moviesList = bagOMovies)
+            .then(bagOMovies => {
+                this.moviesList = bagOMovies;
+                this.filter();
+            })
             .catch(error => console.log(`Error occurred fetching movies list ${error}`));
     }
 
     filter() {
-        let query = this.query.toLowerCase();
+        let query = this.query.toLowerCase().trim();
         if (this.query.length > 0 && this.moviesList.length > 0 && !this._searchService.fetchingMovies) {
             this.filteredList = this.moviesList
                 .filter(movie => movie.lower_title.indexOf(query) > -1)
