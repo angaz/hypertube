@@ -7,9 +7,19 @@ const express = require('express');
 const yts = require('./api/yts.api.js');
 const torrent = require('./my_torrent_stream');
 const movieAPI = require('./api/movie.api.js');
+const userAPI = require('./api/user.api');
 const tmdb = require('./api/tmdb.api.js');
 const router = express.Router();
 const request = require('request');
+
+router.get('/users/:id?', (req, res) => {
+    if (req.params.id === undefined) {
+        return res.status(404).json('User not found.');
+    }
+    userAPI.getUser({_id: req.params.id})
+        .then(user => res.json(user))
+        .catch(error => res.status(500).json(error));
+});
 
 router.get('/captions/:id?', (req, res) => {
     if (req.params.id === undefined) {
