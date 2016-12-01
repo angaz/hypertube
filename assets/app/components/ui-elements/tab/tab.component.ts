@@ -1,15 +1,20 @@
-import { Component, Input } from '@angular/core';
-import {TabsComponent} from "../tabs/tabs.component";
+import { Component, Input, OnInit } from '@angular/core';
+import { TabsComponent } from "../tabs/tabs.component";
 
 @Component ({
     selector: 'tab',
-    templateURL: './tab.component.html',
+    templateUrl: 'tab.component.html',
     styleUrls: ['tab.component.css']
 })
-export class TabComponent {
-    @Input() TabTitle;
+export class TabComponent implements OnInit{
+    active: boolean;
+
+    @Input() TabTitle: string;
 
     constructor(tabs: TabsComponent) {
         tabs.addTab(this)
+    }
+
+    ngOnInit(){
     }
 }

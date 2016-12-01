@@ -57,4 +57,28 @@ router.post('/signin', (req, res, next) => {
 	});
 });
 
+router.post('/users/:id', (req, res, next) => {
+	User.findOne({_id: req.body.id}, (err, user) => {
+		if (err) {
+			return res.status(500).json({
+				title: 'An error occured while retrieving user information.',
+				error: err
+			});
+		}
+		if (!user) {
+			return res.status(401).json({
+				title: 'User not found in our records.',
+				error: {message: 'record not found'}
+			});
+		}
+		res.status(200).json({
+			message: 'User found',
+			userId: user._id,
+			user: user.username,
+			userFirstName: user.firstName,
+			userLastName: user.lastName
+		});
+	})
+});
+
 module.exports = router;
