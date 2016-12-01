@@ -69,7 +69,7 @@ function sendReset(email, name, token) {
 					],
 					'substitutions': {
 						'-name-': name,
-						'-activation_code-': HOST + '/activate/?email=' + email + '&activation=' + token
+						'-password-reset-link-': HOST + '/reset/request?email=' + email + '&reset=' + token
 					},
 					subject: 'Tubular password reset, ' + name,
 				},

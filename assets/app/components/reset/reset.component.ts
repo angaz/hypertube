@@ -10,32 +10,81 @@ import { User } from '../../models/user';
     styleUrls: ['./reset.component.css']
 })
 
-export class resetComponent implements OnInit {
-    resetForm: FormGroup;
+export class ResetComponent implements OnInit {
+    emailForm: FormGroup;
+    passwordForm: FormGroup;
+    emailSent: boolean = false;
+
 
     constructor(private authService: AuthService, private router: Router) {}
 
-    onSubmit() {
+    onSubmitEmail() {
         const user = new User(
             null,
             null,
-            this.resetForm.value.email,
+            this.emailForm.value.email,
             null,
             null
         );
-        this.authService.reset(user)
+        this.authService.sendReset(user)
             .subscribe(
                 data => {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('userId', data.userId);
-                    this.router.navigateByUrl('/movies');//?token=' + data.token);
+                    console.log(data);
+                    this.router.navigateByUrl('/reset');
                 },
                 error => console.error(error)
             );
-        this.resetForm.reset();
+        this.emailSent = true;
+        this.emailForm.reset();
     }
+
+    resetRequest() {
+        console.log('reset.component entered: resetRequest function executed');
+        const user = new User(
+            null,
+            null,
+            null,
+            null,
+            this.passwordForm.value.password
+        );
+        this.authService.resetPassword()
+            .subscribe(
+                data => {
+                    //localStorage.setItem('token', data.token);
+                    //localStorage.setItem('userId', data.userId);
+                    this.router.navigateByUrl('/reset');
+                },
+                error => console.error(error)
+            );
+        this.passwordForm.reset();
+    }
+
+
+    onSubmitPassword() {
+        const user = new User(
+            null,
+            null,
+            null,
+            null,
+            this.passwordForm.value.password
+        );
+        this.authService.resetPassword()
+            .subscribe(
+                data => {
+                    //localStorage.setItem('token', data.token);
+                    //localStorage.setItem('userId', data.userId);
+                    //this.router.navigateByUrl('/reset');
+                },
+                error => console.error(error)
+            );
+        this.passwordForm.reset();
+    }
+
     ngOnInit () {
-        this.resetForm = new FormGroup({
+        this.passwordForm = new FormGroup({
+            password: new FormControl(null, Validators.required)
+        });
+        this.emailForm = new FormGroup({
             email: new FormControl(null, Validators.required)
         });
     }
