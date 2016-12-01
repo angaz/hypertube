@@ -19,6 +19,8 @@ import { WatchComponent } from "../components/watch/watch.component";
 import { SearchComponent } from "../components/search/search.component";
 import { AuthService } from "../services/auth.service";
 import { UserProfileComponent } from "../components/user-profile/user-profile.component";
+import { TabComponent } from "../components/ui-elements/tab/tab.component";
+import { TabsComponent } from "../components/ui-elements/tabs/tabs.component";
 
 const appRoutes: Routes = [
 	{ path: 'signin', component: SigninComponent },
@@ -45,7 +47,9 @@ const appRoutes: Routes = [
 		FooterComponent,
 		WatchComponent,
 		SearchComponent,
-		UserProfileComponent
+		UserProfileComponent,
+		TabComponent,
+		TabsComponent
 	],
 	imports: [
 		RouterModule.forRoot(appRoutes),

@@ -119,6 +119,10 @@ hr{
   border-top: 3px dashed #f1f1f1;
 }
 
+hr.solid {
+  border-top: 1px solid #4d484e;
+}
+
 hypertube-movies{
   position:relative;
 }
