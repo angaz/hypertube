@@ -87,10 +87,10 @@ function downloadSub(subURL, name, language) {
             return resolve(null);
         }
         let found = false;
-        let langCode = iso639.getCode(language.replace(/.*?\-/, ''));
+        let langCode = iso639.getCode(language.replace(/.*?-/, ''));
         let filename = `captions/${name}_${langCode}.vtt`;
         // First checks if subtitle file exists
-        fs.access(`./public/${filename}`, fs.F_OK, err => {
+        fs.access(`${__dirname}/../../public/${filename}`, fs.F_OK, err => {
             if (!err) {
                 found = true;
                 return resolve({
@@ -102,7 +102,7 @@ function downloadSub(subURL, name, language) {
                     file: filename
                 });
             } // Don't need an else because of return
-            fs.mkdirsSync(`${__dirname}/../public/captions`);
+            fs.mkdirsSync(`${__dirname}/../../public/captions`);
             request(subURL)
                 .pipe(unzip.Parse())
                 // Called for every file in the zip
@@ -113,9 +113,10 @@ function downloadSub(subURL, name, language) {
                         entry.on('end', () => {
                             srt2vtt(Buffer.concat(buff), (err, vtt) => {
                                 if (err) {
-                                    throw new Error(err);
+                                    console.log(err);
+                                    return resolve(null);
                                 } else {
-                                    fs.writeFileSync(`./public/${filename}`, vtt);
+                                    fs.writeFileSync(`${__dirname}/../../public/${filename}`, vtt);
                                 }
                             });
                             found = true;
@@ -139,7 +140,6 @@ function downloadSub(subURL, name, language) {
                     }
                 });
         });
-
     });
 }
 

@@ -91,8 +91,4 @@ cron.schedule('0 * * * *', () => {
         .catch(error => console.log(error));
 });
 
-yts.getDetails(6199)
-    .then(captions => console.log(captions))
-    .catch(error => console.log(error));
-
 module.exports = app;
