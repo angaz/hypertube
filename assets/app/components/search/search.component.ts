@@ -19,10 +19,14 @@ export class SearchComponent {
     }
 
     filter() {
+        let query = this.query.toLowerCase();
         if (this.query.length > 0 && this.moviesList.length > 0 && !this._searchService.fetchingMovies) {
-            this.filteredList = this.moviesList.filter(movie => {
-                return movie.lowerTitle.indexOf(this.query.toLowerCase()) > -1;
-            });
+            this.filteredList = this.moviesList
+                .filter(movie => movie.lower_title.indexOf(query) > -1)
+                .map(movie => {
+                    movie.strong_title = movie.title.replace(new RegExp(query, 'gi'), '<strong>$&</strong>');
+                    return movie;
+                });
         } else {
             this.filteredList = [];
         }

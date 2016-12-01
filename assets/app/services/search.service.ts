@@ -1,4 +1,4 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 @Injectable()
@@ -19,7 +19,10 @@ export class SearchService {
             this._http.get('/api/get_movies')
                 .map(res => res.json())
                 .subscribe(res => {
-                    resolve(res);
+                    resolve(res.map(movie => {
+                        movie.lower_title = movie.title.toLowerCase();
+                        return movie;
+                    }));
                     this.fetchingMovies = false;
                 });
         });
