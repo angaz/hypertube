@@ -91,4 +91,6 @@ cron.schedule('0 * * * *', () => {
         .catch(error => console.log(error));
 });
 
+movies.addCastToAll();
+
 module.exports = app;

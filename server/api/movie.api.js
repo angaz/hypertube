@@ -2,10 +2,12 @@
  * Created by adippena on 11/23/16.
  */
 "use strict";
+const iso639 = require('iso-639-1');
+const request = require('request');
+
 const ytsAPI = require('./yts.api.js');
 const tmdbAPI = require('./tmdb.api.js');
 const Movie = require('./../models/movie');
-const iso639 = require('iso-639-1');
 
 function cleanArray(actual) {
     let newArray = [];
@@ -57,52 +59,57 @@ function newMovie(page) {
                                     return success(null);
                                 }
 
-                                let genres = tmdb.genres.map(genre => {
-                                    return genre.name;
-                                });
-
-                                let torrents = [];
-                                yify.torrents.forEach(torrent => {
-                                    if (torrent.quality.match(/^(720p|1080p)$/)) {
-                                        torrents.push({
-                                            hash: torrent.hash,
-                                            quality: torrent.quality,
-                                            size: torrent.size_bytes,
-                                            health: (torrent.seeds/(torrent.peers) ? (torrent.peers * 2) : 10)
+                                tmdbAPI.getCast(tmdb.id)
+                                    .then(cast => {
+                                        let genres = tmdb.genres.map(genre => {
+                                            return genre.name;
                                         });
-                                    }
-                                });
 
-                                let slug = `${tmdb.title
-                                                .toLowerCase()
-                                                .replace(/[^a-zA-z0-9\-\s]/g, '')
-                                                .replace(/\s+/g, '-')}-${tmdb.release_date.split('-')[0]}`;
+                                        let torrents = [];
+                                        yify.torrents.forEach(torrent => {
+                                            if (torrent.quality.match(/^(720p|1080p)$/)) {
+                                                torrents.push({
+                                                    hash: torrent.hash,
+                                                    quality: torrent.quality,
+                                                    size: torrent.size_bytes,
+                                                    health: (torrent.seeds/(torrent.peers) ? (torrent.peers * 2) : 10)
+                                                });
+                                            }
+                                        });
 
-                                let newMovie = {
-                                    yify_id: yify.id,
-                                    tmdb_id: tmdb.id,
-                                    imdb_id: yify.imdb_code,
-                                    belongs_to_collection: tmdb.belongs_to_collection,
-                                    title: tmdb.title,
-                                    slug: slug,
-                                    vote_average: tmdb.vote_average,
-                                    vote_count: tmdb.vote_count,
-                                    runtime: tmdb.runtime,
-                                    genres: genres,
-                                    overview: tmdb.overview,
-                                    language: iso639.getName(tmdb.original_language),
-                                    mpa_rating: yify.mpa_rating,
-                                    backdrop_path: tmdb.backdrop_path,
-                                    poster_path: tmdb.poster_path,
-                                    release_date: tmdb.release_date,
-                                    revenue: tmdb.revenue,
-                                    tagline: tmdb.tagline,
-                                    popularity: tmdb.popularity,
-                                    subtitles: null,
-                                    torrents: torrents
-                                };
+                                        let slug = `${tmdb.title
+                                            .toLowerCase()
+                                            .replace(/[^a-zA-z0-9\-\s]/g, '')
+                                            .replace(/\s+/g, '-')}-${tmdb.release_date.split('-')[0]}`;
 
-                                success(new Movie(newMovie));
+                                        let newMovie = {
+                                            yify_id: yify.id,
+                                            tmdb_id: tmdb.id,
+                                            imdb_id: yify.imdb_code,
+                                            belongs_to_collection: tmdb.belongs_to_collection,
+                                            title: tmdb.title,
+                                            slug: slug,
+                                            vote_average: tmdb.vote_average,
+                                            vote_count: tmdb.vote_count,
+                                            runtime: tmdb.runtime,
+                                            genres: genres,
+                                            overview: tmdb.overview,
+                                            language: iso639.getName(tmdb.original_language),
+                                            mpa_rating: yify.mpa_rating,
+                                            backdrop_path: tmdb.backdrop_path,
+                                            poster_path: tmdb.poster_path,
+                                            release_date: tmdb.release_date,
+                                            revenue: tmdb.revenue,
+                                            tagline: tmdb.tagline,
+                                            popularity: tmdb.popularity,
+                                            cast: cast,
+                                            subtitles: null,
+                                            torrents: torrents
+                                        };
+
+                                        success(new Movie(newMovie));
+                                    })
+                                    .catch(console.log.bind(console));
                             }).catch(error => {
                                 return problem({
                                     message: 'findMovieByImdb error',
@@ -194,9 +201,44 @@ function getMovie(query) {
     });
 }
 
+function addCastToAll() {
+    Movie
+        .find({cast: {$exists: false}})
+        .select({_id: 1, tmdb_id: 1})
+        .exec((err, bagOMovies) => {
+            if (err) {
+                throw new Error(err);
+            }
+            console.log(bagOMovies);
+            newUpdate(bagOMovies);
+        });
+}
+
+function newUpdate(bagOMovies) {
+    if (bagOMovies.length > 0) {
+        let movie = bagOMovies[0];
+        console.log(`${bagOMovies.length} Movies left`);
+        tmdbAPI.getCast(movie.tmdb_id)
+            .then(cast => {
+                Movie.update({_id: movie._id}, {$set: {cast: cast}}, (err, updated) => {
+                    if (err) {
+                        throw new Error(err);
+                    }
+                    if (updated.nModified !== 1) {
+                        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NOT UPDATED');
+                    }
+                    bagOMovies.shift();
+                    newUpdate(bagOMovies);
+                });
+            })
+            .catch(console.log.bind(console));
+    }
+}
+
 module.exports = {
     update: update,
     getPage: getPage,
     getAllMovies: getAllMovies,
-    getMovie: getMovie
+    getMovie: getMovie,
+    addCastToAll: addCastToAll
 };

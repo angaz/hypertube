@@ -17,7 +17,8 @@ const schema = new Schema({
     imdb_id: {type: String, required: true, unique: true},  // IMDB ID number
     belongs_to_collection: {type: Schema.Types.Mixed},      // TMDB collection
     title: {type: String, required: true},                  // Movie title
-    lowerTitle: {type: String, required: true},            // Movie title in lower case for faster searching
+    slug: {type: String, required: true},                   // Lowercase title, whitespace to '-', special characters removed, ending with release year
+    lowerTitle: {type: String, required: true},             // Movie title in lower case for faster searching
     vote_average: {type: Number},                           // TMDB Average vote
     vote_count: {type: Number},                             // TMDB vpte count
     runtime: {type: Number, required: true},                // Runtime in minutes
@@ -32,6 +33,7 @@ const schema = new Schema({
     tagline: {type: String},                                // Movie tagline
     popularity: {type: Number},                             // Movie's popularity
     subtitles: {type: [Schema.Types.Mixed]},                // Array of subtitles, contains language and subtitle path
+    cast: {type: [Schema.Types.Mixed]},                     // Movie main cast members
     torrents: {type: Schema.Types.Mixed, required: true}
     /**
      * torrents: {
