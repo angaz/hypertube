@@ -8,6 +8,7 @@ import {TabsComponent} from "../tabs/tabs.component";
 })
 export class TabComponent {
     @Input() TabTitle;
+    active: boolean;
 
     constructor(tabs: TabsComponent) {
         tabs.addTab(this)

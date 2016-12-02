@@ -22,13 +22,16 @@ export class NavComponent {
 	) {}
 
 	toggleUserProfile(){
-		if (this.userProfileHide)
+		if (this.userProfileHide) {
 			this._userService.showUserProfile(null);
+			this._searchService.hide = true;
+		}
 		else
 			this._userService.hideUserProfile();
 	}
 
 	toggleSearch(){
+		this._userService.hideUserProfile();
 		this._searchService.toggleHide();
 	}
 
