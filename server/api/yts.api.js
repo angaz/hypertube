@@ -57,7 +57,7 @@ function getDetails(id) {
 }
 
 function getAllSubs(movie) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         let allSubs = [];
         yifysubs.searchSubtitles('All', movie.imdb_code, subs => {
             subs = subs[movie.imdb_code];
@@ -76,19 +76,21 @@ function getAllSubs(movie) {
                         }
                     });
                     resolve(newValues);
-                })
-                .catch(err => reject(err));
+                });
         });
     });
 }
 
 function downloadSub(subURL, name, language) {
-    let found = false;
-    let langCode = iso639.getCode(language.replace(/.*?\-/, ''));
-    let filename = `captions/${name}_${langCode}.vtt`;
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
+        if (!subURL || !name || !language) {
+            return resolve(null);
+        }
+        let found = false;
+        let langCode = iso639.getCode(language.replace(/.*?-/, ''));
+        let filename = `captions/${name}_${langCode}.vtt`;
         // First checks if subtitle file exists
-        fs.access(`./public/${filename}`, fs.F_OK, err => {
+        fs.access(`${__dirname}/../../public/${filename}`, fs.F_OK, err => {
             if (!err) {
                 found = true;
                 return resolve({
@@ -100,10 +102,7 @@ function downloadSub(subURL, name, language) {
                     file: filename
                 });
             } // Don't need an else because of return
-            else {
-                reject(err);
-            }
-            fs.mkdirsSync(`${__dirname}/../public/captions`);
+            fs.mkdirsSync(`${__dirname}/../../public/captions`);
             request(subURL)
                 .pipe(unzip.Parse())
                 // Called for every file in the zip
@@ -114,9 +113,10 @@ function downloadSub(subURL, name, language) {
                         entry.on('end', () => {
                             srt2vtt(Buffer.concat(buff), (err, vtt) => {
                                 if (err) {
-                                    return resolve(err);
+                                    console.log(err);
+                                    return resolve(null);
                                 } else {
-                                    fs.writeFileSync(`./public/${filename}`, vtt);
+                                    fs.writeFileSync(`${__dirname}/../../public/${filename}`, vtt);
                                 }
                             });
                             found = true;
@@ -134,11 +134,12 @@ function downloadSub(subURL, name, language) {
                     }
                 })
                 .on('close', () => {
-                    console.log(`Captions: ${filename} had no srt files`);
-                    return resolve(null);
+                    if (!found) {
+                        console.log(`Captions: ${filename} had no srt files`);
+                        return resolve(null);
+                    }
                 });
         });
-
     });
 }
 

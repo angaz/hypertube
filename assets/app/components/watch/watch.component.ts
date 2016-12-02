@@ -13,35 +13,34 @@ import {isNullOrUndefined} from "util";
 export class WatchComponent {
   private subscription: Subscription;
   movie: any = {
-      poster: null,
+      poster: '',
       src: null
   };
-  captions: any = [{
-      language: {
-          code: null,
-          nativeName: null
-      },
-      src: null
-  }];
+  captions: any[] = [];
   noMovie: boolean = false;
 
-  constructor(private activatedRoute: ActivatedRoute, private _ytsService:MovieService) {}
+  constructor(private activatedRoute: ActivatedRoute, private _movieService:MovieService) {}
 
   ngOnInit() {
     // subscribe to router event
     this.subscription = this.activatedRoute.params.subscribe(
         (param: any) => {
-            let watch = this._ytsService.findBySlug(param.name);
-            console.log(watch);
-            if (isNullOrUndefined(watch)) {
-                return this.noMovie = true;
-            }
-            this.movie = {
-                poster: watch.backdrop_path,
-                src: `/api/watch/${watch.torrents[0].hash}`,
-            };
-            this._ytsService.getCaptions(watch.yify_id)
-                .then(captions => {this.captions = captions; console.log(captions);});
+            this._movieService.findBySlug(param.name)
+                .then(watch => {
+                    console.log(watch);
+                    if (isNullOrUndefined(watch)) {
+                        return this.noMovie = true;
+                    }
+                    this.movie = {
+                        poster: watch.backdrop_path,
+                        src: `/api/watch/${watch.torrents[0].hash}`,
+                    };
+                    this._movieService.getCaptions(watch.yify_id)
+                        .then(captions => {
+                            this.captions = captions; console.log(captions);
+                        });
+                })
+                .catch(err => console.log(err));
         });
   }
 

@@ -7,9 +7,12 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
+const cron = require('node-cron');
 const mongoose = require('mongoose');
 const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
+const movies = require('./api/movie.api');
+const yts = require('./api/yts.api');
 const app = express();
 const hbs = exphbs.create({
 	extname: '.hbs',
@@ -82,15 +85,8 @@ app.use('/', appRoutes);
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
 
-// const eztv = require('./api/eztv.api');
-// eztv.getShows().then(response => console.log(response));
-/*eztv.getShowInfo({id: 23, slug: 'the-big-bang-theory'})
-    .then(/!*response => console.log(require('util').inspect(response, {depth: null, breakLength: Infinity}))*!/)
-    .catch(console.log.bind(console));*/
-
-require('node-cron').schedule('0 * * * *', () => {
-    require('./api/movie.api')
-        .update()
+cron.schedule('0 * * * *', () => {
+    movies.update()
         .then(result => console.log(`New movies: ${result}`))
         .catch(error => console.log(error));
 });

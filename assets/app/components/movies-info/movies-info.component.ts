@@ -15,10 +15,7 @@ export class MoviesInfoComponent{
 
     ngOnInit() {
         this.movieSub = this._movieService.movie$
-            .subscribe(movie => {
-                console.log('Showing', movie);
-                this.movie = movie;
-            });
+            .subscribe(movie => this.movie = movie);
     }
 
     ngOnDestroy() {

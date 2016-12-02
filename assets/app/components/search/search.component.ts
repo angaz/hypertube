@@ -8,25 +8,28 @@ import { MovieService } from "../../services/movies.service";
     styleUrls: ['search.component.css']
 })
 export class SearchComponent {
-    constructor  (private _searchService: SearchService, private _movieService: MovieService) {
-        this._searchService.fetchMoviesList()
-            .then(bagOMovies => {
-                this.moviesList = bagOMovies.map(movie => {
-                    return movie.lowerTitle = movie.title.toLowerCase();
-                });
-            })
-            .catch(error => console.log(`Error occurred fetching movies list ${error}`));
-    }
-
     private query: String = '';
     private moviesList = [];
     private filteredList = [];
 
+    constructor  (private _searchService: SearchService, private _movieService: MovieService) {
+        this._searchService.fetchMoviesList()
+            .then(bagOMovies => {
+                this.moviesList = bagOMovies;
+                this.filter();
+            })
+            .catch(error => console.log(`Error occurred fetching movies list ${error}`));
+    }
+
     filter() {
-        if (this.query.length > 0 && !this._searchService.fetchingMovies) {
-            this.filteredList = this.moviesList.filter(movie => {
-                return movie.lowerTitle.indexOf(this.query.toLowerCase()) > -1;
-            });
+        let query = this.query.toLowerCase().trim();
+        if (this.query.length > 0 && this.moviesList.length > 0 && !this._searchService.fetchingMovies) {
+            this.filteredList = this.moviesList
+                .filter(movie => movie.lower_title.indexOf(query) > -1)
+                .map(movie => {
+                    movie.strong_title = movie.title.replace(new RegExp(query, 'gi'), '<strong>$&</strong>');
+                    return movie;
+                });
         } else {
             this.filteredList = [];
         }

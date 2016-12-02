@@ -16,7 +16,7 @@
 
 movies-info {
     z-index:99;
-    width:calc(100% - 90px);
+    width: calc(100% - 90px);
     position:fixed;
     top:0;
     right:-100%;

@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/user');
 const email = require('./email');
 
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
 	let user = new User({
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,

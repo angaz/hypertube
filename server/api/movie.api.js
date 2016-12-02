@@ -73,13 +73,18 @@ function newMovie(page) {
                                     }
                                 });
 
+                                let slug = `${tmdb.title
+                                                .toLowerCase()
+                                                .replace(/[^a-zA-z0-9\-\s]/g, '')
+                                                .replace(/\s+/g, '-')}-${tmdb.release_date.split('-')[0]}`;
+
                                 let newMovie = {
                                     yify_id: yify.id,
                                     tmdb_id: tmdb.id,
                                     imdb_id: yify.imdb_code,
                                     belongs_to_collection: tmdb.belongs_to_collection,
                                     title: tmdb.title,
-                                    lowerTitle: tmdb.title.toLowerCase(),
+                                    slug: slug,
                                     vote_average: tmdb.vote_average,
                                     vote_count: tmdb.vote_count,
                                     runtime: tmdb.runtime,
