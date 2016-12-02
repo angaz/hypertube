@@ -11,23 +11,17 @@ import {Subscription} from "rxjs";
 })
 export class UserProfileComponent implements OnInit{
 
-    public userProfileHide: boolean;
+    public userProfileHide = true;
     private userProfileHideSub: Subscription;
 
-    constructor(private _userService: UserService, private _search: SearchService, private  _moviesInfo: MovieService){}
+    constructor(private _userService: UserService, private _searchService: SearchService, private  _moviesInfo: MovieService){}
 
     ngOnInit() {
         this.userProfileHideSub = this._userService.profileHide$.subscribe(hide => this.userProfileHide = hide);
-        alert (this.userProfileHide);
+        this._searchService.hide = true;
     }
 
     ngOnDestroy() {
         this.userProfileHideSub.unsubscribe();
-    }
-
-    getUserInfo(user_id){
-        this._userService.showUserProfile(user_id);
-        this._moviesInfo.hideMovie();
-        this._search.toggleHide();
     }
 }

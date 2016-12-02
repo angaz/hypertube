@@ -14,7 +14,7 @@ hypertube-nav, hypertube-home{
 
 hypertube-nav{
   padding:0 45px;
-  z-index:101;
+  z-index:9999;
   width:90px;
   background: #29242a;
   height:100vh;

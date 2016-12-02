@@ -1,28 +1,23 @@
-@keyframes slideout-show {
-    0%   { background-color: transparent; }
-    80%  { background-color: transparent; }
-    100% { background-color: rgba(40,40,44, 0.8) }
-}
-
 .container-fluid{
     overflow:hidden;
 }
 
-.hide-user-profile{
-    right:0;
-    animation: slideout-show 1s ease-in-out;
-    background-color: rgba(40,40,44, 0.8)
-}
-
 .user-profile-container {
+    color: #fcf2e6;
+    right:0;
     position:fixed;
     top:0;
-    right: -9999px;
     z-index: 999;
     width:calc(100% - 90px);
     min-height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
+    background-color: rgba(40,40,44, 0.8);
     transition: all 0.5s ease-in-out;
+}
+
+.hide-user-profile{
+    right: -100%;
+    animation: slideout-show 1s ease-in-out;
+    background-color: rgba(40,40,44, 0)
 }
 
 .user-profile-inner {
@@ -30,6 +25,43 @@
     background-color:#221e23;
     width: 80%;
     min-height:100vh;
+}
+
+.user-profile-image{
+    position: absolute;
+    bottom: 0;
+    left:0;
+    width:180px;
+    height:180px;
+    background:#fff;
+    padding:5px;
+    box-sizing: border-box;
+    border-radius:5px;
+}
+
+.user-profile-menu-inner{
+    padding-left:200px;
+}
+
+.user-profile-name{
+    display: inline-block;
+    padding-top: 20px;
+}
+
+.user-profile-name h4{
+    text-transform: capitalize;
+}
+
+.user-profile-menu-items {
+    display: inline-block;
+}
+
+.user-profile-menu-item{
+    background: #404049;
+    padding: 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 15px;
 }
 
 .user-profile-banner{

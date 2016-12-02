@@ -20,8 +20,14 @@ export class UserService {
         if (!user)
             user = localStorage.getItem('userId');
         this._http.get(`/api/users/${user}`).map(res => res.json()).subscribe(res => {
+            this.fetchingUser = true;
             this.user = res;
             this.profileHide.next(false);
         });
+        this.fetchingUser = false;
+    }
+
+    hideUserProfile(){
+        this.profileHide.next(true);
     }
 }
