@@ -4,7 +4,13 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
+//TODO remove User and replace with var to user.api
+
 const User = require('./models/user');
+const userApi = require('./api/user.api');
+
+
 const email = require('./email');
 
 router.post('/', (req, res) => {
@@ -27,10 +33,15 @@ router.post('/', (req, res) => {
 			obj: result
 		});
 	});
-	let token = jwt.sign({user: user.username}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
-	email.sendConfirmation(user.email, user.firstName, token)
-		.then(result => res.json(result))
-		.catch(error => res.status(500).json(error));
+	console.log('generating token');
+	//let token = jwt.sign({user: user.username}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
+	userApi.genToken(req.body.username)
+		.then(token => {
+			email.sendConfirmation(user.email, user.firstName, token)
+				.then(result => res.json(result))
+				.catch(error => res.status(500).json(error));
+		})
+		.catch(console.log.bind(console));
 });
 
 router.post('/signin', (req, res, next) => {
@@ -53,7 +64,7 @@ router.post('/signin', (req, res, next) => {
 				error: {message: 'Invalid login credentials'}
 			});
 		}
-		let token = jwt.sign({user: req.body.username}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
+		let token = user.getToken(req.body.username);
 		res.status(200).json({
 			message: 'Successfully logged in',
 			token: token,
@@ -149,6 +160,5 @@ router.get('/reset/request', (req, res, next) => {
 		res.json()
 	});
 });
-
 
 module.exports = router;

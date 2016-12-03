@@ -87,6 +87,19 @@ function sendReset(email, name, token) {
 		},
 	});
 
+/*
+	function genToken(user) {
+		return new Promise((resolve, reject) => {
+			jwt.sign({user: user}, 'secretllamaissecret', {expiresIn: 21600}, (err, token) => {
+				if (err) {
+					return reject(err);
+				}
+				resolve(token);
+			});
+		});
+	}
+
+*/
 	return new Promise((resolve, reject) => {
 		sg.API(request, (err, success) => {
 			if (err) {
