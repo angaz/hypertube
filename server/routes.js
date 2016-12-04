@@ -13,7 +13,8 @@ const userApi = require('./api/user.api');
 
 const email = require('./email');
 
-router.post('/', (req, res) => {
+router.post('/users/signup', (req, res) => {
+//router.post('/', (req, res) => {
 	let user = new User({
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
@@ -33,18 +34,15 @@ router.post('/', (req, res) => {
 			obj: result
 		});
 	});
-	console.log('generating token');
-	//let token = jwt.sign({user: user.username}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
 	userApi.genToken(req.body.username)
 		.then(token => {
-			email.sendConfirmation(user.email, user.firstName, token)
-				.then(result => res.json(result))
-				.catch(error => res.status(500).json(error));
+			email.sendConfirmation(user.email, user.firstName, token);
 		})
 		.catch(console.log.bind(console));
 });
 
-router.post('/signin', (req, res, next) => {
+router.post('/users/signin', (req, res, next) => {
+	//call getuser
 	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
 			return res.status(500).json({
@@ -58,13 +56,15 @@ router.post('/signin', (req, res, next) => {
 				error: {message: 'Invalid login credentials'}
 			});
 		}
+		//pwd verify
 		if (!bcrypt.compareSync(req.body.password, user.password)) {
 			return res.status(401).json({
 				title: 'Login failed',
 				error: {message: 'Invalid login credentials'}
 			});
 		}
-		let token = user.getToken(req.body.username);
+		//getToken
+		let token = user.genToken(req.body.username);
 		res.status(200).json({
 			message: 'Successfully logged in',
 			token: token,
@@ -77,35 +77,17 @@ router.post('/resend', (req, res, next) => {
 
 });
 
-router.get('/activate', (req, res, next) => {
-	jwt.verify(req.query.activation, 'secretllamaissecret', (err, decoded) => {
-		if (err) {
-			return res.status(401).json({
-				title: 'Not Authenticated',
-				error: err
-			});
-		}
-		User.findOne({ name: decoded.user.username }, (err) => {
-			if(err) {
-				return res.status(500).json({
-					title: 'Username not found',
-					error: err
-				});
-			}
-			User.update({username: decoded.user.username},
-				{ $set : { validated: 1 }}, (err) =>	{
-				if(err) {
-					return res.status(500).json({
-						title: 'Email not validated',
-						error: err
-					});
-				}
-			});
-		});
-	});
+router.get('/users/confirm', (req, res, next) => {
+
+	userApi.verifyEmail(req, res);
+
+	/*
+	activateUser.getPage((req.params.page === undefined) ? 1 : parseInt(req.params.page))
+		.then(bagOMovies => res.json(bagOMovies))
+		.catch(error => res.status(500).json(error));*/
 });
 
-router.post('/reset', (req, res, next) => {
+router.post('/users/reset', (req, res, next) => {
 	User.findOne({email: req.body.email}, (err, ret) => {
 		if (err) {
 			return res.status(500).json({
@@ -139,7 +121,7 @@ router.post('/reset', (req, res, next) => {
 	});
 });
 
-router.get('/reset/request', (req, res, next) => {
+router.get('/users/reset/request', (req, res, next) => {
 	jwt.verify(req.query.reset, 'secretllamaissecret', (err, decoded) => {
 		if(err) {
 			return res.status(401).json({

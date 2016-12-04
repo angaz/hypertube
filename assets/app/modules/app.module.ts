@@ -24,9 +24,9 @@ import {TabComponent} from "../components/ui-elements/tab/tab.component";
 import {TabsComponent} from "../components/ui-elements/tabs/tabs.component";
 
 const appRoutes: Routes = [
-	{ path: 'signin', component: SigninComponent },
-	{ path: 'signup', component: SignupComponent },
-	{ path: 'reset', component: ResetComponent },
+	{ path: 'users/signup', component: SignupComponent },
+	{ path: 'users/signin', component: SigninComponent },
+	{ path: 'users/reset', component: ResetComponent },
 	{ path: 'movies', component: MoviesComponent },
 	{ path: 'series', component: SeriesComponent },
 	{ path: 'watch/:name', component: WatchComponent},

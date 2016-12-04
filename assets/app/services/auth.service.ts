@@ -11,7 +11,7 @@ export class AuthService {
     signup(user: User) {
         const body = JSON.stringify(user);
         const headers = new Headers ({'Content-Type': 'application/json'});
-        return this.http.post('http://localhost:4200/', body, {headers: headers})
+        return this.http.post('http://localhost:4200/users/signup', body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
@@ -19,7 +19,7 @@ export class AuthService {
     signin(user: User) {
         const body = JSON.stringify(user);
         const headers = new Headers ({'Content-Type': 'application/json'});
-        return this.http.post('http://localhost:4200/signin', body, {headers: headers})
+        return this.http.post('http://localhost:4200/users/signin', body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
@@ -27,7 +27,7 @@ export class AuthService {
     sendReset(user: User) {
         const body = JSON.stringify(user);
         const headers = new Headers ({'Content-Type': 'application/json'});
-        return this.http.post('http://localhost:4200/reset', body, {headers: headers})
+        return this.http.post('http://localhost:4200/users/reset', body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
@@ -62,7 +62,7 @@ export class AuthService {
         //const body = JSON.stringify(user);
         const headers = new Headers ({'Content-Type': 'application/json'});
         console.log("auth service entered");
-        return this.http.get('http://localhost:4200/reset/request', {headers: headers})
+        return this.http.get('http://localhost:4200/users/reset/request', {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
@@ -71,7 +71,7 @@ export class AuthService {
         //const body = JSON.stringify(user);
         const headers = new Headers ({'Content-Type': 'application/json'});
         console.log("auth service entered");
-        return this.http.get('http://localhost:4200/reset/request', {headers: headers})
+        return this.http.get('http://localhost:4200/users/reset/request', {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }

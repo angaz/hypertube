@@ -20,7 +20,7 @@ function sendConfirmation(email, name, token) {
 					],
 					'substitutions': {
 						'-name-': name,
-						'-activation_code-': HOST + '/activate?email=' + email + '&activation=' + token
+						'-activation_code-': HOST + '/users/confirm?email=' + email + '&verification=' + token
 					},
 					subject: 'Welcome to Tubular, ' + name,
 				},
@@ -38,14 +38,15 @@ function sendConfirmation(email, name, token) {
 		},
 	});
 
-	return new Promise((resolve, reject) => {
-		sg.API(request, (err, success) => {
-			if (err) {
-				return reject(err);
-			}
-			resolve(success);
+	sg.API(request)
+		.then(response => {
+			console.log(`Email response code: ${response.statusCode}`);
+			console.log(response.body);
+			console.log(response.headers);
+		})
+		.catch(error => {
+			console.log(error.response.statusCode);
 		});
-	});
 }
 
 
@@ -69,7 +70,7 @@ function sendReset(email, name, token) {
 					],
 					'substitutions': {
 						'-name-': name,
-						'-password-reset-link-': HOST + '/reset/request?email=' + email + '&reset=' + token
+						'-password-reset-link-': HOST + '/users/reset/request?email=' + email + '&reset=' + token
 					},
 					subject: 'Tubular password reset, ' + name,
 				},
@@ -87,33 +88,18 @@ function sendReset(email, name, token) {
 		},
 	});
 
-/*
-	function genToken(user) {
-		return new Promise((resolve, reject) => {
-			jwt.sign({user: user}, 'secretllamaissecret', {expiresIn: 21600}, (err, token) => {
-				if (err) {
-					return reject(err);
-				}
-				resolve(token);
-			});
+	sg.API(request)
+		.then(response => {
+			console.log(`Email response code: ${response.statusCode}`);
+			console.log(response.body);
+			console.log(response.headers);
+		})
+		.catch(error => {
+			console.log(error.response.statusCode);
 		});
-	}
-
-*/
-	return new Promise((resolve, reject) => {
-		sg.API(request, (err, success) => {
-			if (err) {
-				return reject(err);
-			}
-			resolve(success);
-		});
-	});
 }
 
-function confirmToken(email, name, token) {
-
-}
-
+//TODO clean up
 function resetPassword(email, name, token) {
 
 }
@@ -121,6 +107,5 @@ function resetPassword(email, name, token) {
 module.exports = {
 	sendConfirmation: sendConfirmation,
 	sendReset: sendReset,
-	confirmToken: confirmToken,
 	resetPassword: resetPassword
 };

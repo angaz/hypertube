@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
+function newUser(query) {
+
+}
+
 function getUser(query) {
     return new Promise(resolve => {
         User
@@ -24,6 +28,38 @@ function genToken(user) {
 	    });
     });
 }
+
+function verifyEmail(req, res) {
+	console.log("test");
+	console.log(req.query.verification);
+	jwt.verify(req.query.verification, 'secretllamaissecret', (err, decoded) => {
+		if (err) {
+			return res.status(401).json({
+				title: 'Not Authenticated',
+				error: err
+			});
+		}
+		User.findOne({name: decoded.user.username}, (err) => {
+			if (err) {
+				return res.status(500).json({
+					title: 'Username not found',
+					error: err
+				});
+			}
+			User.update({username: decoded.user.username},
+				{$set: {verified: 1}}, (err) => {
+					if (err) {
+						return res.status(500).json({
+							title: 'Email not validated',
+							error: err
+						});
+					}
+				});
+		});
+	});
+}
+
+
 /*
 
 function genToken(username, res) {
@@ -48,7 +84,10 @@ function validatePass(user, hash) {
         User.findOne()
     })
 }
+
+
 module.exports = {
+	verifyEmail: verifyEmail,
     getUser: getUser,
     genToken: genToken
 };
