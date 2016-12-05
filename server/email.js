@@ -20,7 +20,7 @@ function sendConfirmation(email, name, token) {
 					],
 					'substitutions': {
 						'-name-': name,
-						'-activation_code-': HOST + '/users/confirm?email=' + email + '&verification=' + token
+						'-activation_code-': HOST + '/users/confirm?verification=' + token
 					},
 					subject: 'Welcome to Tubular, ' + name,
 				},

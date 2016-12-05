@@ -14,6 +14,13 @@ const userApi = require('./api/user.api');
 const email = require('./email');
 
 router.post('/users/signup', (req, res) => {
+	//if (req.body === undefined)
+		//return BOOM!
+	userApi.newUser(req.body, res)
+		.then(result => res.json(result))
+		.catch(error => res.status(500).json(error));
+
+	/*
 //router.post('/', (req, res) => {
 	let user = new User({
 		firstName: req.body.firstName,
@@ -34,11 +41,11 @@ router.post('/users/signup', (req, res) => {
 			obj: result
 		});
 	});
-	userApi.genToken(req.body.username)
+	userApi.genToken(user)
 		.then(token => {
 			email.sendConfirmation(user.email, user.firstName, token);
 		})
-		.catch(console.log.bind(console));
+		.catch(console.log.bind(console));*/
 });
 
 router.post('/users/signin', (req, res, next) => {
@@ -78,7 +85,7 @@ router.post('/resend', (req, res, next) => {
 });
 
 router.get('/users/confirm', (req, res, next) => {
-
+//todo promise
 	userApi.verifyEmail(req, res);
 
 	/*

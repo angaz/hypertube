@@ -1,8 +1,43 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const email = require('../email');
 
-function newUser(query) {
+function newUser(data, res) {
+	return new Promise(resolve => {
+		console.log(`entered api`);
+		//router.post('/', (req, res) => {
+		let user = new User({
+			firstName: data.firstName,
+			lastName: data.lastName,
+			email: data.email,
+			username: data.username,
+			password: bcrypt.hashSync(data.password, 10)
+		});
+		console.log(`saving user`);
 
+		user.save((err, result) => {
+			if (err) {
+				return res.status(500).json({
+					title: 'An error occurred when creating user',
+					error: err
+				});
+			}
+			res.status(201).json({
+				message: 'User created successfully',
+				obj: result
+			});
+		});
+		console.log(`user saved`);
+
+		genToken(user)
+			.then(token => {
+				email.sendConfirmation(user.email, user.firstName, token);
+			})
+			.catch(console.log.bind(console));
+		console.log(`shit should be done`);
+		resolve();
+	});
 }
 
 function getUser(query) {
@@ -29,54 +64,53 @@ function genToken(user) {
     });
 }
 
-function verifyEmail(req, res) {
-	console.log("test");
-	console.log(req.query.verification);
-	jwt.verify(req.query.verification, 'secretllamaissecret', (err, decoded) => {
-		if (err) {
-			return res.status(401).json({
-				title: 'Not Authenticated',
-				error: err
-			});
-		}
-		User.findOne({name: decoded.user.username}, (err) => {
+
+function verifyToken(code) {
+	return new Promise((resolve, reject) => {
+		jwt.verify(code, 'secretllamaissecret', (err, decoded) => {
 			if (err) {
-				return res.status(500).json({
-					title: 'Username not found',
-					error: err
-				});
+				return reject(err);
 			}
-			User.update({username: decoded.user.username},
-				{$set: {verified: 1}}, (err) => {
-					if (err) {
-						return res.status(500).json({
-							title: 'Email not validated',
-							error: err
-						});
-					}
-				});
+			resolve(decoded);
 		});
 	});
 }
 
+function verifyEmail(req, res) {
+	verifyToken(req.query.verification)
+		.then( decoded => {
 
-/*
+			//TODO use the following structure to resolve the db promise
+			/*			return new Promise((resolve, reject) => {
+			 Movie
+			 .find({})
+			 .sort({yify_id: 'descending'})
+			 .limit(20)
+			 .skip((page - 1) * 20)
 
-function genToken(username, res) {
-	jwt.sign({user: username}, 'secretllamaissecret', {expiresIn: 21600}, callback => {
-		if (err) {
-			return res.status(500).json({
-				title: 'An error occurred when creating user',
-				error: err
+			 look at this exec business
+			 return err if db broke
+			 .exec((err, bagOMovies) => {
+			 if (err) {
+			 return reject(err);
+			 }
+			 resolve(bagOMovies);
+			 });
+			 });*/
+
+
+			User.update({username: decoded.user.username}, {$set: {verified: 1}}, (err) => {
+				if (err) {
+					return res.status(500).json({
+						title: 'User not validated',
+						error: err
+					});
+				}
 			});
-		}
-		token.status(201).json({
-			message: 'User created successfully',
-			obj: token
-		});
-	});
+			console.log(`User verified`);
+		})
+		.catch(error => res.status(500).json(error));
 }
-*/
 
 
 function validatePass(user, hash) {
@@ -85,9 +119,10 @@ function validatePass(user, hash) {
     })
 }
 
-
+//TODO remove genToken export when done migrating from routes
 module.exports = {
+	newUser: newUser,
+	getUser: getUser,
+	genToken: genToken,
 	verifyEmail: verifyEmail,
-    getUser: getUser,
-    genToken: genToken
 };
