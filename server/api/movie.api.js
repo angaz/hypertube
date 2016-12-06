@@ -201,44 +201,9 @@ function getMovie(query) {
     });
 }
 
-function addCastToAll() {
-    Movie
-        .find({cast: { $exists: false }})
-        .select({_id: 1, tmdb_id: 1})
-        .exec((err, bagOMovies) => {
-            if (err) {
-                throw new Error(err);
-            }
-            console.log(bagOMovies);
-            newUpdate(bagOMovies);
-        });
-}
-
-function newUpdate(bagOMovies) {
-    if (bagOMovies.length > 0) {
-        let movie = bagOMovies[0];
-        console.log(`${bagOMovies.length} Movies left`);
-        tmdbAPI.getCast(movie.tmdb_id)
-            .then(cast => {
-                Movie.update({_id: movie._id}, {$set: {cast: cast}}, (err, updated) => {
-                    if (err) {
-                        throw new Error(err);
-                    }
-                    if (updated.nModified !== 1) {
-                        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NOT UPDATED');
-                    }
-                    bagOMovies.shift();
-                    newUpdate(bagOMovies);
-                });
-            })
-            .catch(console.log.bind(console));
-    }
-}
-
 module.exports = {
     update: update,
     getPage: getPage,
     getAllMovies: getAllMovies,
     getMovie: getMovie,
-    addCastToAll: addCastToAll
 };

@@ -18,7 +18,6 @@ const schema = new Schema({
     belongs_to_collection: {type: Schema.Types.Mixed},      // TMDB collection
     title: {type: String, required: true},                  // Movie title
     slug: {type: String, required: true},                   // Lowercase title, whitespace to '-', special characters removed, ending with release year
-    lowerTitle: {type: String, required: true},             // Movie title in lower case for faster searching
     vote_average: {type: Number},                           // TMDB Average vote
     vote_count: {type: Number},                             // TMDB vpte count
     runtime: {type: Number, required: true},                // Runtime in minutes
