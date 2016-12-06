@@ -43,7 +43,7 @@ function newMovie(page) {
                         if (error) {
                             return problem({
                                 message: 'Mongoose Movie find error',
-                                error:error
+                                error: error
                             });
                         }
 
@@ -72,7 +72,7 @@ function newMovie(page) {
                                                     hash: torrent.hash,
                                                     quality: torrent.quality,
                                                     size: torrent.size_bytes,
-                                                    health: (torrent.seeds/(torrent.peers) ? (torrent.peers * 2) : 10)
+                                                    health: (torrent.seeds / (torrent.peers) ? (torrent.peers * 2) : 10)
                                                 });
                                             }
                                         });
@@ -177,7 +177,7 @@ function getAllMovies() {
     return new Promise(resolve => {
         Movie
             .find()
-            .select({title: 1, imdb_id: 1, poster_path:1, _id: 0})
+            .select({title: 1, imdb_id: 1, poster_path: 1, _id: 0})
             .sort({title: 'ascending'})
             .exec((err, bigBagOMovies) => {
                 if (err) {
@@ -203,7 +203,7 @@ function getMovie(query) {
 
 function addCastToAll() {
     Movie
-        .find({cast: {$exists: false}})
+        .find({cast: { $exists: false }})
         .select({_id: 1, tmdb_id: 1})
         .exec((err, bagOMovies) => {
             if (err) {

@@ -33,4 +33,4 @@ module.exports = webpackMerge.smart(commonConfig, {
             sourceMap: false
         })
     ]
-})
+});
