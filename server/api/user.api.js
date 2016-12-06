@@ -3,10 +3,8 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const email = require('../email');
 
-function newUser(data, res) {
+function newUser(data) {
 	return new Promise(resolve => {
-		console.log(`entered api`);
-		//router.post('/', (req, res) => {
 		let user = new User({
 			firstName: data.firstName,
 			lastName: data.lastName,
@@ -14,29 +12,23 @@ function newUser(data, res) {
 			username: data.username,
 			password: bcrypt.hashSync(data.password, 10)
 		});
-		console.log(`saving user`);
-
-		user.save((err, result) => {
-			if (err) {
-				return res.status(500).json({
-					title: 'An error occurred when creating user',
-					error: err
-				});
-			}
-			res.status(201).json({
-				message: 'User created successfully',
-				obj: result
-			});
-		});
-		console.log(`user saved`);
-
+		saveUser(user)
+			.catch(console.log.bind(console));
 		genToken(user)
 			.then(token => {
 				email.sendConfirmation(user.email, user.firstName, token);
 			})
 			.catch(console.log.bind(console));
-		console.log(`shit should be done`);
-		resolve();
+		resolve(`user created`);
+	});
+}
+
+function saveUser(user) {
+	return new Promise(resolve => {
+		user
+			.save(user)
+			.catch(console.log.bind(console));
+		resolve(user);
 	});
 }
 
@@ -63,7 +55,6 @@ function genToken(user) {
 	    });
     });
 }
-
 
 function verifyToken(code) {
 	return new Promise((resolve, reject) => {
@@ -98,7 +89,6 @@ function verifyEmail(req, res) {
 			 });
 			 });*/
 
-
 			User.update({username: decoded.user.username}, {$set: {verified: 1}}, (err) => {
 				if (err) {
 					return res.status(500).json({
@@ -112,11 +102,14 @@ function verifyEmail(req, res) {
 		.catch(error => res.status(500).json(error));
 }
 
-
 function validatePass(user, hash) {
     return new Promise(resolve => {
         User.findOne()
     })
+}
+
+function login(user) {
+
 }
 
 //TODO remove genToken export when done migrating from routes

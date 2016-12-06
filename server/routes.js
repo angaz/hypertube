@@ -14,44 +14,25 @@ const userApi = require('./api/user.api');
 const email = require('./email');
 
 router.post('/users/signup', (req, res) => {
-	//if (req.body === undefined)
-		//return BOOM!
-	userApi.newUser(req.body, res)
+	if (req.body.email === undefined)
+		return res.status(400).json('Invalid information supplied');
+	userApi.newUser(req.body)
 		.then(result => res.json(result))
 		.catch(error => res.status(500).json(error));
-
-	/*
-//router.post('/', (req, res) => {
-	let user = new User({
-		firstName: req.body.firstName,
-		lastName: req.body.lastName,
-		email: req.body.email,
-		username: req.body.username,
-		password: bcrypt.hashSync(req.body.password, 10)
-	});
-	user.save((err, result) => {
-		if (err) {
-			return res.status(500).json({
-				title: 'An error occurred when creating user',
-				error: err
-			});
-		}
-		res.status(201).json({
-			message: 'User created successfully',
-			obj: result
-		});
-	});
-	userApi.genToken(user)
-		.then(token => {
-			email.sendConfirmation(user.email, user.firstName, token);
-		})
-		.catch(console.log.bind(console));*/
 });
+
+router.post('/users/signin', (req, res) => {
+	getUser({username: req.body.username});
+
+});
+
+/*
 
 router.post('/users/signin', (req, res, next) => {
 	//call getuser
 	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
+			return res.status(500).json('Invalid information supplied');
 			return res.status(500).json({
 				title: 'An error occurred when logging in',
 				error: err
@@ -79,6 +60,7 @@ router.post('/users/signin', (req, res, next) => {
 		});
 	});
 });
+*/
 
 router.post('/resend', (req, res, next) => {
 
