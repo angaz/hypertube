@@ -15,65 +15,34 @@ const email = require('./email');
 
 router.post('/users/signup', (req, res) => {
 	if (req.body.email === undefined)
-		return res.status(400).json('Invalid information supplied');
+		return res.status(400).json('Invalid registration information');
 	userApi.newUser(req.body)
 		.then(result => res.json(result))
 		.catch(error => res.status(500).json(error));
 });
 
 router.post('/users/signin', (req, res) => {
-	getUser({username: req.body.username});
+	if (req.body.username === undefined)
+		return res.status(400).json('Invalid login information');
+	userApi.userLogin(req.body)
+		.then(result => res.json(result))
+		.catch(error => res.status(500).json(error));
 
 });
 
-/*
-
-router.post('/users/signin', (req, res, next) => {
-	//call getuser
-	User.findOne({username: req.body.username}, (err, user) => {
-		if (err) {
-			return res.status(500).json('Invalid information supplied');
-			return res.status(500).json({
-				title: 'An error occurred when logging in',
-				error: err
-			});
-		}
-		if (!user) {
-			return res.status(401).json({
-				title: 'Login failed',
-				error: {message: 'Invalid login credentials'}
-			});
-		}
-		//pwd verify
-		if (!bcrypt.compareSync(req.body.password, user.password)) {
-			return res.status(401).json({
-				title: 'Login failed',
-				error: {message: 'Invalid login credentials'}
-			});
-		}
-		//getToken
-		let token = user.genToken(req.body.username);
-		res.status(200).json({
-			message: 'Successfully logged in',
-			token: token,
-			userId: user._id
-		});
-	});
+//TODO Reroute to login when validated
+router.get('/users/confirm/:verification?', (req, res) => {
+	userApi.verifyEmail(req.query.verification)
+		.then(result => res.json(result))
+		.catch(error => res.status(500).json(error));
 });
-*/
+
+
+
+
 
 router.post('/resend', (req, res, next) => {
 
-});
-
-router.get('/users/confirm', (req, res, next) => {
-//todo promise
-	userApi.verifyEmail(req, res);
-
-	/*
-	activateUser.getPage((req.params.page === undefined) ? 1 : parseInt(req.params.page))
-		.then(bagOMovies => res.json(bagOMovies))
-		.catch(error => res.status(500).json(error));*/
 });
 
 router.post('/users/reset', (req, res, next) => {

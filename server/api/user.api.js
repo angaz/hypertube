@@ -1,3 +1,4 @@
+"use strict";
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
@@ -19,7 +20,7 @@ function newUser(data) {
 				email.sendConfirmation(user.email, user.firstName, token);
 			})
 			.catch(console.log.bind(console));
-		resolve(`user created`);
+		resolve(`User registered successfully`);
 	});
 }
 
@@ -30,6 +31,57 @@ function saveUser(user) {
 			.catch(console.log.bind(console));
 		resolve(user);
 	});
+}
+
+function userLogin(user) {
+	return new Promise((resolve, reject) => {
+		let dbUser = getUser({username: user.username})
+			.catch(error => reject(error));
+		console.log(test);
+		console.log(`hash? ${USE}`);
+		let passMatch = bcrypt.compare(user.password, dbUser.password);
+		console.log(`Passmatch? ${passMatch}`);
+
+		resolve();
+	});
+//	});
+	 /*
+	   if (err) {
+	 return res.status(500).json('Invalid information supplied');
+	 return res.status(500).json({
+	 title: 'An error occurred when logging in',
+	 error: err
+	 });
+	 }
+	 if (!user) {
+	 return res.status(401).json({
+	 title: 'Login failed',
+	 error: {message: 'Invalid login credentials'}
+	 });
+	 }
+	 //pwd verify
+
+	 if (!bcrypt.compareSync(req.body.password, user.password)) {
+	 return res.status(401).json({
+	 title: 'Login failed',
+	 error: {message: 'Invalid login credentials'}
+	 });
+	 }
+
+
+
+	 //getToken
+	 let token = user.genToken(req.body.username);
+	 res.status(200).json({
+	 message: 'Successfully logged in',
+	 token: token,
+	 userId: user._id
+	 });
+	 });
+	 });
+	 */
+
+
 }
 
 function getUser(query) {
@@ -67,55 +119,47 @@ function verifyToken(code) {
 	});
 }
 
-function verifyEmail(req, res) {
-	verifyToken(req.query.verification)
-		.then( decoded => {
-
-			//TODO use the following structure to resolve the db promise
-			/*			return new Promise((resolve, reject) => {
-			 Movie
-			 .find({})
-			 .sort({yify_id: 'descending'})
-			 .limit(20)
-			 .skip((page - 1) * 20)
-
-			 look at this exec business
-			 return err if db broke
-			 .exec((err, bagOMovies) => {
-			 if (err) {
-			 return reject(err);
-			 }
-			 resolve(bagOMovies);
-			 });
-			 });*/
-
-			User.update({username: decoded.user.username}, {$set: {verified: 1}}, (err) => {
-				if (err) {
-					return res.status(500).json({
-						title: 'User not validated',
-						error: err
-					});
-				}
-			});
-			console.log(`User verified`);
-		})
-		.catch(error => res.status(500).json(error));
+function verifyEmail(verification) {
+	return new Promise((resolve, reject) => {
+		verifyToken(verification)
+			.then( decoded => {
+				User.update({username: decoded.user.username}, {$set: {verified: 1}}, (err) => {
+					if (err) {
+						return reject(err);
+					}
+					resolve(`User has been validated`);
+				});
+			})
+			.catch(error => reject(error));
+	});
 }
 
-function validatePass(user, hash) {
-    return new Promise(resolve => {
-        User.findOne()
+/*
+function verifyPass(userHash, dbHash) {
+	return new Promise((resolve, reject) => {
+		bcrypt.compareSync(userHash, dbHash), (err, token) => {
+			if (err) {
+				return reject(err);
+			}
+			resolve(token);
+		});
+	});
+	    if (!bcrypt.compareSync(userHash, dbHash)) {
+		    return res.status(401).json({
+			    title: 'Login failed',
+			    error: {message: 'Invalid login credentials'}
+		    });
+	    }
     })
 }
 
-function login(user) {
-
-}
+*/
 
 //TODO remove genToken export when done migrating from routes
 module.exports = {
 	newUser: newUser,
 	getUser: getUser,
+	userLogin: userLogin,
 	genToken: genToken,
 	verifyEmail: verifyEmail,
 };
