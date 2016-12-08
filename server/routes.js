@@ -4,101 +4,42 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const User = require('./models/user');
-const email = require('./email');
 
-router.post('/', (req, res) => {
-	let user = new User({
-		firstName: req.body.firstName,
-		lastName: req.body.lastName,
-		email: req.body.email,
-		username: req.body.username,
-		password: bcrypt.hashSync(req.body.password, 10)
-	});
-	user.save((err, result) => {
-		if (err) {
-			return res.status(500).json({
-				title: 'An error occurred when creating user',
-				error: err
-			});
-		}
-		res.status(201).json({
-			message: 'User created successfully',
-			obj: result
-		});
-	});
-	let token = jwt.sign({user: user.username}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
-	email.sendConfirmation(user.email, user.firstName, token)
+//TODO remove User and replace with user.api
+const User = require('./models/user');
+const userApi = require('./api/user.api');
+
+router.post('/users/signup', (req, res) => {
+	if (req.body.email === undefined)
+		return res.status(400).json('Invalid registration information');
+	userApi.newUser(req.body)
 		.then(result => res.json(result))
 		.catch(error => res.status(500).json(error));
 });
 
-router.post('/activate/:email?:token?', (/*req, res, next*/) => {
-	console.log("ACTIVIGTIITITOISFGLHJFKLAFKADHFOI");
+router.post('/users/signin', (req, res) => {
+	if (req.body.username === undefined)
+		return res.status(400).json('Invalid login information');
+	userApi.userLogin(req.body)
+		.then(result => res.json(result))
+		.catch(error => res.status(500).json(error));
 });
 
-router.post('/signin', (req, res) => {
-	User.findOne({username: req.body.username}, (err, user) => {
-		if (err) {
-			return res.status(500).json({
-				title: 'An error occurred when logging in',
-				error: err
-			});
-		}
-		if (!user) {
-			return res.status(401).json({
-				title: 'Login failed',
-				error: {message: 'Invalid login credentials'}
-			});
-		}
-		if (!bcrypt.compareSync(req.body.password, user.password)) {
-			return res.status(401).json({
-				title: 'Login failed',
-				error: {message: 'Invalid login credentials'}
-			});
-		}
-		let token = jwt.sign({user: req.body.username}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
-		res.status(200).json({
-			message: 'Successfully logged in',
-			token: token,
-			userId: user._id
-		});
-	});
+//TODO Reroute to login when validated
+router.get('/users/confirm/:verification?', (req, res) => {
+	userApi.verifyEmail(req.query.verification)
+		.then(result => res.json(result))
+		.catch(error => res.status(500).json(error));
 });
 
+//TODO Resend verification email
 router.post('/resend', (req, res, next) => {
 
 });
 
-router.get('/activate', (req, res, next) => {
-	jwt.verify(req.query.activation, 'secretllamaissecret', (err, decoded) => {
-		if (err) {
-			return res.status(401).json({
-				title: 'Not Authenticated',
-				error: err
-			});
-		}
-		User.findOne({ name: decoded.user.username }, (err) => {
-			if(err) {
-				return res.status(500).json({
-					title: 'Username not found',
-					error: err
-				});
-			}
-			User.update({username: decoded.user.username},
-				{ $set : { validated: 1 }}, (err) =>	{
-				if(err) {
-					return res.status(500).json({
-						title: 'Email not validated',
-						error: err
-					});
-				}
-			});
-		});
-	});
-});
-
-router.post('/reset', (req, res, next) => {
+/*
+//TODO Reset password function
+router.post('/users/reset', (req, res, next) => {
 	User.findOne({email: req.body.email}, (err, ret) => {
 		if (err) {
 			return res.status(500).json({
@@ -114,45 +55,46 @@ router.post('/reset', (req, res, next) => {
 		}
 		let token = jwt.sign({user: ret.username}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
 		//TODO clean up
-		/*
-		console.log("Checking username: ");
-		console.log(ret.username);
-		User.update({username: ret.username}, {
-			$set : { resetToken: token }}, (err) => {
-			if(err) {
-				return res.status(500).json({
-					title: 'Reset token not saved',
-					error: err
-				});
-			}
-		*/
-		email.sendReset(ret.email, ret.firstName, token)
-			.then(result => res.json(result))
-			.catch(error => res.status(500).json(error));
-	});
-});
 
-router.get('/reset/request', (req, res, next) => {
-	jwt.verify(req.query.reset, 'secretllamaissecret', (err, decoded) => {
-		if(err) {
-			return res.status(401).json({
-				title: 'Not Authenticated',
-				error: err
+		 console.log("Checking username: ");
+		 console.log(ret.username);
+		 User.update({username: ret.username}, {
+		 $set : { resetToken: token }}, (err) => {
+		 if(err) {
+		 return res.status(500).json({
+		 title: 'Reset token not saved',
+		 error: err
+		 });
+		 }
+
+		 email.sendReset(ret.email, ret.firstName, token)
+		 .then(result => res.json(result))
+		 .catch(error => res.status(500).json(error));
+		 });
+		 });
+
+
+		router.get('/users/reset/request', (req, res, next) => {
+			jwt.verify(req.query.reset, 'secretllamaissecret', (err, decoded) => {
+				if (err) {
+					return res.status(401).json({
+						title: 'Not Authenticated',
+						error: err
+					});
+				}
+				User.findOne({name: decoded.user.username}, (err) => {
+					if (err) {
+						return res.status(500).json({
+							title: 'Username not found',
+							error: err
+						});
+					}
+				});
+				console.log(res);
+				res.json()
 			});
-		}
-		console.log("oh shit");
-		User.findOne({ name: decoded.user.username }, (err) => {
-			if(err) {
-				return res.status(500).json({
-					title: 'Username not found',
-					error: err
-				});
-			}
 		});
-		console.log(res);
-		res.json()
 	});
-});
-
+*/
 
 module.exports = router;
