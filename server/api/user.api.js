@@ -35,54 +35,24 @@ function saveUser(user) {
 
 function userLogin(user) {
 	return new Promise((resolve, reject) => {
-		let dbUser = getUser({username: user.username})
-			.catch(error => reject(error));
-		console.log(test);
-		console.log(`hash? ${USE}`);
-		let passMatch = bcrypt.compare(user.password, dbUser.password);
-		console.log(`Passmatch? ${passMatch}`);
-
-		resolve();
+		getUser({username: user.username})
+			.then(result => {
+				bcrypt.compare(user.password, result.password, (err, res) => {
+					if (err || !res) {
+						return reject(err);
+					}
+					genToken(user)
+						.then(token => resolve({
+							token: token, userId: result._id
+						}))
+						.catch(error => {
+							reject(error)
+						})
+				})
+			})
 	});
-//	});
-	 /*
-	   if (err) {
-	 return res.status(500).json('Invalid information supplied');
-	 return res.status(500).json({
-	 title: 'An error occurred when logging in',
-	 error: err
-	 });
-	 }
-	 if (!user) {
-	 return res.status(401).json({
-	 title: 'Login failed',
-	 error: {message: 'Invalid login credentials'}
-	 });
-	 }
-	 //pwd verify
-
-	 if (!bcrypt.compareSync(req.body.password, user.password)) {
-	 return res.status(401).json({
-	 title: 'Login failed',
-	 error: {message: 'Invalid login credentials'}
-	 });
-	 }
-
-
-
-	 //getToken
-	 let token = user.genToken(req.body.username);
-	 res.status(200).json({
-	 message: 'Successfully logged in',
-	 token: token,
-	 userId: user._id
-	 });
-	 });
-	 });
-	 */
-
-
 }
+
 
 function getUser(query) {
     return new Promise(resolve => {
@@ -134,28 +104,6 @@ function verifyEmail(verification) {
 	});
 }
 
-/*
-function verifyPass(userHash, dbHash) {
-	return new Promise((resolve, reject) => {
-		bcrypt.compareSync(userHash, dbHash), (err, token) => {
-			if (err) {
-				return reject(err);
-			}
-			resolve(token);
-		});
-	});
-	    if (!bcrypt.compareSync(userHash, dbHash)) {
-		    return res.status(401).json({
-			    title: 'Login failed',
-			    error: {message: 'Invalid login credentials'}
-		    });
-	    }
-    })
-}
-
-*/
-
-//TODO remove genToken export when done migrating from routes
 module.exports = {
 	newUser: newUser,
 	getUser: getUser,

@@ -5,13 +5,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 
-//TODO remove User and replace with var to user.api
-
+//TODO remove User and replace with user.api
 const User = require('./models/user');
 const userApi = require('./api/user.api');
-
-
-const email = require('./email');
 
 router.post('/users/signup', (req, res) => {
 	if (req.body.email === undefined)
@@ -27,7 +23,6 @@ router.post('/users/signin', (req, res) => {
 	userApi.userLogin(req.body)
 		.then(result => res.json(result))
 		.catch(error => res.status(500).json(error));
-
 });
 
 //TODO Reroute to login when validated
@@ -37,14 +32,12 @@ router.get('/users/confirm/:verification?', (req, res) => {
 		.catch(error => res.status(500).json(error));
 });
 
-
-
-
-
+//TODO Resend verification email
 router.post('/resend', (req, res, next) => {
 
 });
 
+//TODO Reset password function
 router.post('/users/reset', (req, res, next) => {
 	User.findOne({email: req.body.email}, (err, ret) => {
 		if (err) {
@@ -72,12 +65,13 @@ router.post('/users/reset', (req, res, next) => {
 					error: err
 				});
 			}
-		*/
+
 		email.sendReset(ret.email, ret.firstName, token)
 			.then(result => res.json(result))
 			.catch(error => res.status(500).json(error));
 	});
 });
+*/
 
 router.get('/users/reset/request', (req, res, next) => {
 	jwt.verify(req.query.reset, 'secretllamaissecret', (err, decoded) => {
