@@ -71,8 +71,34 @@ function findMovieByImdb(imdb) {
     });
 }
 
+function getCast(id) {
+    return new Promise(resolve => {
+        request(`${tmdb}/movie/${id}/credits${key}`, (error, response, body) => {
+            if (!error && response.statusCode == 200) {
+                body = JSON.parse(body);
+                if (body.hasOwnProperty('cast')) {
+                    resolve(body.cast);
+                } else {
+                    throw new Error('No cast property')
+                }
+            } else {
+                if (response.statusCode === 429) {
+                    console.log('429');
+                }
+                console.log('error');
+                throw new Error({
+                    message: 'TMDB getDetails error',
+                    error: error,
+                    code: response.statusCode
+                });
+            }
+        });
+    });
+}
+
 module.exports = {
     find: find,
     getMovieDetails: getMovieDetails,
-    findMovieByImdb: findMovieByImdb
+    findMovieByImdb: findMovieByImdb,
+    getCast: getCast
 };

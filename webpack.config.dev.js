@@ -9,4 +9,4 @@ module.exports = webpackMerge(commonConfig, {
         publicPath: '/js/app/',
         chunkFilename: '[id].chunk.js'
     }
-})
+});

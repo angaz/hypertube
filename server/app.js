@@ -85,6 +85,10 @@ app.use('/', appRoutes);
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
 
+movies.update()
+	.then(result => console.log(`New movies: ${result}`))
+	.catch(error => console.log(error));
+
 cron.schedule('0 * * * *', () => {
     movies.update()
         .then(result => console.log(`New movies: ${result}`))
