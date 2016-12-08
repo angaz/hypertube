@@ -1,18 +1,18 @@
 <div class="container-fluid">
-    <movies-info [class.hide-movies-info]="!infoHide"></movies-info>
-    <div id="movies-results"
-         class="row"
-         infinite-scroll
-            infiniteScrollDistance="1"
-            (scrolled)="onScroll()">
-        <div class="col-sm-4 col-md-3 col-lg-2"
-             *ngFor="let item of defaultMovies"
-             (click)='_movieService.showMovie(item)'>
-            <div class="movies-thumb">
-                <img class="movies-thumb-img"
-                     src="/images/missing_w342.png"
-                     [src]="(item.poster_path) ? 'http://image.tmdb.org/t/p/w342' + item.poster_path : ''">
-            </div>
-        </div>
-    </div>
+	<movies-info [class.hide-movies-info]="!infoHide"></movies-info>
+	<div id="movies-results"
+	     class="row"
+	     infinite-scroll
+	     infiniteScrollDistance="1"
+	     (scrolled)="onScroll()">
+		<div class="col-sm-4 col-md-3 col-lg-2"
+		     *ngFor="let item of defaultMovies"
+		     (click)='_movieService.showMovie(item)'>
+			<div class="movies-thumb">
+				<img class="movies-thumb-img"
+				     src="/images/missing_w342.png"
+				     [src]="(item.poster_path) ? 'http://image.tmdb.org/t/p/w342' + item.poster_path : ''">
+			</div>
+		</div>
+	</div>
 </div>

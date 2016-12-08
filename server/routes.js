@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
 
 router.post('/activate/:email?:token?', (/*req, res, next*/) => {
 	console.log("ACTIVIGTIITITOISFGLHJFKLAFKADHFOI");
-	});
+});
 
 
 router.post('/signin', (req, res) => {

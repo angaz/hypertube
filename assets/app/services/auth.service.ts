@@ -1,34 +1,35 @@
-import { Injectable } from "@angular/core";
-import { Http, Headers, Response } from "@angular/http";
-import { Observable } from "rxjs";
-import { User } from "../models/user";
+import {Injectable} from "@angular/core";
+import {Http, Headers, Response} from "@angular/http";
+import {Observable} from "rxjs";
+import {User} from "../models/user";
 import 'rxjs/Rx';
 
 @Injectable()
 export class AuthService {
-    constructor(private http: Http) {}
+	constructor(private http: Http) {
+	}
 
-    signup(user: User) {
-        const body = JSON.stringify(user);
-        const headers = new Headers ({'Content-Type': 'application/json'});
-        return this.http.post('/', body, {headers: headers})
-            .map((response: Response) => response.json())
-            .catch((error: Response) => Observable.throw(error.json()));
-    }
+	signup(user: User) {
+		const body = JSON.stringify(user);
+		const headers = new Headers({'Content-Type': 'application/json'});
+		return this.http.post('/', body, {headers: headers})
+			.map((response: Response) => response.json())
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
 
-    signin(user: User) {
-        const body = JSON.stringify(user);
-        const headers = new Headers ({'Content-Type': 'application/json'});
-        return this.http.post('/signin', body, {headers: headers})
-            .map((response: Response) => response.json())
-            .catch((error: Response) => Observable.throw(error.json()));
-    }
+	signin(user: User) {
+		const body = JSON.stringify(user);
+		const headers = new Headers({'Content-Type': 'application/json'});
+		return this.http.post('/signin', body, {headers: headers})
+			.map((response: Response) => response.json())
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
 
-    logout() {
-        localStorage.clear();
-    }
+	logout() {
+		localStorage.clear();
+	}
 
-    isLoggedIn() {
-        return localStorage.getItem('token') !== null;
-    }
+	isLoggedIn() {
+		return localStorage.getItem('token') !== null;
+	}
 }

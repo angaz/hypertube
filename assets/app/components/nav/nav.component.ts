@@ -1,22 +1,21 @@
-import { Component } from '@angular/core';
-import { SearchService } from '../../services/search.service';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import {Component} from '@angular/core';
+import {SearchService} from '../../services/search.service';
+import {Router} from '@angular/router';
+import {AuthService} from '../../services/auth.service';
 
-@Component ({
+@Component({
 	selector: 'hypertube-nav',
 	templateUrl: './nav.component.html',
 	styleUrls: ['./nav.component.css'],
 })
 
 export class NavComponent {
-	constructor(
-		private authService: AuthService,
-		private _searchService: SearchService,
-		private router: Router
-	) {}
+	constructor(private authService: AuthService,
+	            private _searchService: SearchService,
+	            private router: Router) {
+	}
 
-	toggleSearch(){
+	toggleSearch() {
 		this._searchService.toggleHide();
 	}
 

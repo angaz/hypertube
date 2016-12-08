@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { User } from '../../models/user';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {AuthService} from '../../services/auth.service';
+import {User} from '../../models/user';
 
-@Component ({
+@Component({
 	selector: 'hypertube-signup',
 	templateUrl: './signup.component.html',
 	styleUrls: ['./signup.component.css']
@@ -13,7 +13,8 @@ import { User } from '../../models/user';
 export class SignupComponent implements OnInit {
 	signupForm: FormGroup;
 
-	constructor(private authService: AuthService, private router: Router) {}
+	constructor(private authService: AuthService, private router: Router) {
+	}
 
 	onSubmit() {
 		const user = new User(
