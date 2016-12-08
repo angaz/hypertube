@@ -37,6 +37,7 @@ router.post('/resend', (req, res, next) => {
 
 });
 
+/*
 //TODO Reset password function
 router.post('/users/reset', (req, res, next) => {
 	User.findOne({email: req.body.email}, (err, ret) => {
@@ -54,45 +55,46 @@ router.post('/users/reset', (req, res, next) => {
 		}
 		let token = jwt.sign({user: ret.username}, 'secretllamaissecret', {expiresIn: 21600}); //Expires in 6 hours
 		//TODO clean up
-		/*
-		console.log("Checking username: ");
-		console.log(ret.username);
-		User.update({username: ret.username}, {
-			$set : { resetToken: token }}, (err) => {
-			if(err) {
-				return res.status(500).json({
-					title: 'Reset token not saved',
-					error: err
+
+		 console.log("Checking username: ");
+		 console.log(ret.username);
+		 User.update({username: ret.username}, {
+		 $set : { resetToken: token }}, (err) => {
+		 if(err) {
+		 return res.status(500).json({
+		 title: 'Reset token not saved',
+		 error: err
+		 });
+		 }
+
+		 email.sendReset(ret.email, ret.firstName, token)
+		 .then(result => res.json(result))
+		 .catch(error => res.status(500).json(error));
+		 });
+		 });
+
+
+		router.get('/users/reset/request', (req, res, next) => {
+			jwt.verify(req.query.reset, 'secretllamaissecret', (err, decoded) => {
+				if (err) {
+					return res.status(401).json({
+						title: 'Not Authenticated',
+						error: err
+					});
+				}
+				User.findOne({name: decoded.user.username}, (err) => {
+					if (err) {
+						return res.status(500).json({
+							title: 'Username not found',
+							error: err
+						});
+					}
 				});
-			}
-
-		email.sendReset(ret.email, ret.firstName, token)
-			.then(result => res.json(result))
-			.catch(error => res.status(500).json(error));
-	});
-});
-*/
-
-router.get('/users/reset/request', (req, res, next) => {
-	jwt.verify(req.query.reset, 'secretllamaissecret', (err, decoded) => {
-		if(err) {
-			return res.status(401).json({
-				title: 'Not Authenticated',
-				error: err
+				console.log(res);
+				res.json()
 			});
-		}
-		console.log("oh shit");
-		User.findOne({ name: decoded.user.username }, (err) => {
-			if(err) {
-				return res.status(500).json({
-					title: 'Username not found',
-					error: err
-				});
-			}
 		});
-		console.log(res);
-		res.json()
 	});
-});
+*/
 
 module.exports = router;
