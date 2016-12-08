@@ -5,30 +5,6 @@ import {ReactiveFormsModule, FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {InfiniteScrollModule} from 'angular2-infinite-scroll';
 
-<<<<<<< HEAD
-import {AppComponent} from '../components/app/app.component';
-import {NavComponent} from '../components/nav/nav.component';
-import {PageNotFoundComponent} from '../components/404/404.component';
-import {SigninComponent} from '../components/signin/signin.component';
-import {SignupComponent} from '../components/signup/signup.component';
-import {HomeComponent} from '../components/home/home.component';
-import {MoviesComponent} from '../components/movies/movies.component';
-import {SeriesComponent} from '../components/series/series.component';
-import {FooterComponent} from "../components/footer/footer.component";
-import {MoviesInfoComponent} from "../components/movies-info/movies-info.component";
-import {WatchComponent} from "../components/watch/watch.component";
-import {SearchComponent} from "../components/search/search.component";
-import {AuthService} from "../services/auth.service";
-
-const appRoutes: Routes = [
-	{path: 'signin', component: SigninComponent},
-	{path: 'signup', component: SignupComponent},
-	{path: 'movies', component: MoviesComponent},
-	{path: 'series', component: SeriesComponent},
-	{path: 'watch/:name', component: WatchComponent},
-	{path: '', component: HomeComponent},
-	{path: '**', component: PageNotFoundComponent}
-=======
 import { AppComponent } from '../components/app/app.component';
 import { NavComponent } from '../components/nav/nav.component';
 import { PageNotFoundComponent } from '../components/404/404.component';
@@ -56,7 +32,6 @@ const appRoutes: Routes = [
 	{ path: 'watch/:name', component: WatchComponent},
 	{ path: '', component: HomeComponent },
 	{ path: '**', component: PageNotFoundComponent }
->>>>>>> master
 ];
 
 @NgModule({

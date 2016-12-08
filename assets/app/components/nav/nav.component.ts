@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-import {Component} from '@angular/core';
-import {SearchService} from '../../services/search.service';
-import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-=======
 import { Component, OnInit } from '@angular/core';
 import { SearchService } from '../../services/search.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
->>>>>>> master
 
 @Component({
 	selector: 'hypertube-nav',
@@ -19,14 +12,6 @@ import {Subscription} from "rxjs";
 })
 
 export class NavComponent {
-<<<<<<< HEAD
-	constructor(private authService: AuthService,
-	            private _searchService: SearchService,
-	            private router: Router) {
-	}
-
-	toggleSearch() {
-=======
 	private userProfileHide = true;
 	private userProfileHideSub: Subscription;
 	constructor(
@@ -44,7 +29,6 @@ export class NavComponent {
 	}
 
 	toggleSearch(){
->>>>>>> master
 		this._searchService.toggleHide();
 	}
 
