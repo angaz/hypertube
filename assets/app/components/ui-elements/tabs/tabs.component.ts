@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component} from '@angular/core';
 import {TabComponent} from "../tab/tab.component";
 
 @Component ({
@@ -6,9 +6,11 @@ import {TabComponent} from "../tab/tab.component";
     templateUrl: 'tabs.component.html',
     styleUrls: ['tabs.component.css']
 })
+
 export class TabsComponent {
-    tabs: TabComponent[] = [];
-    addTab(tab:TabComponent) {
-        this.tabs.push(tab);
-    }
+	tabs: TabComponent[] = [];
+
+	addTab(tab: TabComponent) {
+		this.tabs.push(tab);
+	}
 }

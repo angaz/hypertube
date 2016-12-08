@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { HttpModule } from "@angular/http";
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouterModule, Routes} from '@angular/router';
+import {ReactiveFormsModule, FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {InfiniteScrollModule} from 'angular2-infinite-scroll';
 
 import { AppComponent } from '../components/app/app.component';
 import { NavComponent } from '../components/nav/nav.component';
@@ -66,6 +66,6 @@ const appRoutes: Routes = [
 	providers: [AuthService],
 	bootstrap: [AppComponent]
 })
-export class AppModule{
+export class AppModule {
 
 }

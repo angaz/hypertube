@@ -33,7 +33,11 @@ router.post('/', (req, res) => {
 		.catch(error => res.status(500).json(error));
 });
 
-router.post('/signin', (req, res, next) => {
+router.post('/activate/:email?:token?', (/*req, res, next*/) => {
+	console.log("ACTIVIGTIITITOISFGLHJFKLAFKADHFOI");
+});
+
+router.post('/signin', (req, res) => {
 	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
 			return res.status(500).json({
