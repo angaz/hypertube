@@ -1,28 +1,35 @@
 <div id="movies-info-container">
-    <div class="movies-profile-close" (click)="_movieService.hideMovie()"><i class="fa fa-times fa-2x"></i></div>
-    <div class="movies-profile" [ngStyle]="{'background-image': (movie.backdrop_path) ? 'url(http://image.tmdb.org/t/p/original' + movie.backdrop_path + ')' : 'url()'}"></div>
-    <div class="container">
-        <div class="row">
-            <div class="movies-profile-container">
-                <div class="col-lg-3">
-                    <div class="movies-profile-cover"><img src="" [src]="(movie.poster_path) ? 'http://image.tmdb.org/t/p/w342' + movie.poster_path : ''"></div>
-                </div>
-                <div class="col-lg-6">
-                <div class="movies-profile-title">{{movie.title}}</div>
-                <div class="movies-profile-genre"><div class="genre-tag" *ngFor="let genre of movie.genres">{{genre}}</div></div>
-                <div class="movies-profile-runtime"><strong>Runtime:</strong> {{movie.runtime}} minutes</div>
-                </div>
-                <div class="col-lg-3">
-                    <a [routerLink]="['/watch/' + movie.slug]"><div class="movies-profile-watch">Watch now</div></a>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-lg-12">
-            <h4>Summary</h4>
-            {{movie.overview}}
-            </div>
-        </div>
-    </div>
+	<div class="movies-profile-close" (click)="_movieService.hideMovie()"><i class="fa fa-times fa-2x"></i></div>
+	<div class="movies-profile"
+	     [ngStyle]="{'background-image': (movie.backdrop_path) ? 'url(http://image.tmdb.org/t/p/original' + movie.backdrop_path + ')' : 'url()'}"></div>
+	<div class="container">
+		<div class="row">
+			<div class="movies-profile-container">
+				<div class="col-lg-3">
+					<div class="movies-profile-cover"><img src=""
+					                                       [src]="(movie.poster_path) ? 'http://image.tmdb.org/t/p/w342' + movie.poster_path : ''">
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="movies-profile-title">{{movie.title}}</div>
+					<div class="movies-profile-genre">
+						<div class="genre-tag" *ngFor="let genre of movie.genres">{{genre}}</div>
+					</div>
+					<div class="movies-profile-runtime"><strong>Runtime:</strong> {{movie.runtime}} minutes</div>
+				</div>
+				<div class="col-lg-3">
+					<a [routerLink]="['/watch/' + movie.slug]">
+						<div class="movies-profile-watch">Watch now</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Summary</h4>
+				{{movie.overview}}
+			</div>
+		</div>
+	</div>
 </div>

@@ -1,49 +1,69 @@
 <div class="container">
-    <div class="row full-height flex-items-xs-middle flex-items-xs-center">
-        <div class="col-xs offset-xs-0 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-            <div class="signup-tile tile tile-inner-padding">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="signin-title">
-                            <div class="logo-long">tubular</div>
-                            <h3>Signup</h3>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-                            <div class="row">
-                                <div class="col-xs-12 col-md-6"><input type="text" class="form-control" id="firstName" placeholder="First Name" formControlName="firstName"></div>
-                                <div class="col-xs-12 col-md-6"><input type="text" class="form-control" id="lastName" placeholder="Last Name" formControlName="lastName"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12"><input type="email" class="form-control" id="email" placeholder="Email" formControlName="email"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12"><input type="text" class="form-control" id="username" placeholder="Username" formControlName="username"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-md-6"><input type="password" class="form-control" id="password" placeholder="Password" formControlName="password"></div>
-                                <div class="col-xs-12 col-md-6"><input type="password" class="form-control" id="repeatPassword" placeholder="Repeat Password" formControlName="repeatPassword"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12"><button type="submit" [disabled]="!signupForm.valid" class="button">Sign Up</button></div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <hr>
-                <h5>OR</h5>
-                <div class="social-container">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6"><div class="social-button" id="social-button-facebook"><i class="fa fa-facebook"></i><div class="name">Sign up with Facebook</div></div></div>
-                        <div class="col-xs-12 col-md-6"><div class="social-button" id="social-button-google"><i class="fa fa-google"></i><div class="name">Sign up with Google</div></div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row full-height flex-items-xs-middle flex-items-xs-center">
+		<div class="col-xs offset-xs-0 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+			<div class="signup-tile tile tile-inner-padding">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="signin-title">
+							<div class="logo-long">tubular</div>
+							<h3>Signup</h3>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-xs-12">
+						<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+							<div class="row">
+								<div class="col-xs-12 col-md-6"><input type="text" class="form-control" id="firstName"
+								                                       placeholder="First Name"
+								                                       formControlName="firstName"></div>
+								<div class="col-xs-12 col-md-6"><input type="text" class="form-control" id="lastName"
+								                                       placeholder="Last Name"
+								                                       formControlName="lastName"></div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12"><input type="email" class="form-control" id="email"
+								                              placeholder="Email" formControlName="email"></div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12"><input type="text" class="form-control" id="username"
+								                              placeholder="Username" formControlName="username"></div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-md-6"><input type="password" class="form-control"
+								                                       id="password" placeholder="Password"
+								                                       formControlName="password"></div>
+								<div class="col-xs-12 col-md-6"><input type="password" class="form-control"
+								                                       id="repeatPassword" placeholder="Repeat Password"
+								                                       formControlName="repeatPassword"></div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<button type="submit" [disabled]="!signupForm.valid" class="button">Sign Up</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<hr>
+				<h5>OR</h5>
+				<div class="social-container">
+					<div class="row">
+						<div class="col-xs-12 col-md-6">
+							<div class="social-button" id="social-button-facebook"><i class="fa fa-facebook"></i>
+								<div class="name">Sign up with Facebook</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6">
+							<div class="social-button" id="social-button-google"><i class="fa fa-google"></i>
+								<div class="name">Sign up with Google</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <hypertube-footer></hypertube-footer>

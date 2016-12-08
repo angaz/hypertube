@@ -17,7 +17,7 @@ const app = express();
 const hbs = exphbs.create({
 	extname: '.hbs',
 	helpers: {
-		angular: function(options) {
+		angular: function (options) {
 			return options.fn();
 		}
 	}
@@ -27,16 +27,16 @@ const hbs = exphbs.create({
 const mongoUrl = 'mongodb://hypertube:eyVhqp8urJdS3CWn@52.165.47.251:7342/hypertube?ssl=true';
 mongoose.Promise = global.Promise;
 
-function connectWithRetry (counter) {
+function connectWithRetry(counter) {
 	if (counter < 5) {
-        mongoose.connect(mongoUrl, (err) => {
-            if (err) {
-                console.error(`Failed to connect to mongo on startup - retrying in 5 sec\n Retry: ${counter}`, err);
-                setTimeout(() => connectWithRetry(counter + 1), 5000);
-            } else {
-            	console.log('Connected to MongoDB successfully');
+		mongoose.connect(mongoUrl, (err) => {
+			if (err) {
+				console.error(`Failed to connect to mongo on startup - retrying in 5 sec\n Retry: ${counter}`, err);
+				setTimeout(() => connectWithRetry(counter + 1), 5000);
+			} else {
+				console.log('Connected to MongoDB successfully');
 			}
-        });
+		});
 	} else {
 		throw new Error('Retried connecting to MongoDB 5 times');
 	}
@@ -59,7 +59,7 @@ app.use(session({
 express.static.mime.define({'text/vtt': ['vtt']});
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use('/js', express.static(path.join(__dirname, '../public/js')));
 app.use('/stylesheets', express.static(path.join(__dirname, '../public/stylesheets')));
@@ -75,8 +75,8 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next, err) => {
-    console.error(err);
-    res.send({status:500, message: 'internal error', type:'internal'});
+	console.error(err);
+	res.send({status: 500, message: 'internal error', type: 'internal'});
 });
 
 app.use('/api', apiRoutes);
@@ -85,10 +85,14 @@ app.use('/', appRoutes);
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
 
+movies.update()
+	.then(result => console.log(`New movies: ${result}`))
+	.catch(error => console.log(error));
+
 cron.schedule('0 * * * *', () => {
-    movies.update()
-        .then(result => console.log(`New movies: ${result}`))
-        .catch(error => console.log(error));
+	movies.update()
+		.then(result => console.log(`New movies: ${result}`))
+		.catch(error => console.log(error));
 });
 
 module.exports = app;

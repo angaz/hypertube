@@ -1,17 +1,18 @@
-import { Injectable } from "@angular/core";
-import { Http, Headers, Response } from "@angular/http";
-import { Observable } from "rxjs";
-import { User } from "../models/user";
+import {Injectable} from "@angular/core";
+import {Http, Headers, Response} from "@angular/http";
+import {Observable} from "rxjs";
+import {User} from "../models/user";
 import 'rxjs/Rx';
 
 @Injectable()
 export class AuthService {
-    constructor(private http: Http) {}
+	constructor(private http: Http) {
+	}
 
     signup(user: User) {
         const body = JSON.stringify(user);
         const headers = new Headers ({'Content-Type': 'application/json'});
-        return this.http.post('http://localhost:4200/users/signup', body, {headers: headers})
+        return this.http.post('/users/signup', body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
@@ -19,7 +20,7 @@ export class AuthService {
     signin(user: User) {
         const body = JSON.stringify(user);
         const headers = new Headers ({'Content-Type': 'application/json'});
-        return this.http.post('http://localhost:4200/users/signin', body, {headers: headers})
+        return this.http.post('/users/signin', body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
@@ -80,7 +81,7 @@ export class AuthService {
         localStorage.clear();
     }
 
-    isLoggedIn() {
-        return localStorage.getItem('token') !== null;
-    }
+	isLoggedIn() {
+		return localStorage.getItem('token') !== null;
+	}
 }

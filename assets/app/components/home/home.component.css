@@ -1,85 +1,85 @@
-section#home-banner{
-  width:100%;
-  min-height:100vh;
-  background: #221e23;
-  position:relative;
-  background: url('images/home-bg.jpg') center center;
-  background-size:cover;
+section#home-banner {
+	width: 100%;
+	min-height: 100vh;
+	background: #221e23;
+	position: relative;
+	background: url('images/home-bg.jpg') center center;
+	background-size: cover;
 }
 
-.home-banner-text{
-  top:50%;
-  left:0;
-  margin-top:-100px;
-  position:absolute;
-  color:#fcf2e6;
-  width:100%;
-  text-align:center;
+.home-banner-text {
+	top: 50%;
+	left: 0;
+	margin-top: -100px;
+	position: absolute;
+	color: #fcf2e6;
+	width: 100%;
+	text-align: center;
 }
 
-.home-banner-text h1{
-  font-size:4em;
-  text-transform: uppercase;
-  font-family: 'Oswald', sans-serif;
-  font-weight:400;
+.home-banner-text h1 {
+	font-size: 4em;
+	text-transform: uppercase;
+	font-family: 'Oswald', sans-serif;
+	font-weight: 400;
 }
 
-.home-banner-text h4{
-  margin-top:20px;
-  font-size:2em;
-  text-transform: uppercase;
-  font-family: 'Oswald', sans-serif;
-  font-weight:200;
+.home-banner-text h4 {
+	margin-top: 20px;
+	font-size: 2em;
+	text-transform: uppercase;
+	font-family: 'Oswald', sans-serif;
+	font-weight: 200;
 
 }
 
 .home-banner-text button {
-  margin-top:30px;
+	margin-top: 30px;
 }
 
 section#about {
-  padding:80px 0;
-  background:#fff;
-  font-size:18px;
+	padding: 80px 0;
+	background: #fff;
+	font-size: 18px;
 }
 
 section#about-2 {
-  padding:80px 0;
-  color:#fcf2e6;
-  background: #221e23;
-  font-size:18px;
+	padding: 80px 0;
+	color: #fcf2e6;
+	background: #221e23;
+	font-size: 18px;
 }
 
 section#about-2 h3,
 section#about-2 h5 {
-  text-transform: uppercase;
-  font-family: 'Oswald', sans-serif;
-  font-weight:400;
+	text-transform: uppercase;
+	font-family: 'Oswald', sans-serif;
+	font-weight: 400;
 }
 
 section#about h3,
 section#about h5 {
-  color: #937e63;
-  text-transform: uppercase;
-  font-family: 'Oswald', sans-serif;
-  font-weight:400;
+	color: #937e63;
+	text-transform: uppercase;
+	font-family: 'Oswald', sans-serif;
+	font-weight: 400;
 }
 
 section#about h3,
-section#about-2 h3{
-  font-size:2em;
-  margin-bottom:40px;
-  text-align:center;
+section#about-2 h3 {
+	font-size: 2em;
+	margin-bottom: 40px;
+	text-align: center;
 }
 
 section#about h5,
-section#about-2 h5{
-  margin:20px 0;
-  font-size:1.5em;
+section#about-2 h5 {
+	margin: 20px 0;
+	font-size: 1.5em;
 }
 
-p{
-  font-size:1.3em;
+p {
+	font-size: 1.3em;
 }
 
 

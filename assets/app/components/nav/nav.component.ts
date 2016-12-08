@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
 
-@Component ({
+@Component({
 	selector: 'hypertube-nav',
 	templateUrl: './nav.component.html',
 	styleUrls: ['./nav.component.css'],
