@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
 import {TabComponent} from "../tab/tab.component";
 
-@Component({
-	selector: 'tabs',
-	templateURL: './tabs.component.html',
-	styleUrls: ['./tabs.component.css']
+@Component ({
+    selector: 'tabs',
+    templateUrl: 'tabs.component.html',
+    styleUrls: ['tabs.component.css']
 })
+
 export class TabsComponent {
 	tabs: TabComponent[] = [];
 

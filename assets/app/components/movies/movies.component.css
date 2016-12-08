@@ -21,15 +21,15 @@
 }
 
 movies-info {
-	z-index: 99;
-	width: calc(100% - 90px);
-	position: fixed;
-	top: 0;
-	right: -100%;
-	min-height: 100vh;
-	transition: all 1s ease-in-out;
-	background-color: rgba(40, 40, 44, 0);
-	color: #fff;
+    z-index:99;
+    width: calc(100% - 90px);
+    position:fixed;
+    top:0;
+    right:-100%;
+    min-height:100vh;
+    transition: all 1s ease-in-out;
+    background-color:rgba(40,40,44, 0);
+    color:#fff;
 }
 
 #movies-results {

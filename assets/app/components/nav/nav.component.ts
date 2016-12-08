@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 import {Component} from '@angular/core';
 import {SearchService} from '../../services/search.service';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
+=======
+import { Component, OnInit } from '@angular/core';
+import { SearchService } from '../../services/search.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import {UserService} from "../../services/user.service";
+import {Subscription} from "rxjs";
+>>>>>>> master
 
 @Component({
 	selector: 'hypertube-nav',
@@ -10,12 +19,32 @@ import {AuthService} from '../../services/auth.service';
 })
 
 export class NavComponent {
+<<<<<<< HEAD
 	constructor(private authService: AuthService,
 	            private _searchService: SearchService,
 	            private router: Router) {
 	}
 
 	toggleSearch() {
+=======
+	private userProfileHide = true;
+	private userProfileHideSub: Subscription;
+	constructor(
+		private authService: AuthService,
+		private _searchService: SearchService,
+		private router: Router,
+		private _userService: UserService
+	) {}
+
+	toggleUserProfile(){
+		if (this.userProfileHide)
+			this._userService.showUserProfile(null);
+		else
+			this._userService.hideUserProfile();
+	}
+
+	toggleSearch(){
+>>>>>>> master
 		this._searchService.toggleHide();
 	}
 
@@ -26,5 +55,9 @@ export class NavComponent {
 
 	isLoggedIn() {
 		return this.authService.isLoggedIn();
+	}
+
+	ngOnInit(){
+		this.userProfileHideSub = this._userService.profileHide$.subscribe(hide => this.userProfileHide = hide);
 	}
 }

@@ -12,32 +12,15 @@ hypertube-nav, hypertube-home {
 	vertical-align: top;
 }
 
-hypertube-nav {
-	padding: 0 45px;
-	z-index: 101;
-	width: 90px;
-	background: #29242a;
-	height: 100vh;
-	border-collapse: collapse;
-	position: relative;
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
-}
-
-hypertube-nav:before, hypertube-nav:after {
-	content: "";
-	position: absolute;
-	z-index: -1;
-	top: 10px;
-	bottom: 10px;
-	left: 0;
-	right: 0;
-	border-radius: 100px / 10px;
-}
-
-hypertube-nav:after {
-	right: 10px;
-	left: auto;
-	transform: skew(8deg) rotate(3deg);
+hypertube-nav{
+  padding:0 45px;
+  z-index:9999;
+  width:90px;
+  background: #29242a;
+  height:100vh;
+  border-collapse: collapse;
+  position:relative;
+  box-shadow:0 5px 10px rgba(0, 0, 0, 0.8);
 }
 
 hypertube-home {

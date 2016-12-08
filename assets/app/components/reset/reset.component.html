@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row full-height flex-items-xs-middle flex-items-xs-center">
+        <div class="col-xs offset-xs-0 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+            <div class="reset-tile tile tile-inner-padding">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="reset-title">
+                            <div class="logo-long">tubular</div>
+                            <h3>reset password</h3>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form [formGroup]="emailForm" *ngIf="emailSent !== true" (ngSubmit)="onSubmitEmail()">
+                            <div class="row">
+                                <div class="col-xs-12"><input type="email" class="form-control" id="email" placeholder="Email" formControlName="email"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12"><button type="submit" [disabled]="!emailForm.valid" class="button">Send Email</button></div>
+                            </div>
+                        </form>
+                        <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPassword()">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6"><input type="password" class="form-control" id="password" placeholder="Password" formControlName="password"></div>
+                                <div class="col-xs-12 col-md-6"><input type="password" class="form-control" id="repeatPassword" placeholder="Repeat Password"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12"><button type="submit" [disabled]="!passwordForm.valid" class="button">Reset Password</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+<hypertube-footer></hypertube-footer>

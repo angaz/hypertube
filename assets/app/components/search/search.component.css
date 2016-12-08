@@ -1,4 +1,5 @@
 .search-container {
+<<<<<<< HEAD
 	position: fixed;
 	top: 0;
 	left: 90px;
@@ -7,6 +8,16 @@
 	width: 100%;
 	height: 100vh;
 	transition: all 0.5s ease-in-out;
+=======
+    position:fixed;
+    top:0;
+    left:90px;
+    z-index: 1000;
+    background: rgba(40,40,44, 0.8);
+    width: 100%;
+    height:100vh;
+    transition:all 0.5s ease-in-out;
+>>>>>>> master
 }
 
 .search {
@@ -39,8 +50,15 @@
 	margin-bottom: 24px;
 }
 
+<<<<<<< HEAD
 .hide-search {
 	left: -9990px;
 	transition: all 0.5s ease-in-out;
 	background: rgba(0, 0, 0, 0);
+=======
+.hide-search{
+    left:-100%;
+    transition:all 0.5s ease-in-out;
+    background: rgba(0,0,0,0);
+>>>>>>> master
 }
