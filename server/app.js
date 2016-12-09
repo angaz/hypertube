@@ -23,7 +23,6 @@ const hbs = exphbs.create({
 	}
 });
 
-//retries db connection if failed
 const mongoUrl = 'mongodb://hypertube:eyVhqp8urJdS3CWn@52.165.47.251:7342/hypertube?ssl=true';
 mongoose.Promise = global.Promise;
 

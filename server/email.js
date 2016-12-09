@@ -49,7 +49,6 @@ function sendConfirmation(email, name, token) {
 		});
 }
 
-
 function sendReset(email, name, token) {
 	const SENDGRID_REGISTRATION_TEMPLATE = 'a8a1c62e-5c5c-4574-b3e4-38ccc30401ad';
 	const SENDGRID_API_KEY = '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';
@@ -70,7 +69,7 @@ function sendReset(email, name, token) {
 					],
 					'substitutions': {
 						'-name-': name,
-						'-password-reset-link-': HOST + '/users/reset/request?email=' + email + '&reset=' + token
+						'-password-reset-link-': HOST + '/users/reset/request?token=' + token
 					},
 					subject: 'Tubular password reset, ' + name,
 				},
@@ -99,13 +98,7 @@ function sendReset(email, name, token) {
 		});
 }
 
-//TODO clean up
-function resetPassword(email, name, token) {
-
-}
-
 module.exports = {
 	sendConfirmation: sendConfirmation,
-	sendReset: sendReset,
-	resetPassword: resetPassword
+	sendReset: sendReset
 };

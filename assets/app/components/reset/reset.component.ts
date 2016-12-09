@@ -30,7 +30,7 @@ export class ResetComponent implements OnInit {
             .subscribe(
                 data => {
                     console.log(data);
-                    this.router.navigateByUrl('/reset');
+                    this.router.navigateByUrl('/users/reset');
                 },
                 error => console.error(error)
             );
