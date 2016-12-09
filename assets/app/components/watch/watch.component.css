@@ -10,14 +10,18 @@
 	}
 }
 
-.container-fluid {
+.watch-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
 	overflow: hidden;
 }
 
 .hide-movies-info {
 	right: 0;
 	animation: movies-info-show 1s ease-in-out;
-	background-color: rgba(40, 40, 44, 0.8)
+	background-color: rgba(40, 40, 44, 0.8);
 }
 
 movies-info {
@@ -59,7 +63,81 @@ movies-info {
 	padding: 0 !important;
 }
 
-video {
+.video-container {
+	position: relative;
+	height: 100vh;
 	width: 100%;
-	height: auto;
+	background-color: #000;
 }
+
+.video-controls {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 56px;
+	padding: 0 6px;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 2147483647;
+	transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+}
+
+.control-buttons {
+	display: flex;
+	flex-direction: row;
+	white-space: nowrap;
+}
+
+.control-buttons-main {
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 6px;
+
+}
+
+.control-buttons button {
+	background-color: transparent;
+	border: hidden;
+	width: 48px;
+	height: 48px;
+	line-height: 48px;
+}
+
+.seeker {
+	position: absolute;
+	bottom: 36px;
+	width: 100%;
+}
+
+.hidden {
+	opacity: 0;
+}
+
+.no-cursor {
+	cursor: none;
+}
+
+video {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.end-time {
+	color: #fff;
+	font-size: 2rem;
+	font-weight: bolder;
+	position: absolute;
+	left: 12px;
+	top: 12px;
+}
+
+.watch-time {
+	color: #fff;
+	font-size: 1.2rem;
+	font-weight: bolder;
+	text-align: center;
+}
+

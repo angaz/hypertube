@@ -1,11 +1,32 @@
-<div class="container-fluid">
-	<video controls autoplay [poster]="(movie.poster) ? 'http://image.tmdb.org/t/p/w1280' + movie.poster : ''">
-		<source *ngIf="movie.src" src="" [src]="movie.src">
-		<track *ngFor="let caption of captions"
-		       [label]="caption.language.nativeName"
-		       [srclang]="caption.language.code"
-		       [src]="caption.file"
-		       src=""
-		       kind="subtitles">
-	</video>
+<div class="watch-container">
+	<div #videoContainer class="video-container" [ngClass]="{'no-cursor': hideCursor}" (mousemove)="mouseMove()">
+		<video #video
+		       autoplay
+		       [poster]="(movie.poster) ? 'http://image.tmdb.org/t/p/w1280' + movie.poster : ''"
+		       (timeupdate)="seekTimeUpdate()"
+		       (loadedmetadata)="metaLoaded()">
+			<source *ngIf="movie.src" src="" [src]="movie.src">
+			<track *ngFor="let caption of captions"
+			       [label]="caption.language.nativeName"
+			       [srclang]="caption.language.code"
+			       [src]="caption.file"
+			       src=""
+			       kind="subtitles">
+		</video>
+		<div class="end-time" [ngClass]="{'hidden': hideControls}">
+			<span>End Time: {{endTime}}</span>
+		</div>
+		<div #videoControls class="video-controls" [ngClass]="{'hidden': hideControls}">
+			<input #seeker class="seeker" type="range" min="0" max="100" value="0" step="0.005" (change)="seek()">
+			<div class="control-buttons control-buttons-main">
+				<div class="control-buttons">
+					<button (click)="playPause()">{{(video.paused) ? "Play" : "Pause"}}</button>
+					<span class="watch-time">{{currentTime}} / {{durationTime}}</span>
+				</div>
+				<div #buttons class="control-buttons">
+					<button (click)="maxMin()">Fullscreen</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
