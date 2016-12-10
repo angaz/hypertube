@@ -32,6 +32,7 @@ export class AuthService {
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
+
 /*
     receiveReset(user: User) {
         if (typeof movie === 'string') {

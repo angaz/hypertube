@@ -22,7 +22,7 @@ function sendConfirmation(email, name, token) {
 						'-name-': name,
 						'-activation_code-': HOST + '/users/confirm?verification=' + token
 					},
-					subject: 'Welcome to Tubular, ' + name,
+					subject: 'Welcome to Tubular!',
 				},
 			],
 			from: {
@@ -71,7 +71,7 @@ function sendReset(email, name, token) {
 						'-name-': name,
 						'-password-reset-link-': HOST + '/users/reset/request?token=' + token
 					},
-					subject: 'Tubular password reset, ' + name,
+					subject: 'Tubular password reset',
 				},
 			],
 			from: {

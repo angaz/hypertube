@@ -37,13 +37,6 @@ router.post('/users/resend', (req, res, next) => {
 
 });
 
-router.post('/users/reset', (req, res) => {
-	if (req.body.username === undefined)
-		return res.status(400).json('Invalid email');
-	userApi.resetPass(req.body.email)
-		.then(result => res.json(result))
-		.catch(error => res.status(500).json(error));
-});
 
 //TODO Reroute to /users/reset if request is invalid
 router.get('/users/reset/request', (req, res) => {
@@ -56,6 +49,13 @@ router.get('/users/reset/request', (req, res) => {
 });
 
 
+router.post('/users/reset', (req, res) => {
+	if (req.body.username === undefined)
+		return res.status(400).json('Invalid email');
+	userApi.resetPass(req.body.email)
+		.then(result => res.json(result))
+		.catch(error => res.status(500).json(error));
+});
 
 
 module.exports = router;

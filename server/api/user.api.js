@@ -46,7 +46,7 @@ function newUser(data) {
 }
 
 function resetPass(userEmail) {
-	return new Promise(resolve, reject => {
+	return new Promise((resolve, reject) => {
 		getUser({email: userEmail})
 			.then(result => {
 				if (result === null) {
