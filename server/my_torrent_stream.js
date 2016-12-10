@@ -35,8 +35,7 @@ function newStream(hash) {
 					maxSize = file.length;
 				}
 			});
-
-			if (stream !== null && maxSize !== 0) {
+			if (stream !== null) {
 				console.log(`Streaming: ${stream.name}`);
 				totalPieces = Math.ceil(stream.length / engine.torrent.pieceLength);
 				resolve({
@@ -51,9 +50,7 @@ function newStream(hash) {
 		engine.on('verify', index => {
 			++noPieces;
 			pieces.push(index);
-			if (stream === undefined || stream === null) {
-				console.log(`Verified ${index} of ${totalPieces}`);
-			} else {
+			if (stream) {
 				console.log(`Downloaded ${noPieces} of ${totalPieces} from ${stream.name} ${parseFloat((noPieces / totalPieces * 100).toFixed(4))}%`);
 			}
 		});
