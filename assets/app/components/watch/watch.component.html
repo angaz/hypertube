@@ -4,7 +4,8 @@
 		       autoplay
 		       [poster]="(movie.poster) ? 'http://image.tmdb.org/t/p/w1280' + movie.poster : ''"
 		       (timeupdate)="seekTimeUpdate()"
-		       (loadedmetadata)="metaLoaded()">
+		       (loadedmetadata)="metaLoaded()"
+		       (click)="playPause()">
 			<source *ngIf="movie.src" src="" [src]="movie.src">
 			<track *ngFor="let caption of captions"
 			       [label]="caption.language.nativeName"
@@ -20,11 +21,15 @@
 			<input #seeker class="seeker" type="range" min="0" max="100" value="0" step="0.005" (change)="seek()">
 			<div class="control-buttons control-buttons-main">
 				<div class="control-buttons">
-					<button (click)="playPause()">{{(video.paused) ? "Play" : "Pause"}}</button>
+					<button (click)="playPause()">
+						<i class="material-icons">{{(video.paused) ? "play_arrow" : "pause"}}</i>
+					</button>
 					<span class="watch-time">{{currentTime}} / {{durationTime}}</span>
 				</div>
 				<div #buttons class="control-buttons">
-					<button (click)="maxMin()">Fullscreen</button>
+					<button (click)="toggleFullscreen()">
+						<i class="material-icons">{{(isFullscreen()) ? "fullscreen_exit" : "fullscreen"}}</i>
+					</button>
 				</div>
 			</div>
 		</div>

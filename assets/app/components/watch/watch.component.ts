@@ -39,7 +39,7 @@ export class WatchComponent {
 
 	getEndTime() {
 		let t = new Date(new Date().getTime() + (this.video.duration * 1000) - (this.video.currentTime * 1000));
-		this.endTime = `${WatchComponent.lpad(t.getHours().toString(), 2, '0')}:${WatchComponent.lpad(t.getMinutes().toString(), 2, '0')}`;
+		this.endTime = `${this.lpad(t.getHours().toString(), 2, '0')}:${this.lpad(t.getMinutes().toString(), 2, '0')}`;
 	}
 
 	ngOnInit() {
@@ -75,10 +75,12 @@ export class WatchComponent {
 		if (this.timer !== null) {
 			clearTimeout(this.timer);
 		}
-		this.timer = setTimeout(() => {
-			this.hideControls = true;
-			this.hideCursor = true;
-		}, 2500);
+		if (!this.video.paused) {
+			this.timer = setTimeout(() => {
+				this.hideControls = true;
+				this.hideCursor = true;
+			}, 2500);
+		}
 		this.hideControls = false;
 		this.hideCursor = false;
 	}
@@ -96,7 +98,7 @@ export class WatchComponent {
 		this.video.currentTime = this.video.duration * (this.seeker.value / 100);
 	}
 
-	static toTime(time: number) {
+	toTime(time: number) {
 		let hour = Math.floor(time / 3600);
 		time -= hour * 3600;
 		let min = Math.floor(time / 60);
@@ -105,11 +107,11 @@ export class WatchComponent {
 		if (hour) {
 			ret += `${hour}:`;
 		}
-		ret += `${WatchComponent.lpad(min.toString(), 2, '0')}:${WatchComponent.lpad(Math.floor(time).toString(), 2, '0')}`;
+		ret += `${this.lpad(min.toString(), 2, '0')}:${this.lpad(Math.floor(time).toString(), 2, '0')}`;
 		return ret;
 	}
 
-	static lpad(string: string, length: number, padChar: string) {
+	lpad(string: string, length: number, padChar: string) {
 		while (string.length < length) {
 			string = padChar + string;
 		}
@@ -117,17 +119,21 @@ export class WatchComponent {
 	}
 
 	metaLoaded() {
-		this.durationTime = WatchComponent.toTime(this.video.duration);
+		this.durationTime = this.toTime(this.video.duration);
 		this.getEndTime();
 	}
 
 	seekTimeUpdate() {
 		this.seeker.value = this.video.currentTime / this.video.duration * 100;
-		this.currentTime = WatchComponent.toTime(this.video.currentTime);
+		this.currentTime = this.toTime(this.video.currentTime);
 	}
 
-	maxMin() {
-		if (!document.fullscreenElement && !document.webkitIsFullScreen) {
+	isFullscreen() {
+		return (document.fullscreenElement || document.webkitIsFullScreen);
+	}
+
+	toggleFullscreen() {
+		if (!this.isFullscreen()) {
 			if (this.video.parentNode.requestFullscreen) {
 				this.video.parentNode.requestFullscreen()
 			} else if (this.video.parentNode.webkitRequestFullscreen) {
