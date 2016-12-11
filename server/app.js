@@ -12,7 +12,6 @@ const mongoose = require('mongoose');
 const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
 const movies = require('./api/movie.api');
-const yts = require('./api/yts.api');
 const app = express();
 const hbs = exphbs.create({
 	extname: '.hbs',
@@ -85,14 +84,16 @@ app.use('/', appRoutes);
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
 
-movies.update()
-	.then(result => console.log(`New movies: ${result}`))
-	.catch(error => console.log(error));
+function update() {
+	movies.update()
+		.then(result => console.log(`New or updated movies: ${result}`))
+		.catch(error => console.log(error));
+}
+
+update();
 
 cron.schedule('0 * * * *', () => {
-	movies.update()
-		.then(result => console.log(`New movies: ${result}`))
-		.catch(error => console.log(error));
+	update();
 });
 
 module.exports = app;

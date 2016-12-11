@@ -3,10 +3,11 @@
 		<video #video
 		       autoplay
 		       [poster]="(movie.poster) ? 'http://image.tmdb.org/t/p/w1280' + movie.poster : ''"
+		       [ngClass]="{'raised-text': !hideControls}"
 		       (timeupdate)="seekTimeUpdate()"
 		       (loadedmetadata)="metaLoaded()"
 		       (click)="playPause()">
-			<source *ngIf="movie.src" src="" [src]="movie.src">
+			<source *ngIf="movieSrc" src="" [src]="movieSrc">
 			<track *ngFor="let caption of captions"
 			       [label]="caption.language.nativeName"
 			       [srclang]="caption.language.code"
@@ -18,7 +19,7 @@
 			<span>End Time: {{endTime}}</span>
 		</div>
 		<div #videoControls class="video-controls" [ngClass]="{'hidden': hideControls}">
-			<input #seeker class="seeker" type="range" min="0" max="100" value="0" step="0.005" (change)="seek()">
+			<input #seeker class="seeker" type="range" name="seeker" min="0" max="100" value="0" step="0.005" (change)="seek()">
 			<div class="control-buttons control-buttons-main">
 				<div class="control-buttons">
 					<button (click)="playPause()">
@@ -27,6 +28,12 @@
 					<span class="watch-time">{{currentTime}} / {{durationTime}}</span>
 				</div>
 				<div #buttons class="control-buttons">
+					<ul>
+						<li *ngFor="let video of movie.srcs; let index = index" (click)="selectVideo(index)">{{video.quality}} :: {{video.humanReadableSize}}</li>
+					</ul>
+					<ul>
+						<li *ngFor="let caption of video.textTracks; let index = index" (click)="selectTrack(index)">{{caption.label}}</li>
+					</ul>
 					<button (click)="toggleFullscreen()">
 						<i class="material-icons">{{(isFullscreen()) ? "fullscreen_exit" : "fullscreen"}}</i>
 					</button>

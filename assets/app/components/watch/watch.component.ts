@@ -14,12 +14,13 @@ export class WatchComponent {
 	@ViewChild('video') video;
 	@ViewChild('seeker') seeker;
 	private subscription: Subscription;
-	movie: any = {
+	private movie: any = {
 		poster: '',
-		src: null
+		src: ''
 	};
-	captions: any[] = [];
-	noMovie: boolean = false;
+	private movieSrc = null;
+	private captions: any[] = [];
+	private noMovie: boolean = false;
 	private hideCursor: boolean = false;
 	private hideControls: boolean = false;
 	private currentTime: string = '00:00';
@@ -52,10 +53,26 @@ export class WatchComponent {
 						if (isNullOrUndefined(watch)) {
 							return this.noMovie = true;
 						}
+						let srcs = [];
+						watch.torrents.forEach(torrent => {
+							if (torrent.hash) {
+								if ((torrent.size / 1073741824) > 1) { // 1024^3 - GB
+									torrent.humanReadableSize = `${(torrent.size / 1073741824).toFixed(2)}GB`;
+								} else if ((torrent.size / 1048576) > 1) { // 1024^2 - MB
+									torrent.humanReadableSize = `${(torrent.size / 1048576).toFixed(2)}MB`;
+								} else if ((torrent.size / 1024) > 1) { // 1024 - KB
+									torrent.humanReadableSize = `${(torrent.size / 1024).toFixed(2)}KB`;
+								} else {
+									torrent.humanReadableSize = `${torrent.size}B`;
+								}
+								srcs.push(torrent);
+							}
+						});
 						this.movie = {
 							poster: watch.backdrop_path,
-							src: `/api/watch/${watch.torrents[0].hash}`,
+							srcs: srcs,
 						};
+						this.selectVideo(0);
 						this._movieService.getCaptions(watch.yify_id)
 							.then(captions => {
 								this.captions = captions;
@@ -146,5 +163,25 @@ export class WatchComponent {
 				document.webkitExitFullscreen();
 			}
 		}
+	}
+
+	selectTrack(index) {
+		console.log(this.video.textTracks);
+		let tracks = this.video.textTracks;
+		for (let i = 0; i < tracks.length; ++i) {
+			if (i == index) {
+				tracks[i].mode = 'showing';
+			} else {
+				tracks[i].mode = 'disabled';
+			}
+		}
+	}
+
+	selectVideo(index) {
+		let currentTime = this.video.currentTime;
+		this.movieSrc = `/api/watch/${this.movie.srcs[index].hash}`;
+		this.video.load();
+		this.video.play();
+		this.video.currentTime = currentTime;
 	}
 }

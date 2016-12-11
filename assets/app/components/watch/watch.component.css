@@ -233,3 +233,11 @@ video {
 	margin-top: -3px;
 	transition: all .3s ease-in-out;
 }
+
+.raised-text::-webkit-media-text-track-container {
+	bottom: 80px;
+}
+
+.raised-text::-moz-media-text-track-container {
+	bottom: 80px;
+}

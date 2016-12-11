@@ -29,6 +29,7 @@ function update() {
 
 function newMovie(page) {
 	let promises = [];
+	let updates = 0;
 	return new Promise((resolve, reject) => {
 		ytsAPI.getPage(page).then(yifyPage => {
 			console.log(`Get page ${page}\t${new Date()}`);
@@ -39,7 +40,7 @@ function newMovie(page) {
 
 			yifyPage.forEach(yify => {
 				promises.push(new Promise((success, problem) => {
-					Movie.find({'yify_id': yify.id}, '*', (error, movie) => {
+					Movie.find({'yify_id': yify.id}, '_id, torrents', (error, movie) => {
 						if (error) {
 							return problem({
 								message: 'Mongoose Movie find error',
@@ -63,18 +64,6 @@ function newMovie(page) {
 									.then(cast => {
 										let genres = tmdb.genres.map(genre => {
 											return genre.name;
-										});
-
-										let torrents = [];
-										yify.torrents.forEach(torrent => {
-											if (torrent.quality.match(/^(720p|1080p)$/)) {
-												torrents.push({
-													hash: torrent.hash,
-													quality: torrent.quality,
-													size: torrent.size_bytes,
-													health: (torrent.seeds / (torrent.peers) ? (torrent.peers * 2) : 10)
-												});
-											}
 										});
 
 										let slug = `${tmdb.title
@@ -104,7 +93,7 @@ function newMovie(page) {
 											popularity: tmdb.popularity,
 											cast: cast,
 											subtitles: null,
-											torrents: torrents
+											torrents: getTorrents(yify)
 										};
 
 										success(new Movie(newMovie));
@@ -117,6 +106,15 @@ function newMovie(page) {
 								});
 							});
 						} else {
+							if (movie[0].torrents !== undefined && movie[0].torrents.length !== yify.torrents.length) {
+								Movie.update({_id: movie[0]._id}, {$set: {torrents: getTorrents(yify)}}, (err, update) => {
+									if (err) {
+										throw new Error(err);
+									}
+									console.log(require('util').inspect(`${update} updated`, {depth: null}));
+								});
+								++updates;
+							}
 							success(null);
 						}
 					});
@@ -126,20 +124,23 @@ function newMovie(page) {
 			Promise.all(promises)
 				.then(bagOmovies => {
 					bagOmovies = cleanArray(bagOmovies);
-					if (bagOmovies.length > 0) {
-						Movie.insertMany(bagOmovies, (error, inserted) => {
-							if (error) {
-								return reject({
-									message: 'insert error',
-									error: error
-								});
-							}
-							setTimeout(() => {
-								newMovie(page + 1)
-									.then(moreMovies => resolve(inserted.length + moreMovies))
-									.catch(error => reject(error));
-							}, 2500);
-						});
+					if (bagOmovies.length > 0 || updates > 0) {
+						if (bagOmovies.length > 0) {
+							Movie.insertMany(bagOmovies, (error, inserted) => {
+								if (error) {
+									return reject({
+										message: 'insert error',
+										error: error
+									});
+								}
+								updates += inserted.length;
+							});
+						}
+						setTimeout(() => {
+							newMovie(page + 1)
+								.then(moreMovies => resolve(updates + moreMovies))
+								.catch(error => reject(error));
+						}, 2500);
 					} else {
 						console.log('No more movies');
 						resolve(0);
@@ -155,6 +156,21 @@ function newMovie(page) {
 			return reject(error);
 		});
 	});
+}
+
+function getTorrents(yify) {
+	let torrents = [];
+	yify.torrents.forEach(torrent => {
+		if (torrent.quality.match(/^(720p|1080p)$/)) {
+			torrents.push({
+				hash: torrent.hash,
+				quality: torrent.quality,
+				size: torrent.size_bytes,
+				health: (torrent.seeds / (torrent.peers) ? (torrent.peers * 2) : 10)
+			});
+		}
+	});
+	return torrents;
 }
 
 function getPage(page) {
