@@ -1,0 +1,12 @@
+<div id="seeker">
+	<div id="container">
+		<div id="track" (click)="scrub($event)">
+			<div id="track-container">
+				<canvas #downloaded id="downloaded" height="1"></canvas>
+				<div #loading id="loading"></div>
+			</div>
+		</div>
+		<div #thumb id="thumb"></div>
+		<div id="time"></div>
+	</div>
+</div>
