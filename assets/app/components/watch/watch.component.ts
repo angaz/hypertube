@@ -25,12 +25,20 @@ export class WatchComponent {
 	private currentTime: string = '00:00';
 	private durationTime: string = '00:00';
 	private endTime: string = '00:00';
+	private showTracks = false;
+	private showSrcs = false;
 	private currentTimeInt: number = 0;
 	private timer = null;
+	private playingFormat = null;
 
 	constructor(
 			private activatedRoute: ActivatedRoute,
 			private _movieService: MovieService) {
+	}
+
+	documentClick() {
+		this.showTracks = false;
+		this.showSrcs = false;
 	}
 
 	ngAfterViewInit() {
@@ -95,6 +103,7 @@ export class WatchComponent {
 			this.timer = setTimeout(() => {
 				this.hideControls = true;
 				this.hideCursor = true;
+				this.documentClick();
 			}, 2500);
 		}
 		this.hideControls = false;
@@ -186,6 +195,7 @@ export class WatchComponent {
 	selectVideo(index) {
 		let currentTime = this.video.currentTime;
 		this.movieSrc = `/api/watch/${this.movie.srcs[index].hash}`;
+		this.playingFormat = this.movie.srcs[index];
 		this.video.load();
 		this.video.play();
 		this.video.currentTime = currentTime;
