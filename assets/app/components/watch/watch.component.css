@@ -151,87 +151,11 @@ video {
 .seeker {
 	position: absolute;
 	left: 0;
-	bottom: 48px;
-	-webkit-appearance: none;
-	width: 100%;
-	margin: 6px 1px 0 1px;
+	right: 0;
+	bottom: 36px;
+	margin: 0 6px;
 	background-color: transparent;
-	border: none;
-}
-
-.seeker:focus {
-	outline: none;
-}
-
-.seeker:hover::-webkit-slider-runnable-track {
-	height: 24px;
-	margin-top: 0;
-}
-
-.seeker:hover::-webkit-slider-thumb {
 	height: 30px;
-	transform: rotate(0deg);
-	border-radius: 0;
-}
-
-.seeker::-webkit-slider-runnable-track {
-	width: 100%;
-	height: 6px;
-	margin-top: 12px;
-	cursor: pointer;
-	background: #484d4d;
-	border: none;
-	transition: all .3s ease-in-out;
-}
-
-.seeker::-webkit-slider-thumb {
-	border: 1px solid rgba(0, 137, 123, 0.47);
-	transform: rotate(90deg);
-	border-radius: 50%;
-	height: 12px;
-	width: 12px;
-	background: #52a591;
-	cursor: pointer;
-	-webkit-appearance: none;
-	margin-top: -3px;
-	transition: all .3s ease-in-out;
-}
-
-.seeker:focus::-webkit-slider-runnable-track {
-	background: #4a5050;
-}
-
-.seeker:hover::-moz-range-track {
-	height: 24px;
-	margin-top: 0;
-}
-
-.seeker:hover::-moz-range-thumb {
-	height: 30px;
-	transform: rotate(0deg);
-	border-radius: 0;
-}
-
-.seeker::-moz-range-track {
-	width: 100%;
-	height: 6px;
-	margin-top: 12px;
-	cursor: pointer;
-	background: #484d4d;
-	border: none;
-	transition: all .3s ease-in-out;
-}
-
-.seeker::-moz-range-thumb {
-	border: 1px solid rgba(0, 137, 123, 0.47);
-	transform: rotate(90deg);
-	border-radius: 50%;
-	height: 12px;
-	width: 12px;
-	background: #52a591;
-	cursor: pointer;
-	margin-top: -3px;
-	transition: all .3s ease-in-out;
 }
 
 .raised-text::-webkit-media-text-track-container {
