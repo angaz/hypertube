@@ -75,7 +75,7 @@ movies-info {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 56px;
+	height: 48px;
 	padding: 4px;
 	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 2147483647;
@@ -96,8 +96,8 @@ movies-info {
 .control-buttons button {
 	background-color: transparent;
 	border: hidden;
-	width: 48px;
-	height: 48px;
+	width: 36px;
+	height: 36px;
 	padding: 0;
 }
 
@@ -106,8 +106,8 @@ movies-info {
 }
 
 .control-buttons i {
-	line-height: 48px;
-	font-size: 48px;
+	line-height: 36px;
+	font-size: 36px;
 }
 
 .seeker {
@@ -240,4 +240,36 @@ video {
 
 .raised-text::-moz-media-text-track-container {
 	bottom: 80px;
+}
+
+.drop-up {
+	position: relative;
+	display: inline-block;
+}
+
+.drop-up > div {
+	display: none;
+	position: absolute;
+	max-height: 10vh;
+	overflow-y: auto;
+	color: #fff;
+	background-color: rgba(0, 0, 0, 0.5);
+	bottom: 100%;
+	right: 0;
+	flex-direction: column;
+	transition: background-color .3s ease-in-out;
+}
+
+.drop-up > div > span {
+	min-width: 160px;
+	height: 2rem;
+	cursor: hand;
+}
+
+.drop-up span:hover {
+	background-color: rgba(128, 128, 128, 0.5);
+}
+
+.drop-up-show {
+	display: flex !important;
 }

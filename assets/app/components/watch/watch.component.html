@@ -15,8 +15,10 @@
 			       src=""
 			       kind="subtitles">
 		</video>
-		<div class="end-time" [ngClass]="{'hidden': hideControls}">
-			<span>End Time: {{endTime}}</span>
+		<div class="top-controls">
+			<div class="end-time" [ngClass]="{'hidden': hideControls}">
+				<span>End Time: {{endTime}}</span>
+			</div>
 		</div>
 		<div #videoControls class="video-controls" [ngClass]="{'hidden': hideControls}">
 			<input #seeker class="seeker" type="range" name="seeker" min="0" max="100" value="0" step="0.005" (change)="seek()">
@@ -27,13 +29,23 @@
 					</button>
 					<span class="watch-time">{{currentTime}} / {{durationTime}}</span>
 				</div>
-				<div #buttons class="control-buttons">
-					<ul>
-						<li *ngFor="let video of movie.srcs; let index = index" (click)="selectVideo(index)">{{video.quality}} :: {{video.humanReadableSize}}</li>
-					</ul>
-					<ul>
-						<li *ngFor="let caption of video.textTracks; let index = index" (click)="selectTrack(index)">{{caption.label}}</li>
-					</ul>
+				<div #buttons class="control-buttons" (window:mouseup)="documentClick()">
+					<div class="drop-up">
+						<button (click)="showTracks = false; showSrcs = !showSrcs">
+							<i class="material-icons">hd</i>
+						</button>
+						<div class="drop-up-contents" [ngClass]="{'drop-up-show': showSrcs}">
+							<span *ngFor="let video of movie.srcs; let index = index" (click)="selectVideo(index)">{{video.quality}} :: {{video.humanReadableSize}}</span>
+						</div>
+					</div>
+					<div class="drop-up">
+						<button (click)="showSrcs = false; showTracks = !showTracks">
+							<i class="material-icons">subtitles</i>
+						</button>
+						<div class="drop-up-contents" [ngClass]="{'drop-up-show': showTracks}">
+							<span *ngFor="let caption of video.textTracks; let index = index" (click)="selectTrack(index)">{{caption.label}}</span>
+						</div>
+					</div>
 					<button (click)="toggleFullscreen()">
 						<i class="material-icons">{{(isFullscreen()) ? "fullscreen_exit" : "fullscreen"}}</i>
 					</button>
