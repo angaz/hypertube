@@ -22,6 +22,7 @@ import { AuthService } from "../services/auth.service";
 import {UserProfileComponent} from "../components/user-profile/user-profile.component";
 import {TabComponent} from "../components/ui-elements/tab/tab.component";
 import {TabsComponent} from "../components/ui-elements/tabs/tabs.component";
+import {ProgressBarComponent} from "../components/ui-elements/progress-bar/progress-bar.component";
 
 const appRoutes: Routes = [
 	{ path: 'users/signup', component: SignupComponent },
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
 		SearchComponent,
 		UserProfileComponent,
 		TabComponent,
-		TabsComponent
+		TabsComponent,
+		ProgressBarComponent
 	],
 	imports: [
 		RouterModule.forRoot(appRoutes),

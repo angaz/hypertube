@@ -12,7 +12,6 @@ import {isNullOrUndefined} from "util";
 })
 export class WatchComponent {
 	@ViewChild('video') video;
-	@ViewChild('seeker') seeker;
 	private subscription: Subscription;
 	private movie: any = {
 		poster: '',
@@ -28,6 +27,7 @@ export class WatchComponent {
 	private endTime: string = '00:00';
 	private showTracks = false;
 	private showSrcs = false;
+	private currentTimeInt: number = 0;
 	private timer = null;
 	private playingFormat = null;
 
@@ -43,7 +43,6 @@ export class WatchComponent {
 
 	ngAfterViewInit() {
 		this.video = this.video.nativeElement;
-		this.seeker = this.seeker.nativeElement;
 	}
 
 	getEndTime() {
@@ -120,8 +119,13 @@ export class WatchComponent {
 		}
 	}
 
-	seek() {
-		this.video.currentTime = this.video.duration * (this.seeker.value / 100);
+	seek(time) {
+		console.log(time);
+		console.log(this.video.duration);
+		console.log(this.video.duration * (time / 100));
+		if (this.video.duration > 0) {
+			this.video.currentTime = this.video.duration * (time / 100);
+		}
 	}
 
 	toTime(time: number) {
@@ -150,7 +154,8 @@ export class WatchComponent {
 	}
 
 	seekTimeUpdate() {
-		this.seeker.value = this.video.currentTime / this.video.duration * 100;
+		this.getEndTime();
+		this.currentTimeInt = this.video.currentTime / this.video.duration * 100;
 		this.currentTime = this.toTime(this.video.currentTime);
 	}
 
@@ -172,6 +177,7 @@ export class WatchComponent {
 				document.webkitExitFullscreen();
 			}
 		}
+		this.getEndTime();
 	}
 
 	selectTrack(index) {

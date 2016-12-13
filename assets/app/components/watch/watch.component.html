@@ -21,7 +21,13 @@
 			</div>
 		</div>
 		<div #videoControls class="video-controls" [ngClass]="{'hidden': hideControls}">
-			<input #seeker class="seeker" type="range" name="seeker" min="0" max="100" value="0" step="0.005" (change)="seek()">
+			<progress-bar
+					class="seeker"
+					[length]="video.duration"
+					[downloaded]="downloaded"
+					[value]="currentTimeInt"
+					(seeked)="seek($event)">
+			</progress-bar>
 			<div class="control-buttons control-buttons-main">
 				<div class="control-buttons">
 					<button (click)="playPause()">
