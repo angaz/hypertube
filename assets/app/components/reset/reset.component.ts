@@ -18,6 +18,8 @@ export class ResetComponent implements OnInit {
 
     constructor(private authService: AuthService, private router: Router) {}
 
+
+
     onSubmitEmail() {
         const user = new User(
             null,
@@ -40,19 +42,13 @@ export class ResetComponent implements OnInit {
 
     resetRequest() {
         console.log('reset.component entered: resetRequest function executed');
-        const user = new User(
-            null,
-            null,
-            null,
-            null,
-            this.passwordForm.value.password
-        );
-        this.authService.resetPassword()
+        let validate = 0;
+        this.authService.resetPassword(validate)
             .subscribe(
-                data => {
+                validate => {
                     //localStorage.setItem('token', data.token);
                     //localStorage.setItem('userId', data.userId);
-                    this.router.navigateByUrl('/reset');
+                    this.router.navigateByUrl('/reset/ttt');
                 },
                 error => console.error(error)
             );

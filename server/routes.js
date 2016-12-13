@@ -40,9 +40,8 @@ router.post('/users/resend', (req, res, next) => {
 
 //TODO Reroute to /users/reset if request is invalid
 router.get('/users/reset/request', (req, res) => {
-	if (!req.query.token) {
+	if (!req.query.token)
 		return res.status(400).json('Invalid reset request');
-	}
 	userApi.resetReqTest(req.query.token)
 		.then(result => res.json(result))
 		.catch(error => res.status(500).json(error));
@@ -53,7 +52,10 @@ router.post('/users/reset', (req, res) => {
 	if (req.body.username === undefined)
 		return res.status(400).json('Invalid email');
 	userApi.resetPass(req.body.email)
-		.then(result => res.json(result))
+		.then(result => {
+			//res.json(result);
+			//res.render('/testsss', { title: 'Express' });
+		})
 		.catch(error => res.status(500).json(error));
 });
 
