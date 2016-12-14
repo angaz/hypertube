@@ -25,6 +25,19 @@ router.post('/users/signin', (req, res) => {
 		.catch(error => res.status(500).json(error));
 });
 
+// Redirect the user to Facebook for authentication.  When complete,
+// Facebook will redirect the user back to the application at
+//     /auth/facebook/callback
+app.get('/users/facebook', passport.authenticate('facebook'));
+
+// Facebook will redirect the user to this URL after approval.  Finish the
+// authentication process by attempting to obtain an access token.  If
+// access was granted, the user will be logged in.  Otherwise,
+// authentication has failed.
+app.get('/auth/facebook/callback',
+	passport.authenticate('facebook', { successRedirect: '/',
+		failureRedirect: '/login' }));
+
 //TODO Reroute to login when validated
 router.get('/users/confirm/:verification?', (req, res) => {
 	userApi.verifyEmail(req.query.verification)

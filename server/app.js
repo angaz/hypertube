@@ -13,6 +13,7 @@ const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
 const movies = require('./api/movie.api');
 const yts = require('./api/yts.api');
+const passport = require('passport');
 const app = express();
 const hbs = exphbs.create({
 	extname: '.hbs',
@@ -55,6 +56,9 @@ app.use(session({
 	saveUninitialized: false
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 express.static.mime.define({'text/vtt': ['vtt']});
 
 app.use(bodyParser.json());
@@ -79,7 +83,7 @@ app.use((req, res, next, err) => {
 });
 
 app.use('/api', apiRoutes);
-app.use('/', appRoutes);
+app.use('/', appRoutes, passport);
 
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
