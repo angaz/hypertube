@@ -30,7 +30,6 @@ export class WatchComponent {
 	private endTime: string = '00:00';
 	private showTracks = false;
 	private showSrcs = false;
-	private currentTimeInt: number = 0;
 	private timer = null;
 	private socket = null;
 	private downloadPieces = {

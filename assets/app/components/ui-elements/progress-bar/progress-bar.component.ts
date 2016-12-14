@@ -9,6 +9,7 @@ export class ProgressBarComponent {
 	@ViewChild('downloaded') downloadedBar;
 	@ViewChild('thumb') thumb;
 	@ViewChild('container') container;
+	@ViewChild('played') played;
 
 	private ctx = null;
 	private imageData = null;
@@ -19,10 +20,13 @@ export class ProgressBarComponent {
 		this.downloadedBar = this.downloadedBar.nativeElement;
 		this.thumb = this.thumb.nativeElement;
 		this.container = this.container.nativeElement;
+		this.played = this.played.nativeElement;
 	}
 
 	setValue(value) {
-		this.thumb.style.left = `${value}%`;
+		value = `${value}%`;
+		this.thumb.style.left = value;
+		this.played.style.width = value;
 	}
 
 	drawPiece(pieceNumber) {
@@ -37,7 +41,6 @@ export class ProgressBarComponent {
 	}
 
 	drawAllPieces(pieceNumbers, totalPieces) {
-		console.log('draw all pieces', this.ctx, this.imageData);
 		this.resetPieces();
 		this.ctx = this.downloadedBar.getContext('2d');
 		this.downloadedBar.width = totalPieces;
@@ -66,7 +69,7 @@ export class ProgressBarComponent {
 
 	scrub(event) {
 		if (this.mouseDown) {
-			this.thumb.style.left = `${event.offsetX / this.container.offsetWidth * 100}%`;
+			this.setValue(event.offsetX / this.container.offsetWidth * 100);
 		}
 	}
 
@@ -74,7 +77,7 @@ export class ProgressBarComponent {
 		this.mouseDown = false;
 		if (event.target.closest('#container')) {
 			let value = event.offsetX / this.container.offsetWidth * 100;
-			this.thumb.style.left = `${value}%`;
+			this.setValue(value);
 			this.seeked.emit(value);
 		}
 	}
