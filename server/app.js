@@ -22,6 +22,9 @@ const hbs = exphbs.create({
 	}
 });
 
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
 //retries db connection if failed
 const mongoUrl = 'mongodb://hypertube:eyVhqp8urJdS3CWn@52.165.47.251:7342/hypertube?ssl=true';
 mongoose.Promise = global.Promise;
@@ -48,6 +51,10 @@ app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use((req, res, next) => {
+	res.io = io;
+	next();
+});
 app.use(logger('dev'));
 app.use(session({
 	secret: 'Ilivellamas',
@@ -96,4 +103,7 @@ cron.schedule('0 * * * *', () => {
 	update();
 });
 
-module.exports = app;
+module.exports = {
+	app: app,
+	server: server
+};

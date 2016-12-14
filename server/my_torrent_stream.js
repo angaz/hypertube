@@ -10,7 +10,7 @@ mime.define({
 	'video/webm': ['mkv']
 });
 
-function newStream(hash) {
+function newStream(hash, socket) {
 	return new Promise((resolve, reject) => {
 		let engine = new torrentStream(`magnet:?xt=urn:btih:${hash}`);
 		let stream = null;
@@ -42,6 +42,7 @@ function newStream(hash) {
 					stream: stream,
 					destroy: destroy
 				});
+				socket.emit('pieces', {pieces: totalPieces});
 			} else {
 				reject('An error occurred starting a stream');
 			}
@@ -53,12 +54,13 @@ function newStream(hash) {
 			if (stream) {
 				console.log(`Downloaded ${noPieces} of ${totalPieces} from ${stream.name} ${parseFloat((noPieces / totalPieces * 100).toFixed(4))}%`);
 			}
+			socket.emit('verified', {index: index});
 		});
 	});
 }
 
 function watch(req, res, hash) {
-	newStream((hash === undefined) ? 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A' : hash)
+	newStream((hash === undefined) ? 'E7F6991C3DC80E62C986521EABCF03AF2420FC9A' : hash, res.io)
 		.then(data => {
 			let stream = data.stream;
 

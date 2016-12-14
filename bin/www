@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-const app = require('../server/app');
+const app = require('../server/app').app;
 const debug = require('debug')('hypertube:server');
 const http = require('http');
 
@@ -19,7 +19,8 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
+const server = require('../server/app').server;
 
 /**
  * Listen on provided port, on all network interfaces.

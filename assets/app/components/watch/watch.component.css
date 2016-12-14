@@ -152,10 +152,10 @@ video {
 	position: absolute;
 	left: 0;
 	right: 0;
-	bottom: 36px;
 	margin: 0 6px;
-	background-color: transparent;
+	bottom: 36px;
 	height: 30px;
+	width: auto;
 }
 
 .raised-text::-webkit-media-text-track-container {
@@ -187,7 +187,11 @@ video {
 .drop-up > div > span {
 	min-width: 160px;
 	height: 2rem;
-	cursor: hand;
+	cursor: pointer;
+}
+
+.activeQuality {
+	background-color: rgba(255, 255, 255, 0.5);
 }
 
 .drop-up span:hover {

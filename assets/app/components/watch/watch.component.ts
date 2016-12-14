@@ -5,6 +5,8 @@ import {Subscription} from 'rxjs';
 import {MovieService} from '../../services/movies.service';
 import {isNullOrUndefined} from "util";
 
+import * as io from 'socket.io-client';
+
 @Component({
 	selector: 'hypertube-watch',
 	templateUrl: './watch.component.html',
@@ -12,6 +14,7 @@ import {isNullOrUndefined} from "util";
 })
 export class WatchComponent {
 	@ViewChild('video') video;
+	@ViewChild('progressBar') progressBar;
 	private subscription: Subscription;
 	private movie: any = {
 		poster: '',
@@ -29,7 +32,13 @@ export class WatchComponent {
 	private showSrcs = false;
 	private currentTimeInt: number = 0;
 	private timer = null;
+	private socket = null;
+	private downloadPieces = {
+		verified: [],
+		totalPieces: 0
+	};
 	private playingFormat = null;
+	private playingIndex = 0;
 
 	constructor(
 			private activatedRoute: ActivatedRoute,
@@ -88,11 +97,23 @@ export class WatchComponent {
 					})
 					.catch(err => console.log(err));
 			});
+
+		this.socket = io(`//${window.location.hostname}:${window.location.port}`);
+		this.socket.on('verified', piece => {
+			this.downloadPieces.verified.push(piece.index);
+			this.progressBar.drawPiece(piece.index);
+		});
+		this.socket.on('pieces', totalPieces => {
+			console.log('Number of pieces: ', totalPieces.pieces);
+			this.downloadPieces.totalPieces = totalPieces.pieces;
+			this.progressBar.drawAllPieces(this.downloadPieces.verified, totalPieces.pieces);
+		});
 	}
 
 	ngOnDestroy() {
 		// prevent memory leak by unsubscribing
 		this.subscription.unsubscribe();
+		this.socket.disconnect();
 	}
 
 	mouseMove() {
@@ -120,9 +141,6 @@ export class WatchComponent {
 	}
 
 	seek(time) {
-		console.log(time);
-		console.log(this.video.duration);
-		console.log(this.video.duration * (time / 100));
 		if (this.video.duration > 0) {
 			this.video.currentTime = this.video.duration * (time / 100);
 		}
@@ -155,7 +173,7 @@ export class WatchComponent {
 
 	seekTimeUpdate() {
 		this.getEndTime();
-		this.currentTimeInt = this.video.currentTime / this.video.duration * 100;
+		this.progressBar.setValue(this.video.currentTime / this.video.duration * 100);
 		this.currentTime = this.toTime(this.video.currentTime);
 	}
 
@@ -194,10 +212,14 @@ export class WatchComponent {
 
 	selectVideo(index) {
 		let currentTime = this.video.currentTime;
+		this.video.pause();
 		this.movieSrc = `/api/watch/${this.movie.srcs[index].hash}`;
+		this.playingIndex = index;
 		this.playingFormat = this.movie.srcs[index];
 		this.video.load();
 		this.video.play();
 		this.video.currentTime = currentTime;
+		this.progressBar.resetPieces();
+		this.downloadPieces.verified = [];
 	}
 }

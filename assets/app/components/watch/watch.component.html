@@ -22,10 +22,8 @@
 		</div>
 		<div #videoControls class="video-controls" [ngClass]="{'hidden': hideControls}">
 			<progress-bar
+					#progressBar
 					class="seeker"
-					[length]="video.duration"
-					[downloaded]="downloaded"
-					[value]="currentTimeInt"
 					(seeked)="seek($event)">
 			</progress-bar>
 			<div class="control-buttons control-buttons-main">
@@ -41,7 +39,10 @@
 							<i class="material-icons">hd</i>
 						</button>
 						<div class="drop-up-contents" [ngClass]="{'drop-up-show': showSrcs}">
-							<span *ngFor="let video of movie.srcs; let index = index" (click)="selectVideo(index)">{{video.quality}} :: {{video.humanReadableSize}}</span>
+							<span
+									*ngFor="let video of movie.srcs; let index = index"
+									(click)="selectVideo(index)"
+									[ngClass]="{'activeQuality': playingIndex == index}">{{video.quality}} :: {{video.humanReadableSize}}</span>
 						</div>
 					</div>
 					<div class="drop-up">
