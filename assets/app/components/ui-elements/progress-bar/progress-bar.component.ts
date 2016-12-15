@@ -10,6 +10,7 @@ export class ProgressBarComponent {
 	@ViewChild('thumb') thumb;
 	@ViewChild('container') container;
 	@ViewChild('played') played;
+	@ViewChild('buffered') buffered;
 
 	private ctx = null;
 	private imageData = null;
@@ -21,12 +22,18 @@ export class ProgressBarComponent {
 		this.thumb = this.thumb.nativeElement;
 		this.container = this.container.nativeElement;
 		this.played = this.played.nativeElement;
+		this.buffered = this.buffered.nativeElement;
 	}
 
 	setValue(value) {
 		value = `${value}%`;
 		this.thumb.style.left = value;
 		this.played.style.width = value;
+		this.buffered.style.left = value;
+	}
+
+	setBuffered(value) {
+		this.buffered.style.right = `${value}%`;
 	}
 
 	drawPiece(pieceNumber) {

@@ -6,6 +6,7 @@
 		       [ngClass]="{'raised-text': !hideControls}"
 		       (timeupdate)="seekTimeUpdate()"
 		       (loadedmetadata)="metaLoaded()"
+		       (progress)="progressUpdate($event)"
 		       (click)="playPause()">
 			<source *ngIf="movieSrc" src="" [src]="movieSrc">
 			<track *ngFor="let caption of captions"
@@ -16,7 +17,7 @@
 			       kind="subtitles">
 		</video>
 		<div class="top-controls">
-			<div class="end-time" [ngClass]="{'hidden': hideControls}">
+			<div class="end-time no-select" [ngClass]="{'hidden': hideControls}">
 				<span>End Time: {{endTime}}</span>
 			</div>
 		</div>
@@ -26,18 +27,16 @@
 					class="seeker"
 					(seeked)="seek($event)">
 			</progress-bar>
-			<div class="control-buttons control-buttons-main">
+			<div class="control-buttons control-buttons-main no-select">
 				<div class="control-buttons">
 					<button (click)="playPause()">
-						<i class="material-icons">{{(video.paused) ? "play_arrow" : "pause"}}</i>
+						<i class="fa" [ngClass]="video.paused ? 'fa-play' : 'fa-pause'"></i>
 					</button>
 					<span class="watch-time">{{currentTime}} / {{durationTime}}</span>
 				</div>
-				<div #buttons class="control-buttons" (window:mouseup)="documentClick()">
+				<div #buttons class="control-buttons">
 					<div class="drop-up">
-						<button (click)="showTracks = false; showSrcs = !showSrcs">
-							<i class="material-icons">hd</i>
-						</button>
+						<button (click)="showTracks = false; showSrcs = !showSrcs">{{playingFormat.quality}}</button>
 						<div class="drop-up-contents" [ngClass]="{'drop-up-show': showSrcs}">
 							<span
 									*ngFor="let video of movie.srcs; let index = index"
@@ -46,15 +45,15 @@
 						</div>
 					</div>
 					<div class="drop-up">
-						<button (click)="showSrcs = false; showTracks = !showTracks">
-							<i class="material-icons">subtitles</i>
+						<button class="button-padding" (click)="showSrcs = false; showTracks = !showTracks">
+							<i class="fa fa-cc"></i>
 						</button>
 						<div class="drop-up-contents" [ngClass]="{'drop-up-show': showTracks}">
 							<span *ngFor="let caption of video.textTracks; let index = index" (click)="selectTrack(index)">{{caption.label}}</span>
 						</div>
 					</div>
-					<button (click)="toggleFullscreen()">
-						<i class="material-icons">{{(isFullscreen()) ? "fullscreen_exit" : "fullscreen"}}</i>
+					<button class="button-padding" (click)="toggleFullscreen()">
+						<i class="fa" [ngClass]="(isFullscreen()) ? 'fa-compress' : 'fa-expand'"></i>
 					</button>
 				</div>
 			</div>

@@ -33,13 +33,14 @@
 .control-buttons-main {
 	justify-content: space-between;
 	align-items: center;
+	height: 100%;
 }
 
 .control-buttons button {
 	background-color: transparent;
 	border: hidden;
-	width: 36px;
-	height: 36px;
+	width: 30px;
+	height: 30px;
 	padding: 0;
 }
 
@@ -48,8 +49,8 @@
 }
 
 .control-buttons i {
-	line-height: 36px;
-	font-size: 36px;
+	line-height: 30px;
+	font-size: 30px;
 }
 
 .hidden {
@@ -84,13 +85,19 @@ video {
 	margin: auto 0 auto 1rem;
 }
 
+.no-select {
+/*	-webkit-user-select: none;
+	-moz-user-select: none;
+	cursor: default;*/
+}
+
 .seeker {
 	position: absolute;
 	left: 0;
 	right: 0;
 	margin: 0 6px;
-	bottom: 36px;
-	height: 30px;
+	bottom: 40px;
+	height: 24px;
 }
 
 .raised-text::-webkit-media-text-track-container {
@@ -135,4 +142,8 @@ video {
 
 .drop-up-show {
 	display: flex !important;
+}
+
+.button-padding {
+	margin-left: 12px;
 }

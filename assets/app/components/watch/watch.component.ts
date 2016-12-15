@@ -10,7 +10,11 @@ import * as io from 'socket.io-client';
 @Component({
 	selector: 'hypertube-watch',
 	templateUrl: './watch.component.html',
-	styleUrls: ['./watch.component.css']
+	styleUrls: ['./watch.component.css']/*,
+	host: {
+		'(window:keypress)': 'keyPress($event)'/!*,
+		'(window:mouseup)': 'documentClick()'*!/
+	}*/
 })
 export class WatchComponent {
 	@ViewChild('video') video;
@@ -36,7 +40,10 @@ export class WatchComponent {
 		verified: [],
 		totalPieces: 0
 	};
-	private playingFormat = null;
+	private playingFormat = {
+		quality: '',
+		humanReadableSize: ''
+	};
 	private playingIndex = 0;
 
 	constructor(
@@ -51,6 +58,10 @@ export class WatchComponent {
 
 	ngAfterViewInit() {
 		this.video = this.video.nativeElement;
+	}
+
+	keyPress(event) {
+		console.log(event);
 	}
 
 	getEndTime() {
@@ -113,6 +124,10 @@ export class WatchComponent {
 		// prevent memory leak by unsubscribing
 		this.subscription.unsubscribe();
 		this.socket.disconnect();
+	}
+
+	progressUpdate(event) {
+		console.log(event);
 	}
 
 	mouseMove() {
@@ -215,9 +230,9 @@ export class WatchComponent {
 		this.movieSrc = `/api/watch/${this.movie.srcs[index].hash}`;
 		this.playingIndex = index;
 		this.playingFormat = this.movie.srcs[index];
+		this.video.currentTime = currentTime;
 		this.video.load();
 		this.video.play();
-		this.video.currentTime = currentTime;
 		this.progressBar.resetPieces();
 		this.downloadPieces.verified = [];
 	}
