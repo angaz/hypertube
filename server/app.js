@@ -13,7 +13,6 @@ const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
 const movies = require('./api/movie.api');
 const yts = require('./api/yts.api');
-const passport = require('passport');
 const app = express();
 const hbs = exphbs.create({
 	extname: '.hbs',
@@ -47,7 +46,7 @@ connectWithRetry(0);
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
-// uncomment after placing your favicon in /public
+// TODO uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(session({
@@ -55,9 +54,6 @@ app.use(session({
 	resave: true,
 	saveUninitialized: false
 }));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 express.static.mime.define({'text/vtt': ['vtt']});
 
@@ -83,7 +79,7 @@ app.use((req, res, next, err) => {
 });
 
 app.use('/api', apiRoutes);
-app.use('/', appRoutes, passport);
+app.use('/', appRoutes);
 
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));

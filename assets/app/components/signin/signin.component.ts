@@ -22,7 +22,8 @@ export class SigninComponent implements OnInit {
 			null,
 			null,
 			this.signinForm.value.username,
-			this.signinForm.value.password
+			this.signinForm.value.password,
+			null // Meta information
 		);
 		this.authService.signin(user)
 			.subscribe(
