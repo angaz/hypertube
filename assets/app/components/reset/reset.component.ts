@@ -15,18 +15,17 @@ export class ResetComponent implements OnInit {
     passwordForm: FormGroup;
     emailSent: boolean = false;
 
-
     constructor(private authService: AuthService, private router: Router) {}
 
-
-
+/*
     onSubmitEmail() {
         const user = new User(
             null,
             null,
             this.emailForm.value.email,
             null,
-            null
+            null,
+	        null
         );
         this.authService.sendReset(user)
             .subscribe(
@@ -43,7 +42,7 @@ export class ResetComponent implements OnInit {
     resetRequest() {
         console.log('reset.component entered: resetRequest function executed');
         let validate = 0;
-        this.authService.resetPassword(validate)
+        this.authService.resetPassword()
             .subscribe(
                 validate => {
                     //localStorage.setItem('token', data.token);
@@ -62,7 +61,8 @@ export class ResetComponent implements OnInit {
             null,
             null,
             null,
-            this.passwordForm.value.password
+            this.passwordForm.value.password,
+	        null
         );
         this.authService.resetPassword()
             .subscribe(
@@ -75,6 +75,7 @@ export class ResetComponent implements OnInit {
             );
         this.passwordForm.reset();
     }
+*/
 
     ngOnInit () {
         this.passwordForm = new FormGroup({

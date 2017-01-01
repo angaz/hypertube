@@ -86,11 +86,11 @@ function getCast(id) {
 					console.log('429');
 				}
 				console.log('error');
-				throw new Error({
+/*				throw new Error({
 					message: 'TMDB getDetails error',
 					error: error,
 					code: response.statusCode
-				});
+				});*/
 			}
 		});
 	});

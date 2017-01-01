@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UserService {
-    user = new User (null, null, null, null, null);
+    user = new User (null, null, null, null, null, null);
 
     public profileHide = new BehaviorSubject<any>(true);
     public profileHide$ = this.profileHide.asObservable();

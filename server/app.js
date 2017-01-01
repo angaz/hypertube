@@ -23,7 +23,8 @@ const hbs = exphbs.create({
 	}
 });
 
-const mongoUrl = 'mongodb://hypertube:eyVhqp8urJdS3CWn@52.165.47.251:7342/hypertube?ssl=true';
+//const mongoUrl = 'mongodb://hypertube:eyVhqp8urJdS3CWn@52.165.47.251:7342/hypertube?ssl=true';
+const mongoUrl = 'mongodb://localhost:27017';
 mongoose.Promise = global.Promise;
 
 function connectWithRetry(counter) {

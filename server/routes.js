@@ -12,6 +12,7 @@ const userApi = require('./api/user.api');
 router.post('/users/signup', (req, res) => {
 	if (req.body.email === undefined)
 		return res.status(400).json('Invalid registration information');
+		console.log(`test ${req.body}`);
 	userApi.newUser(req.body)
 		.then(result => res.json(result))
 		.catch(error => res.status(500).json(error));

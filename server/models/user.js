@@ -6,12 +6,19 @@ const mongooseUniqueValidator = require('mongoose-unique-validator');
 
 let schema = new Schema({
 	local : {
-		firstName: {type: String, required: true},
+/*		firstName: {type: String, required: true},
 		lastName: String,
 		email: {type: String, required: true, unique: true},
 		username: {type: String, required: true, unique: true},
 		password: {type: String, required: true},
 		meta: Schema.Types.Mixed,
+		verified: Boolean*/
+		firstName: String,
+		lastName: String,
+		email: String,
+		username: String,
+		password: String,
+		meta: String,
 		verified: Boolean
 	},
 	facebook : {

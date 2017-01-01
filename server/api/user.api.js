@@ -1,5 +1,4 @@
 "use strict";
-const localStrategy = require('passport-local').Strategy;
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -7,17 +6,17 @@ const User = require('../models/user');
 const email = require('../email');
 
 function newUser(data) {
-	return new Promise(resolve, reject => {
-		let user = new User({
-			firstName: data.firstName,
-			lastName: data.lastName,
-			email: data.email,
-			username: data.username,
-			password: bcrypt.hashSync(data.password, 10),
-			verified: 0
-		});
-		getUser({username: user.username})
+	return new Promise((resolve, reject) => {
+		let user = new User();
+			user.local.firstName = data.firstName;
+			user.local.lastName = data.lastName;
+			user.local.email = data.email;
+			user.local.username = data.username;
+			user.local.password = bcrypt.hashSync(data.password, 10);
+			user.local.verified = 0;
+		getUser({'local.username': data.username})
 			.then(result => {
+				console.log(result);
 				if (result !== null) {
 					return reject({
 						title: 'User creation failed',
@@ -26,7 +25,7 @@ function newUser(data) {
 				}
 			})
 			.catch(console.log.bind(console));
-		getUser({email: user.email})
+		getUser({'local.email': data.email})
 			.then(result => {
 				if (result !== null) {
 					return reject({
@@ -36,11 +35,12 @@ function newUser(data) {
 				}
 			})
 			.catch(console.log.bind(console));
+		//TODO call directly
 		saveUser(user)
 			.catch(console.log.bind(console));
-		genToken(user)
+		genToken(user.local)
 			.then(token => {
-				email.sendConfirmation(user.email, user.firstName, token);
+				email.sendConfirmation(data.email, data.firstName, token);
 			})
 			.catch(console.log.bind(console));
 		resolve(`User registered successfully`);
