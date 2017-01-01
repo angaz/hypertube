@@ -37,6 +37,24 @@ export class SigninComponent implements OnInit {
 		this.signinForm.reset();
 	}
 
+	//Facebook login
+	facebookAuth() {
+		this.authService.facebook()
+			.subscribe(
+				data => {
+					localStorage.setItem('token', data.token);
+					localStorage.setItem('userId', data.userId);
+					this.router.navigateByUrl('/movies');//?token=' + data.token);
+				},
+				error => console.error(error)
+			);
+	}
+
+
+	//Google login
+
+	//42 login
+
 	ngOnInit() {
 		this.signinForm = new FormGroup({
 			username: new FormControl(null, Validators.required),

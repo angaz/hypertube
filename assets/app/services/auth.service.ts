@@ -25,6 +25,12 @@ export class AuthService {
             .catch((error: Response) => Observable.throw(error.json()));
     }
 
+	facebook() {
+		return this.http.get('/users/facebook')
+			.map((response: Response) => response.json())
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
     sendReset(user: User) {
         const body = JSON.stringify(user);
         const headers = new Headers ({'Content-Type': 'application/json'});

@@ -11,6 +11,7 @@ const cron = require('node-cron');
 const mongoose = require('mongoose');
 const appRoutes = require('./routes');
 const apiRoutes = require('./routes.api');
+const passport = require('passport');
 const movies = require('./api/movie.api');
 const yts = require('./api/yts.api');
 const app = express();
@@ -22,7 +23,6 @@ const hbs = exphbs.create({
 		}
 	}
 });
-
 //const mongoUrl = 'mongodb://hypertube:eyVhqp8urJdS3CWn@52.165.47.251:7342/hypertube?ssl=true';
 const mongoUrl = 'mongodb://localhost:27017';
 mongoose.Promise = global.Promise;
@@ -61,6 +61,9 @@ express.static.mime.define({'text/vtt': ['vtt']});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+require('./api/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/js', express.static(path.join(__dirname, '../public/js')));
 app.use('/stylesheets', express.static(path.join(__dirname, '../public/stylesheets')));
 app.use('/captions', express.static(path.join(__dirname, '../public/captions')));
@@ -80,7 +83,7 @@ app.use((req, res, next, err) => {
 });
 
 app.use('/api', apiRoutes);
-app.use('/', appRoutes);
+app.use('/', appRoutes, passport);
 
 // Renders the index if no route was caught. 404 is handled by Angular
 app.use((req, res) => res.render('index'));
@@ -95,4 +98,7 @@ cron.schedule('0 * * * *', () => {
 		.catch(error => console.log(error));
 });
 
-module.exports = app;
+module.exports = {
+	app: app,
+	passport: passport
+};

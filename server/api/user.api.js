@@ -165,7 +165,7 @@ function verifyEmail(verification) {
 	return new Promise((resolve, reject) => {
 		verifyToken(verification)
 			.then( decoded => {
-				User.update({username: decoded.user.username}, {$set: {verified: 1}}, (err) => {
+				User.update({'local.username': decoded.user.username}, {$set: {'local.verified': 1}}, (err) => {
 					if (err) {
 						return reject({
 							message: 'User verification failed!',

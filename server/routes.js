@@ -1,9 +1,9 @@
 "use strict";
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-
+const passport = require('passport');
+//const bcrypt = require('bcryptjs');
+//const jwt = require('jsonwebtoken');
 
 //TODO remove User and replace with user.api
 const User = require('./models/user');
@@ -26,21 +26,16 @@ router.post('/users/signin', (req, res) => {
 		.catch(error => res.status(500).json(error));
 });
 
-// Redirect the user to Facebook for authentication.  When complete,
-// Facebook will redirect the user back to the application at
-//     /auth/facebook/callback
-router.post('/users/facebook', (req, res) => {
+router.get('/users/facebook', (req, res) => {});//, passport.authenticate('facebook', {scope: ['email']}));
 
-});
+router.get('/users/facebook/callback', passport.authenticate('facebook', {
+	successRedirect: '/profile',
+	failureRedirect: '/'
+}));
 
-// Facebook will redirect the user to this URL after approval.  Finish the
-// authentication process by attempting to obtain an access token.  If
-// access was granted, the user will be logged in.  Otherwise,
-// authentication has failed.
-router.post('/users/facebook/callback', (req, res) => {
-	//passport.authenticate('facebook', { successRedirect: '/',
-	//	failureRedirect: '/login' }));
-});
+
+
+
 
 //TODO Reroute to login when validated
 router.get('/users/confirm/:verification?', (req, res) => {
@@ -77,4 +72,7 @@ router.post('/users/reset', (req, res) => {
 });
 
 
-module.exports = router;
+module.exports = {
+	router: router,
+	passport: passport
+};
